@@ -2,6 +2,51 @@
 
 
 # 2296. Design a Text Editor[H]
+"""
+Design a text editor with a cursor that can do the following:
+    Add text to where the cursor is.
+    Delete text from where the cursor is (simulating the backspace key).
+    Move the cursor either left or right.
+    When deleting text, only characters to the left of the cursor will be deleted. 
+    The cursor will also remain within the actual text and cannot be moved beyond it.
+    More formally, we have that 0 <= cursor.position <= currentText.length always holds.
+Implement the TextEditor class:
+TextEditor() Initializes the object with empty text.
+void addText(string text) 
+    Appends text to where the cursor is. The cursor ends to the right of text.
+int deleteText(int k) 
+    Deletes k characters to the left of the cursor. Returns the number of characters actually deleted.
+string cursorLeft(int k) 
+    Moves the cursor to the left k times. Returns the last min(10, len) characters to the left of the cursor, 
+    where len is the number of characters to the left of the cursor.
+string cursorRight(int k) 
+    Moves the cursor to the right k times. Returns the last min(10, len) characters to the left of the cursor, 
+    where len is the number of characters to the left of the cursor.
+"""
+class TextEditor:
+    def __init__(self):
+        self.cursor = 0
+        self.text = ""
+    def addText(self, str): # be cautious that the cursor can be placed in any position
+        self.text = self.text[:self.cursor] + str + self.text[self.cursor:]
+        self.cursor += len(str)
+
+    def deleteText(self, k): # create new cursor
+        new_cursor = max(0, self.cursor-k)
+        self.text = self.text[:new_cursor] + self.text[self.cursor:]
+        diff = self.cursor - new_cursor
+        self.cursor = new_cursor
+        return diff
+
+    def cursorLeft(self, k):
+        self.cursor = max(0, self.cursor-k)
+        l = min(10, self.cursor)
+        return self.text[self.cursor-l:self.cursor]
+
+    def cursorRight(self, k):
+        self.cursor = min(len(self.text), k)
+        l = min(10, self.cursor)
+        return self.text[self.cursor-l:self.cursor]
 
 
 # 699. Falling Sqaures[H]
@@ -10,7 +55,22 @@
 # 2069. Walking Robot Simulation II
 
 
-# 969. Pancake Sorting[E]
+# 969. Pancake Sorting
+"""每次找最大的煎饼, 先翻到第一个位置, 再翻到最后一个位置, 经过2n次, 可以得到结果"""
+def pancakeSort(arr):
+    result, n = [], len(arr)
+    for k in range(n, 0, -1):
+        pos = arr.index(k)
+        if pos == k - 1: # this means the element k is already in the ideal position k - 1
+            continue # find next k (k-1)
+        if pos != 0: #说明需要翻到第一个
+            result.append(k)
+            arr[:pos+1] = arr[:pos+1][::-1]
+        result.append(k) #当前k已经在index 0上了
+        arr[:k] = arr[:k][::-1]
+    return result
+
+# 490. The Maze
 
 # 1366. Rank Team by Votes
 
@@ -42,20 +102,63 @@ def rotateBox(self, box):
             new_box[i][j] = shifted_box[m-j-1][i]
     return new_box
 
+# 271 Encode and Decode Strings
 
-# 112. Path Sum[E]
+# 2069
+
+# 804
+
+# 1790
+
+# 359
+
+# 208. Implement Trie(Prefix Tree)
+
+
+# 64. Minimum Path Sum
+def minPathSum(grid):
+    m, n = len(grid), len(grid[0])
+    for i in range(1, n):
+        grid[0][i] += grid[0][i-1]
+    for i in range(1, m):
+        grid[i][0] += grid[i-1][0]
+        for j in range(1, n):
+            grid[i][j] += min(grid[i-1][j], grid[i][j-1])
+    return grid[-1][-1]
+
+
+# 112. Path Sum[E] (return True of False if a path exist)
 class TreeNode:
     def __init__(self, val = 0, left = None, right = None):
         self.val = val
         self.left = left
         self.right = right
 
-def hasPathSum(self, root, targetSum): # recursive
+def hasPathSum(root, targetSum): # recursive
     if not root:
         return False
     targetSum -= root.val
     if targetSum == 0 and not root.left and not root.right:
         return True
-    return self.hasPathSum(root.left, targetSum) or self.hasPathSum(root.right, targetSum)
+    return hasPathSum(root.left, targetSum) or hasPathSum(root.right, targetSum)
 
-# 113. Path Sum
+
+# 113. Path Sum II (return all paths)
+def pathSum(root, targetSum):
+    pass
+
+# 859. Buddy Strings[E]
+
+# 394. Decode String
+
+# 48. Rotate Image
+
+# 139. Work Break
+
+# 200. Number of Islands
+
+# 573. Squirrel Simulation
+
+# 1814. Count Nice Pairs in an Array
+
+# 2768. Number of Black Blocks
