@@ -1,6 +1,7 @@
 # 273. Integer to English Words[H]
 
 
+
 # 2296. Design a Text Editor[H]
 """
 Design a text editor with a cursor that can do the following:
@@ -71,6 +72,26 @@ def pancakeSort(arr):
     return result
 
 # 490. The Maze
+""" DFS 遍历迷宫，注意每次移动只能走到障碍物才能进行下一次移动"""
+def hasPath(maze, start, destination):
+    m, n = len(maze), len(maze[0])
+    visited = set()
+    stack = [start]
+    directions = [(1, 0), (0, 1), (-1, 0), (0, -1)]
+    while stack:
+        curx, cury = stack.pop()
+        if [curx, cury] == destination:
+            return True
+        for dirx, diry in directions:
+            tx, ty = curx, cury
+            while 0 <= tx+dirx < m and 0 <= ty+diry < n and maze[tx+dirx][ty+diry] != 1: # exit the while loop when encounter wall
+                tx += dirx
+                ty += diry
+            if (tx,ty) not in visited:
+                visited.add((tx, ty))
+                stack.append((tx, ty))
+    return False
+
 
 # 1366. Rank Team by Votes
 
@@ -156,6 +177,9 @@ def pathSum(root, targetSum):
 # 139. Work Break
 
 # 200. Number of Islands
+"""遍历这个矩阵, 每次遇到1的时候意味着遇到了一个新的岛, 结果加一, 并从这个位置开始BSF/DFS把与他相邻的所有格子标成0, 继续遍历"""
+
+
 
 # 573. Squirrel Simulation
 
