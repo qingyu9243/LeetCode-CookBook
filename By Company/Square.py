@@ -24,7 +24,7 @@ string cursorRight(int k)
     Moves the cursor to the right k times. Returns the last min(10, len) characters to the left of the cursor, 
     where len is the number of characters to the left of the cursor.
 """
-class TextEditor:
+class TextEditor:    
     def __init__(self):
         self.cursor = 0
         self.text = ""
@@ -48,7 +48,6 @@ class TextEditor:
         self.cursor = min(len(self.text), k)
         l = min(10, self.cursor)
         return self.text[self.cursor-l:self.cursor]
-
 
 # 699. Falling Sqaures[H]
 
@@ -96,6 +95,7 @@ def hasPath(maze, start, destination):
 # 1366. Rank Team by Votes
 
 # 1861. Rotating the Box
+"""先把每一行的石头按照重力规律移到右边, 再翻转matrix"""
 def rotateBox(self, box):
     # move by gravity 
     m, n = len(box), len(box[0])
@@ -134,7 +134,37 @@ def rotateBox(self, box):
 # 359
 
 # 208. Implement Trie(Prefix Tree)
+"""字典树的每一个节点都是一个map, key是当前字母, value是所有的子树, 如果一个单词结束, 就在下方插入一个#作为标记"""
+class Trie:
+    def __init__(self,):
+        self.dic = {}
 
+    def insert(self, word):
+        "Insert word into the trie."
+        cur = self.dic # set pointer cur to the root of trie
+        for c in word:
+            if c not in cur:
+                cur[c] = {} # create a sub dictionary
+            cur = cur[c] # move the pointer to the dict that direct from the char
+        cur['#'] = True # end the word by add "#"
+
+    def search(self, word):
+        "Returns if the word is in the trie."
+        cur = self.dic
+        for c in word:
+            if c not in cur:
+                return False
+            cur = cur[c]
+        return '#' in cur
+    
+    def startWith(self, prefix):
+        "Returns if there is any word in the trie that starts with the given prefix."
+        cur = self.dic
+        for c in prefix:
+            if c not in cur:
+                return False
+            cur = cur[c]
+        return True
 
 # 64. Minimum Path Sum
 def minPathSum(grid):
@@ -178,8 +208,25 @@ def pathSum(root, targetSum):
 
 # 200. Number of Islands
 """遍历这个矩阵, 每次遇到1的时候意味着遇到了一个新的岛, 结果加一, 并从这个位置开始BSF/DFS把与他相邻的所有格子标成0, 继续遍历"""
+def numsIslands(grid):
+    def bfs(i, j): # traversal the grid and change the surronding 1 to 0 until can't find any 1s.
+        directions = [(1, 0), (0, 1), (-1, 0), (0, -1)]
+        queue = [(i, j)]
+        while queue:
+            x, y = queue.pop(0)
+            for dx, dy in directions:
+                if 0 <= x + dx < m and 0 <= y + dy < n and grid[x+dx][y+dy] == "1":
+                    grid[x+dx][y+dy] = "0"
+                    queue.append((x+dx, y+dy))
 
-
+    m, n =  len(grid), len(grid[0])
+    res = 0
+    for i in range(m):
+        for j in range(n):
+            if grid[i][j] == "1":
+                bfs(i, j)
+                res += 1
+    return res
 
 # 573. Squirrel Simulation
 
