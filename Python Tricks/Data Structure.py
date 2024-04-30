@@ -1,57 +1,76 @@
 #### Math ####
 import math
-'''
+"""
 + - * / ** // %
 / : 除3/4 -> 0.75
 //: 整除 3//4 -> 0, 4//3 -> 1
 **: 幂次方 3**2 = 9
 %: 余数 5%3 = 2
-'''
+"""
+# find the combinations if give 5 elements and 
+x = 5
+y = 2
 res = math.comb(x, y)
 
 
 #### Array ####
 ## Insert 
-nums.insert(index, "")
-Append
-nums.append("")
-Extend
-nums.extend(nums2)
-
-a[::-1] 
-
-# changing array length
+nums = [1, 2, 3, 5, 6]
+nums.insert(3, 4) # insert(index, value) -> nums = [1, 2, 3, 4, 5, 6]
+## Append
+nums.append(7) # -> nums = [1, 2, 3, 4, 5, 6, 7]
+## Extend
+nums2 = [8, 9]
+nums.extend(nums2) # -> nums = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+## Reverse ([::-1] both applys for str and array)
+nums[::-1]
+# Changing array length
 nums = [1, 2, 3, 4, 5]
-(index  0, 1, 2, 3, 4)
+#(index 0, 1, 2, 3, 4)
 nums[1:4] = [6, 7]    # [1, 6, 7, 5]        (replace 3 elements with 2)
 nums[-1:] = [8, 9, 0] # [1, 6, 7, 8, 9, 0]  (replace 1 element with 3)
 nums[:1] = []         # [6, 7, 8, 9, 0]     (replace 1 element with 0)
 
-Loop/Iterate
+## Loop/Iterate ##
+# 2D array 
+arr = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+sum = 0
+for i in range(len(arr)):
+    for j in range(len(arr[0])):
+        sum += arr[i][j]
 
-2d array. arr = [[a, b], [a, b], [a, b]]
-for a, b in arr:
+for a, b, c in arr:
+    sum += a + b + c
 
-1d array. arr = [0, 7, 8, 10]
+# 1D array
+arr_1d = [0, 7, 8, 10]
+l = []
+  # index and element 
 for i, n in enumerate(arr):
-for i in range(len(arr))
-for j in range(len(arr)-1, -1, -1)
+     l.append((i, n))
+  # loop from back
+for i in range(len(arr)-1, -1, -1):
+    l.append(i)
 
 # break: exit the loop
 # continue: go to the next loop
-
+"""
 # if no break in the for loop, can use else
 for xx loop:
     if xx:
        break
 else:
      xxx   
+"""
 
 #Python Compare/Check
 
 # if char is an integer.
 
 #### String ####
+
+## Compare character
+
 
 s = "    words high   "
 s.strip() # Remove spaces at the beginning and at the end of the string:
