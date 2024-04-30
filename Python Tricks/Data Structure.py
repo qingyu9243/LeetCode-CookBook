@@ -1,5 +1,5 @@
 #### Math ####
-
+import math
 '''
 + - * / ** // %
 / : 除3/4 -> 0.75
@@ -7,6 +7,8 @@
 **: 幂次方 3**2 = 9
 %: 余数 5%3 = 2
 '''
+res = math.comb(x, y)
+
 
 #### Array ####
 ## Insert 
@@ -45,7 +47,7 @@ for xx loop:
 else:
      xxx   
 
-Python Compare/Check
+#Python Compare/Check
 
 # if char is an integer.
 
