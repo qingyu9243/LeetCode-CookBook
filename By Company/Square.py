@@ -117,7 +117,7 @@ def hasPath(maze, start, destination):
 		...
 	}
 """
-def rankTeams(self, votes: List[str]) -> str:
+def rankTeams(self, votes) -> str:
     d = {}
 
     for vote in votes:
@@ -186,13 +186,13 @@ class Robot:
         else:
             self.dir = 0
 
-    def getPos(self) -> List[int]:
+    def getPos(self):
         if self.pos > self.mid + self.width:
             return [0,self.height - (self.pos - self.mid - self.width)]
         elif self.pos > self.mid:
             return [self.width - (self.pos - self.mid) ,self.height]
         elif self.pos > self.width:
-            return [self.width, self.pos - self.width ]
+            return [self.width, self.pos - self.width]
         else:
             return [self.pos,0]
 
@@ -417,7 +417,7 @@ def countNicePairs(self, nums) -> int:
 
 # 2768. Number of Black Blocks
 from collections import Counter
-def countBlackBlocks(self, m: int, n: int, coordinates) -> List[int]:
+def countBlackBlocks(self, m: int, n: int, coordinates):
     dict1 = defaultdict(int)
     
     for i,j in coordinates:
