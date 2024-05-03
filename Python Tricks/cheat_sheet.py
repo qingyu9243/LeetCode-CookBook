@@ -7,10 +7,21 @@ import math
 **: 幂次方 3**2 = 9
 %: 余数 5%3 = 2
 """
-# find the combinations if give 5 elements and 
+# big number
+big_num = float('inf')
+# Rounds a number up to the nearest integer
+math.ceil()
+# Rounds a number down to the nearest integer
+math.floor()
+# Returns the number of ways to choose k items from n items without repetition and order
 x = 5
 y = 2
 res = math.comb(x, y)
+# Returns the value of x to the power of y
+math.pow()
+# Returns the square root of a number
+math.sqrt()
+int(math.sqrt(13)) # -> 3.60xxx to 3
 
 
 #### Array ####

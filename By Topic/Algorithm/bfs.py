@@ -59,7 +59,16 @@ def numIslands(grid):
 
 
 # 279. Perfect Sqaures
+"""
+1. DP. dp[n] = min(dp[n-k]) + 1, k is square number
+2. BFS. 
+dry run:
+n = 12
+num_squares = [1, 4, 9, 16]
 
+"""
+def numSquares(n):
+    pass
 
 # 322. Coin Change
 
@@ -75,6 +84,7 @@ def numIslands(grid):
 
 # 127. Word Ladder
 """
+
 """
 
 

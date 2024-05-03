@@ -1,4 +1,9 @@
-# 146	LRU Cache	42.5%	Medium	
+# 146	LRU Cache	42.5%	Medium
+from collections import OrderedDict
+class LRU:
+    def __init__(self):
+        self.cache = OrderedDict()
+
 # 1570	Dot Product of Two Sparse Vectors 89.9%	Medium	
 # 380	Insert Delete GetRandom O(1)	54.4%	Medium	
 # 588	Design In-Memory File System48.1%	Hard	

@@ -1,6 +1,23 @@
-# 42	Trapping Rain Water	62.0%	Hard	
-# 121	Best Time to Buy and Sell Stock	53.6%	Easy	
+# 42	Trapping Rain Water	62.0%	Hard
+"""
+Algo: DP.
+"""
+
+# 121	Best Time to Buy and Sell Stock	53.6%	[Easy]
+"""
+Algo: one pass
+"""
+def maxProfit(prices):
+    cur_min = float('inf')
+    ans = -float('inf')
+    for p in prices:
+        cur_min = min(cur_min, p)
+        cur_profit = p - cur_min
+        ans = max(ans, cur_profit)
+    return ans
+
 # 5 Longest Palindromic Substring	33.8%	Medium	
+
 # 1235 Maximum Profit in Job Scheduling	54.6%	Hard	
 # 629	K Inverse Pairs Array	50.0%	Hard	
 # 70 Climbing Stairs	52.9%	Easy	
@@ -10,6 +27,22 @@
 # 1531	String Compression II	52.7%	Hard	
 # 368	Largest Divisible Subset	45.3%	Medium	
 # 279	Perfect Squares	54.8%	Medium	
+"""
+1. DP. dp[n] = min(dp[n-k]) + 1, k is square number
+Time: O(n*sqrt(n))
+"""
+import math
+def numSquares(n):
+    square_nums = [i**2 for i in range(1, int(math.sqrt(n))+1)]
+    dp = [float('inf')]*(n+1)
+    dp[0] = 0
+    for i in range(1, n+1):
+        for square in square_nums:
+            if i < square:
+                break
+            dp[i] = min(dp[i], dp[i - square]+1)
+    return dp[-1]
+
 # 85	Maximal Rectangle 50.4%	Hard	
 # 1012	Numbers With Repeated Digits	42.0%	Hard	
 # 446	Arithmetic Slices II - Subsequence	54.6%	Hard	
