@@ -1,6 +1,37 @@
 # 314. Binary Tree Vertical Order Traversal
 # 200. Number of Islands
 # 339. Nested List Weight Sum
+"""
+Input: nestedList = [[1,1],2,[1,1]]
+Output: 10 (1*2 + 1*2) + 2 + (1*2 + 1*2)
+
+class NestedInteger:
+    def __init__(self, value=None):
+        If value is not specified, initializes an empty list.
+        Otherwise initializes a single integer equal to value.        
+
+    def isInteger(self):
+        @return True if this NestedInteger holds a single integer, rather than a nested list.
+        :rtype bool
+
+    def add(self, element):
+        Set this NestedInteger to hold a nested list and adds a nested integer elem to it.
+        :rtype void
+
+    def setInteger(self, value):
+        Set this NestedInteger to hold a single integer equal to value.
+        :rtype void
+
+    def getInteger(self):
+        @return the single integer that this NestedInteger holds, if it holds a single integer
+        Return None if this NestedInteger holds a nested list
+        :rtype int
+
+    def getList(self):
+        @return the nested list that this NestedInteger holds, if it holds a nested list
+        Return None if this NestedInteger holds a single integer
+        :rtype List[NestedInteger]
+"""
 # 236. Lowest Common Ancestor of a Binary Tree	62.2%	Medium	
 # 938. Range Sum of BST	86.8%	Easy	
 # 426 Convert Binary Search Tree to Sorted Doubly Linked List 
@@ -13,7 +44,7 @@
 # 827 Making A Large Island	47.1%	Hard
 
 # 210 Course Schedule II	50.4%	Medium	
-# 987 Vertical Order Traversal of a Binary Tree47.5%	Hard	
+# 987 Vertical Order Traversal of a Binary Tree 47.5%	Hard	
 # 129 Sum Root to Leaf Numbers	65.8%	Medium	
 # 297 Serialize and Deserialize Binary Tree	56.7%	Hard	
 # 341 Flatten Nested List Iterator	64.5%	Medium	

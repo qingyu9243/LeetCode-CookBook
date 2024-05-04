@@ -1,4 +1,7 @@
 # 22. Generate parentheses
+"""
+algo:backtrack
+"""
 def generateParentheses(n: int):
     ans = []
     def backtrack(l, r, cur_s):
@@ -33,30 +36,53 @@ def letterComb(digits):
 
 # 79	Word Search	42.8%	Medium	
 """
+Check if the word exist in the board
 algo: dfs/backtrack
+time: O(N*3^L), N is the total number of cells in the board, 
+                3 is the 3 directions to search in board
+                L is the the length of the word to be matched.
 """
-def wordSearch(board, word):
-    def backtrack(x, y, l):
+def wordSearch(board, word): # -> True/False
+    def dfs(x, y, l): # x y location in the matrix, l: 遍历到word的哪一个位置了
         if l == len(word):
             return True 
-        
+        for dirx, diry in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
+            if 0 <= x + dirx < m and 0 <= y + diry < n and flag[x+dirx][y+diry]\
+            and board[x+dirx][y+diry] == word[l]:
+                flag[x+dirx][y+diry] = False
+                if dfs(x+dirx, y+diry, l+1):
+                    return True
+                flag[x+dirx][y+diry] = True
+                   
+        return False            
 
     m, n = len(board), len(board[0])
+    flag = [[True]*n for i in range(m)] # available to visit
     for i in range(m):
         for j in range(n):
             if board[i][j] == word[0]:
-                backtrack(i, j, 1)
+                flag[i][j] = False
+                if dfs(i, j, 1):
+                    return True
+                flag[i][j] = True
+    return False
 
+# 465	Optimal Account Balancing 49.6%	Hard
 
-# 465	Optimal Account Balancing 49.6%	Hard	
+# 51	N-Queens	68.2%	Hard
 
-# 51	N-Queens	68.2%	Hard	
+# 1239 Maximum Length of a Concatenated String with Unique Characters	54.1%	Medium
 
-# 1239 Maximum Length of a Concatenated String with Unique Characters	54.1%	Medium	
-# 140	Word Break II	48.0%	Hard	
-# 691	Stickers to Spell Word	48.6%	Hard	
-# 39	Combination Sum	71.4%	Medium	
-# 78	Subsets	77.5%	Medium	
-# 37	Sudoku Solver	61.1%	Hard	
-# 212	Word Search II	36.3%	Hard	
+# 140	Word Break II	48.0%	Hard
+
+# 691	Stickers to Spell Word	48.6%	Hard
+
+# 39	Combination Sum	71.4%	Medium
+
+# 78	Subsets	77.5%	Medium
+
+# 37	Sudoku Solver	61.1%	Hard
+
+# 212	Word Search II	36.3%	Hard
+
 # 46	Permutations
