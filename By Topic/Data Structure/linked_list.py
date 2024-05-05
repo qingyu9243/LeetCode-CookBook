@@ -1,5 +1,38 @@
+class LinkedNode:
+    def __init__(self, key = -1, value = -1):
+        self.key = key
+        self.val = value
+        self.prev = None
+        self.next = None
 
 # 146	LRU Cache	42.5%	Medium	
+"""
+Least Recently Used. Evict the least recently used entry.
+"""
+class LRUCache:
+    def __init__(self, capacity):
+        self.capacity = capacity
+        self.cache = dict()
+        self.head = LinkedNode()
+        self.tail = LinkedNode()
+        self.head.next = self.tail
+        self.tail.next = self.head
+
+    def get(self, key):
+        pass
+
+    def put(self, key, value):
+        pass
+
+    def __evit(self, key):
+        pass
+
+    def __delete(self, key):
+        pass
+
+    def __addToEnd(self, key):
+        
+
 
 # 2	Add Two Numbers	42.8%	Medium	
 
