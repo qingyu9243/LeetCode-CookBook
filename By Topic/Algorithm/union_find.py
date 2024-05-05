@@ -24,7 +24,10 @@ class UnionFind:
             root[root_y] = root_x
 """
 
-# 547. Friend Circle
+# 547. Number of Provinces
+"""
+Algo: use UF ds to store the relationship between cities. Connected cities are one union.
+"""
 def findCircleNum(isConnected) -> int:
     n = len(isConnected)
     root = [i for i in range(n)]
@@ -51,8 +54,19 @@ def findCircleNum(isConnected) -> int:
         ans.add(tmp_root)
     return len(ans)
     
-# 721	Accounts Merge	57.1%	Medium	
-    
+# 721	Accounts Merge	57.1%	Medium
+"""
+merge the accounts to its owner from a list of emails. 
+input: accounts = [["John","1","2"],["John","1","3"],["Mary","6"],["John","5"]]
+output: [["John","1","2","3"],["Mary","6"],["John","5"]]
+algo: union find
+
+
+"""
+def accountsMerge(accounts):
+    ownership = {}
+
+
 # 130. Surrounded Regions
 
 

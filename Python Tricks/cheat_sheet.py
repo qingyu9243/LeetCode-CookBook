@@ -166,8 +166,16 @@ class TreeNode():
 q = deque()
 root = TreeNode(1)
 q = deque([root, 0]) # append root and its column index
-q.append()
-q.popleft()
+a = 5
+q.insert(0, a) # Return the position of x in the deque (at or after index start and before index stop). 
+               # Returns the first match or raises ValueError if not found.
+q.append(a) # Add x to the right side of the deque.
+q.appendleft(a) # Add x to the left side of the deque.
+q.pop() # Remove and return an element from the right side of the deque. 
+        # If no elements are present, raises an IndexError.
+q.popleft() # Remove and return an element from the left side of the deque. 
+            # If no elements are present, raises an IndexError.
+q.remove(a) # Remove the first occurrence of value. If not found, raises a ValueError.
 
 
 
