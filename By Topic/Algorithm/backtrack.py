@@ -85,4 +85,4 @@ def wordSearch(board, word): # -> True/False
 
 # 212	Word Search II	36.3%	Hard
 
-# 46	Permutations
+# 46	Permutations Medium

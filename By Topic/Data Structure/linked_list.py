@@ -18,8 +18,8 @@ class LRUCache:
     def __init__(self, capacity):
         self.capacity = capacity
         self.cache = dict()
-        self.head = LinkedNode()
-        self.tail = LinkedNode()
+        self.head = ListNode()
+        self.tail = ListNode()
         self.head.next = self.tail
         self.tail.next = self.head
 
@@ -96,6 +96,11 @@ def mergeTwoLists(l1, l2):
 # 426	Convert Binary Search Tree to Sorted Doubly Linked List64.8%	Medium	
 # 138	Copy List with Random Pointer	56.1%	Medium	
 # 206	Reverse Linked List	76.5%	Easy	
+"""
+Given the head of a singly linked list, reverse the list, and return the reversed list.
+"""
+def reverseList(head):
+    pass
 # 460	LFU Cache	44.2%	Hard	
 # 143	Reorder List
 

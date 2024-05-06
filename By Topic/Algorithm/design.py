@@ -25,11 +25,11 @@ class LRU:
         if len(self.cache) > self.capacity:
             self.cache.popitem(last = False)
 
-
 # 1570	Dot Product of Two Sparse Vectors 89.9%	Medium	
 """
 
-"""            
+"""     
+       
 # 380	Insert Delete GetRandom O(1)	54.4%	Medium	
 # 588	Design In-Memory File System48.1%	Hard	
 # 359	Logger Rate Limiter75.9%	Easy	

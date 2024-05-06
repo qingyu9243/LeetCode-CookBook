@@ -82,11 +82,75 @@ def numSquares(n):
 # 2385. Amount of Time for Binary Tree to Be Infected
 
 
-# 127. Word Ladder
+# 127. Word Ladder, Hard
 """
-
+Input:
+    begin word = "hit", end word = "cog"
+    wordList = ["hot","dot","dog","lot","log","cog"]
+Output:
+    5 (shortest transform "hot" -> "dot" -> "dog" -> cog")
+Algo: 将单词的每一个位置替换成一个符号，这样就可以快速找到相邻的单词，bfs. Use dict to store word transforms
 """
+def ladderLength(beginWord, endWord, wordList):
+    if (
+        endWord not in wordList
+        or not endWord
+        or not beginWord
+        or not wordList
+    ):
+        return 0
+    l = len(beginWord)
+    # construct a dictionary that stores the relationship for word transforming
+    all_comb_dict = defaultdict(list)
+    for word in wordList: # word: hot, tmp_w: *ot, h*t, ho*
+        for i in range(l):
+            tmp_w = word[:i]+"*"+word[i:]
+            all_comb_dict[tmp_w].append(word) # key: *ot, value: hot
 
+    visited = set()
+    queue = deque((beginWord, 1))
+    while queue:
+        cur_word, level = queue.popleft()
+        for i in range(l):
+            search_word = cur_word[:i]+"*"+cur_word[i:]
+            for next_word in all_comb_dict[search_word]:
+                if next_word == endWord:
+                    return level + 1
+                if next_word not in visited: 
+                    queue.append((next_word, level + 1))
+            all_comb_dict[search_word] = []
+    return 0
+
+# 126. Word Ladder II Hard
+"""
+Input: beginWord = "hit", endWord = "cog", wordList = ["hot","dot","dog","lot","log","cog"]
+Output: [["hit","hot","dot","dog","cog"],["hit","hot","lot","log","cog"]]
+Explanation: There are 2 shortest transformation sequences:
+    "hit" -> "hot" -> "dot" -> "dog" -> "cog"
+    "hit" -> "hot" -> "lot" -> "log" -> "cog"
+"""
+def findLadders(beginWord: str, endWord: str, wordList): # -> List[List[str]]
+    wordList = set(wordList)
+    res = []
+    edge = defaultdict(list)
+    for word in wordList:
+        for i in range(len(word)):
+            edge[word[:i] + "_" + word[i+1:]].append(word)
+            
+    q = {beginWord: [[beginWord]]}
+    while q:
+        wordList -= set(q.keys())
+        new_q = defaultdict(list)
+        for w in q:
+            if w == endWord: 
+                res += q[w]
+            else:
+                for i in range(len(w)):
+                    for neww in edge[w[:i] + "_" + w[i+1:]]:
+                        if neww in wordList:
+                            new_q[neww] += [j + [neww] for j in q[w]]          
+        q = new_q
+    return res
 
 # 815. Bus Routes
 
