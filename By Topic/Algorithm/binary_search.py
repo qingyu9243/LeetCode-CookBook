@@ -1,4 +1,5 @@
-# 1235	Maximum Profit in Job Scheduling	54.6%	Hard	
+# 1235	Maximum Profit in Job Scheduling	54.6%	Hard
+
 #4	Median of Two Sorted Arrays	40.0%	Hard
 
 #528	Random Pick with Weight	46.8%	Medium	

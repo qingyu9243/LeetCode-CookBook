@@ -8,7 +8,6 @@
 # 215	Kth Largest Element in an Array	66.8%	Medium	
 # 15	3Sum	34.5%	Medium	
 # 11	Container With Most Water	55.2%	Medium	
-# 1235	Maximum Profit in Job Scheduling	54.6%	Hard	
 # 560	Subarray Sum Equals K	43.6%	Medium	
 # 1570	Dot Product of Two Sparse Vectors89.9%	Medium	
 # 528	Random Pick with Weight	46.8%	Medium	
