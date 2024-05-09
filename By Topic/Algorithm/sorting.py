@@ -1,7 +1,8 @@
-# 88	Merge Sorted Array	49.6%	Easy	
+# 88	Merge Sorted Array	49.6%	Easy
+
 # 56	Merge Intervals	47.3%	Medium	
 # 1235 Maximum Profit in Job Scheduling	54.6%	Hard	
-# 49	Group Anagrams	68.5%	Medium	
+# 49	Group Anagrams	68.5%	Medium
 # 215	Kth Largest Element in an Array	66.8%	Medium	
 # 15	3Sum	34.5%	Medium	
 # 767	Reorganize String	54.6%	Medium	
