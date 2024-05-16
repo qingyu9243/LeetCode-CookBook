@@ -86,3 +86,20 @@ def wordSearch(board, word): # -> True/False
 # 212	Word Search II	36.3%	Hard
 
 # 46	Permutations Medium
+
+# 77. Combinations
+"""
+Given two integers n and k, return all possible combinations of k numbers chosen from the range [1, n].
+Input: n = 4, k = 2
+Output: [[1,2],[1,3],[1,4],[2,3],[2,4],[3,4]]
+"""
+def combine(n, k):
+    ans = []
+    def backtrack(cur_comb, cur_n, cur_k):
+        if cur_k == k:
+            ans.append(cur_n)
+        tmp = cur_comb.append(cur_n)
+        backtrack(tmp, cur_n+1, cur_k+1)
+    for i in range(1, n+1):
+        backtrack([], i, 0)
+    return ans
