@@ -1,3 +1,17 @@
+"""
+presentation to improve,
+practice 
+
+1. def minSteps(arr, word1, word2):
+2. direction: overall alorithm: BFS => Trie+BFS+binary (HARD)
+3. how? => dry run 
+4. coding
+5. back to #3 (verify #4)
+6. add some more test cases
+"""
+# https://www.geeksforgeeks.org/learn-data-structures-and-algorithms-dsa-tutorial/?ref=shm
+# https://www.geeksforgeeks.org/software-engineering-system-design-strategy/?ref=lbp
+
 #### Math ####
 import math
 """
@@ -201,3 +215,19 @@ https://docs.python.org/3/library/heapq.html
 https://github.com/gmertk/python-cheatsheets/blob/master/cheatsheet-queues.py
 https://www.pythonsheets.com/notes/python-heap.html
 """
+
+#####################
+##### Template ######
+#####################
+
+#### Binary Search ####
+def binary_search(search_space):
+    def condition(num) -> bool:
+        pass
+    left, right = min(search_space), max(search_space)
+    while left < right:
+        mid = (left+right)//2
+        if condition(mid): # >= or <=
+            right = mid
+        else:
+            left = mid + 1

@@ -1,6 +1,40 @@
+from collections import defaultdict
 #######################
 ### Array / String ####
 #######################
+
+# 1. Two Sum[easy]
+"""
+Input: nums = [2,7,11,15], target = 9
+Output: [0,1]
+Algo: hashmap-> key: nums[i], value:i
+"""
+def twoSum(nums, target):
+    dic = {}
+    for i in range(len(nums)):
+        diff = target - nums[i]
+        if diff in dic:
+            return [i, dic[diff]]
+        dic[nums[i]] = i
+
+# 217. Contains Duplicate[easy]
+"""
+Given an integer array nums, return true if any value appears at least twice in the array, 
+and return false if every element is distinct.
+"""
+def containsDuplicate(nums):
+    return len(nums) != len(set(nums))
+
+# 238. Product of Array Except Self
+"""
+Given an integer array nums, return an array answer such that answer[i] is equal to the product of all the elements of nums except nums[i].
+The product of any prefix or suffix of nums is guaranteed to fit in a 32-bit integer.
+You must write an algorithm that runs in O(n) time and without using the division operation.
+"""
+def productExceptSelf(nums):
+    ans = []
+    
+
 
 # 88. Merge Sorted Array (easy)
 """
@@ -63,8 +97,6 @@ def removeElement(nums, val): # -> return end index
 #H-Index
 
 #Insert Delete GetRandom O(1)
-
-#Product of Array Except Self
 
 #Gas Station
 
