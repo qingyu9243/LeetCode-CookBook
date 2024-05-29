@@ -23,3 +23,11 @@
 #992	Subarrays with K Different Integers	63.1%	Hard	
 
 #930	Binary Subarrays With Sum
+
+# 438. Find all anagrams in a string
+"""
+Input: s = "cbaebabacd", p = "abc"
+Output: [0,6]
+"""
+def findAnagrams(s, p):
+    pass
