@@ -27,6 +27,65 @@ def gcdOfStrings(str1, str2):
 
 # 
 ### Two pointers ###
+# 283. Move Zeros
+"""
+Given an integer array nums, move all 0's to the end of it while maintaining the relative order of the non-zero elements.
+Note that you must do this in-place without making a copy of the array.
+Input: nums = [0,1,0,3,12]
+Output: [1,3,12,0,0]
+"""
+def moveZeros(nums):
+    l, r, n = 0, 0, len(nums)
+    while r < n:
+        if nums[r] != 0:
+            nums[l] = nums[r]
+            l += 1
+        r += 1
+    while l < n:
+        nums[l] = 0
+        l += 1
+
+# 392. Is Subsequence 
+"""
+Example 1:
+Input: s = "abc", t = "ahbgdc"
+Output: true
+Follow up:
+If there are lots of incoming S, say S1, S2, … , Sk where k >= 1B, 
+and you want to check one by one to see if T has its subsequence. 
+In this scenario, how would you change your code?
+"""
+from collections import defaultdict
+import bisect
+def isSubsequence(s, t):
+    dic = defaultdict(list)
+    for i, c in enumerate(t):
+        dic[c].append(i)
+
+    cur = -1
+    for c in s:
+        if c not in dic:
+            return False
+        l = dic[c]
+        p = bisect.bisect_left(l, cur)
+
+        if p == len(l):
+            return False
+        cur = l[p]+1
+    return True    
+
+# 11. Container with Most Water
+def maxArea(height) -> int:
+    res = 0
+    l, r = 0, len(height)-1
+    while l < r:
+        res = max(res, min(height[r], height[l]) * (r - l))
+        if height[l] < height[r]:
+            l += 1
+        else:
+            r -= 1
+    return res
+
 
 ### Sliding Window ###
 # 643. Maximum Average Subarray I
@@ -52,7 +111,53 @@ def findMaxAverage(nums, k) -> float:
 
 
 ### Stack & Queue ###
+# 735. Asteroid Collision
+"""行星碰撞
+Input: asteroids = [5,10,-5]
+Output: [5,10]
+Input: asteroids = [-2,-2,1,-2]
+Output: [-2, -2, -2]
+# + + -> append
+# - - -> append
+# - + -> append
+# + - -> collision
+#    big   -small -> while loop,not append
+#    same  same -> while loop, pop 
+#    small -big -> while loop, pop and need to continue to check left side
+"""
+def asteroidsCollision(asteroids):
+    stack = []
+    for star in asteroids:
+        if not stack or star > 0 or stack[-1] < 0:
+            stack.append(star)
+            continue
+        while stack and stack[-1] > 0:
+            if stack[-1] > abs(star):
+                break
+            x = stack.pop()
+            if x + star == 0:
+                break
+            # 隐含condition：stack[-1] < abs(star),需要继续pop看左边的stars
+        else: # ???
+            stack.append(star)
+    return stack
 
+# 394. Decode String
+"""
+Example 1:
+
+Input: s = "3[a]2[bc]"
+Output: "aaabcbc"
+Example 2:
+
+Input: s = "3[a2[c]]"
+Output: "accaccacc"
+Example 3:
+
+Input: s = "2[abc]3[cd]ef"
+Output: "abcabccdcdcdef"
+"""
+def decodeString(s):
 
 ### Linked List ###
 
