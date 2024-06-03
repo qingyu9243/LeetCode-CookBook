@@ -111,7 +111,7 @@ def findMaxAverage(nums, k) -> float:
 
 
 ### Stack & Queue ###
-# 735. Asteroid Collision
+# 【栈经典题】735. Asteroid Collision
 """行星碰撞
 Input: asteroids = [5,10,-5]
 Output: [5,10]
@@ -142,7 +142,7 @@ def asteroidsCollision(asteroids):
             stack.append(star)
     return stack
 
-# 394. Decode String
+# 【栈经典题】394. Decode String
 """
 Example 1:
 
@@ -158,6 +158,22 @@ Input: s = "2[abc]3[cd]ef"
 Output: "abcabccdcdcdef"
 """
 def decodeString(s):
+    stack = []
+    cur_num = cur_str = ""
+    for c in s:
+        if c == "[":
+            stack.append(cur_str)
+            stack.append(int(cur_num))
+            cur_num = cur_str = ""
+        elif c == "]":
+            num = stack.pop()
+            pre_str = stack.pop()
+            cur_str = cur_str + num*pre_str
+        elif c.isdigit():
+            cur_num += c
+        else:
+            cur_str += c
+    return cur_str
 
 ### Linked List ###
 
