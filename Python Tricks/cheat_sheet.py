@@ -23,6 +23,7 @@ import math
 """
 # big number
 big_num = float('inf')
+big_neg = float('-inf')
 # Rounds a number up to the nearest integer
 math.ceil()
 # Rounds a number down to the nearest integer
@@ -36,6 +37,7 @@ math.pow()
 # Returns the square root of a number
 math.sqrt()
 int(math.sqrt(13)) # -> 3.60xxx to 3
+# True -> int 1, False ->int 0
 
 
 #### Array ####

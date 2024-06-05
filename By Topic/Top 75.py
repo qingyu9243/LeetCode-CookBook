@@ -105,7 +105,28 @@ def findMaxAverage(nums, k) -> float:
     return res/k
 
 ### Prefix Sum ###
+# 1732. Find the highest altitude [easy]
+def largestAltitude(gain) -> int:
+    max_altitude = 0
+    cur_altitude = 0
+    for g in gain:
+        cur_altitude += g
+        max_altitude = max(max_altitude, cur_altitude)
 
+    return max_altitude
+
+# 724. Find Pivot Index [easy]
+"""
+Find the index that the accumulated sum before index and after index are same.
+"""
+def pivotIndex(nums) -> int:
+    s = sum(nums)
+    pre_sum = 0
+    for i, n in enumerate(nums):
+        if pre_sum == (s-n)/2:
+            return i
+        pre_sum += n
+    return -1
 
 ### Hashmap/Hashset ###
 
@@ -168,7 +189,7 @@ def decodeString(s):
         elif c == "]":
             num = stack.pop()
             pre_str = stack.pop()
-            cur_str = cur_str + num*pre_str
+            cur_str = pre_str + num*cur_str
         elif c.isdigit():
             cur_num += c
         else:
@@ -178,14 +199,138 @@ def decodeString(s):
 ### Linked List ###
 
 ### Binary Tree - DFS & BFS ###
+# 104. Max Depth of Binary Tree
+class TreeNode():
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+def maxDepth(root:TreeNode):
+    if not root:
+        return 0
+    else:
+        left_h = maxDepth(root.left)
+        right_h = maxDepth(root.right)
+        return max(left_h, right_h)+1
+    
+def maxDepth_iter(root:TreeNode):
+    stack = []
+    if root is not None:
+        stack.append((1, root))
 
+    depth = 0
+    while stack != []:
+        current_depth, root = stack.pop()
+        if root is not None:
+            depth = max(depth, current_depth)
+            stack.append((current_depth + 1, root.left))
+            stack.append((current_depth + 1, root.right))
+
+    return depth
+
+# 100. Same Tree
+def sameTree(root1, root2):
+    if not root1 and not root2:
+        return True
+    elif not root1 or not root2:
+        return False
+    return root1.val == root2.val and sameTree(root1.left, root2.left) and sameTree(root1.right, root2.right)
+
+# 872. Leaf-Similar Trees
+def leafSimilar(root1, root2):
+    def dfs(root, leaf):
+        if not root:
+            return
+        if not root.left and not root.right:
+            leaf.append(root.val)
+        dfs(root.left, leaf)
+        dfs(root.right, leaf)
+
+    leaf1 = []
+    leaf2 = []
+    dfs(root1, leaf1)
+    dfs(root2, leaf2)
+    return leaf1 == leaf2
+
+# 1448. Count good nodes in binary tree
+def goodNodes(root):
+    def dfs(root, max_val):
+        res = int(root.val >= max_val)
+        if root.left:
+            dfs(root.left, max(max_val,root.val))
+        if root.right:
+            dfs(root.right, max(max_val, root.val))
+        return res
+
+    return dfs(root, float('-inf'))
+
+# 199. Binary Tree Right Side View (BFS)
+"""
+BFS, level order traversal
+"""
+from collections import deque
+def rightSideView(root):
+    if not root:
+        return []
+    q = deque()
+    q.append([root]) # append list of the nodes in this level
+    ans = []
+    while q:
+        l_nodes = q.popleft()
+        ans.append(l_nodes[-1].val)
+        l = []
+        for n in l_nodes:
+            if n.left:
+                l.append(n.left)
+            if n.right:
+                l.append(n.right)
+        if len(l) > 0:
+            q.append(l)
+    return ans
+
+# 1161. Max level sum of a Binary Tree (BFS)
+def maxLevelSum(root):
+    if not root:
+        return 0
+    q = deque()
+    q.append(root)
+    max_sum_level = 0
+    cur_level = 0
+    max_sum = float('-inf')
+    while q:
+        cur_level += 1
+        cur_sum = 0
+        for _ in range(len(q)):
+            node = q.popleft()
+            cur_sum += node.val
+            if node.left:
+                q.append(node.left)
+            if node.right:
+                q.append(node.right)
+        if cur_sum > max_sum:
+            max_sum_level = cur_level
+            max_sum = cur_sum
+    return max_sum_level
 
 ### Binary Search Tree ###
 
 ### Heap(Priority Queue) ###
 
-### Binary Search ###
+### Binary Search Tree ###
+# 700. Search in BST
+def searchBST(root, val):
+    if not root:
+        return
+    if root.val == val:
+        return root
+    elif root.val < val:
+        return searchBST(root.right, val)
+    elif root.val > val:
+        return searchBST(root.left, val)    
 
+# [重点题]450. Delete Node in BST
+def deleteNode(root, key):
+    pass
 ### Backtrack ###
 
 ### Dynamic Programming ###
