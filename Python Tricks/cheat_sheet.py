@@ -57,6 +57,13 @@ nums = [1, 2, 3, 4, 5]
 nums[1:4] = [6, 7]    # [1, 6, 7, 5]        (replace 3 elements with 2)
 nums[-1:] = [8, 9, 0] # [1, 6, 7, 8, 9, 0]  (replace 1 element with 3)
 nums[:1] = []         # [6, 7, 8, 9, 0]     (replace 1 element with 0)
+# Zip
+nums1 = [1, 2, 3]
+nums2 = [4, 5, 6]
+paris = list(zip(nums2, nums1))
+# itemgetter
+
+
 
 ## Loop/Iterate ##
 # 2D array 

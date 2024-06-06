@@ -313,10 +313,6 @@ def maxLevelSum(root):
     return max_sum_level
 
 ### Binary Search Tree ###
-
-### Heap(Priority Queue) ###
-
-### Binary Search Tree ###
 # 700. Search in BST
 def searchBST(root, val):
     if not root:
@@ -331,8 +327,71 @@ def searchBST(root, val):
 # [重点题]450. Delete Node in BST
 def deleteNode(root, key):
     pass
-### Backtrack ###
 
+### Graphs - DFS & BFS ###
+
+### Heap(Priority Queue) ###
+import heapq
+from operator import itemgetter
+from heapq import heappush, heappop
+# [重点]2542. Maximum Subsequence Score [Medium - Hard]
+def maxScore(nums1, nums2, k):
+    res, prefixSum, minHeap = 0, 0, []
+    for a, b in sorted(list(zip(nums1, nums2)), key=itemgetter(1), resverse=True):
+        prefixSum += a
+        heappush(minHeap, a)
+        if len(minHeap) == k:
+            res = max(res, prefixSum*b)
+            prefixSum -= heappop(minHeap)
+    return res
+
+### Binary Search ###
+# 374. Guess Number higher or lower
+def guess(n):
+    pass
+def guessNumber(n: int) -> int:
+    l, r = 1, n
+    while l <= r:
+        mid = (l+r)//2
+        res = guess(mid)
+        if res == 0:
+            return mid
+        elif res == -1:
+            r = mid -1
+        else:
+            l = mid + 1
+    return -1
+
+# 2300. Successful Pairs of Spells and Potions
+def successfulPairs(spells, potions, success):
+    ans = []
+    m = len(potions)
+    potions.sort()
+    for s in spells:
+        i = bisect.bisect_left(potions, math.ceil(success/s))
+        ans.append(m-i)
+    return ans    
+
+### Backtrack ###
+"""
+Input: digits = "23"
+Output: ["ad","ae","af","bd","be","bf","cd","ce","cf"]
+"""
+def letterCombinations(digits):
+    ans = []
+    dic = {"2": "abc", "3":"def", "4":"ghi", "5":"jkl",
+        "6": "mno", "7": "qprs", "8":"tuv", "9": "wxyz"}
+    def backtrack(cur_digit, cur_str):
+        if cur_digit == len(digits):
+            ans.append(cur_str)
+        else:
+            char = dic[digits[cur_digit]]
+            for c in char:
+                backtrack(cur_digit+1, cur_str+c)
+    if len(digits) == 0:
+        return []
+    backtrack(0, "")
+    return ans
 ### Dynamic Programming ###
 
 ### Bit Manipulation ###
@@ -356,3 +415,5 @@ boolean startsWith(String prefix) Returns true if there is a previously inserted
 
 
 ### Monotonic ###
+
+print(asteroidsCollision([-2,-2,1,-2]))
