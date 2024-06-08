@@ -29,16 +29,18 @@ math.ceil()
 # Rounds a number down to the nearest integer
 math.floor()
 # Returns the number of ways to choose k items from n items without repetition and order
-x = 5
-y = 2
-res = math.comb(x, y)
+n = 5
+k = 2
+res = math.comb(n, k)
 # Returns the value of x to the power of y
-math.pow()
+x, y = 3, 2
+math.pow(x, y) # 3**2
 # Returns the square root of a number
 math.sqrt()
 int(math.sqrt(13)) # -> 3.60xxx to 3
 # True -> int 1, False ->int 0
-
+# round(num, digits)
+a = round(4.56667, 3)
 
 #### Array ####
 ## Insert 
@@ -60,9 +62,10 @@ nums[:1] = []         # [6, 7, 8, 9, 0]     (replace 1 element with 0)
 # Zip
 nums1 = [1, 2, 3]
 nums2 = [4, 5, 6]
-paris = list(zip(nums2, nums1))
+paris = list(zip(nums1, nums2)) # pairs = [(1, 4), (2, 5), (3, ,6)]
 # itemgetter
 
+# 
 
 
 ## Loop/Iterate ##
@@ -119,6 +122,10 @@ s[::-1]
 s.lower()
 s.upper()
 s.isalpha()
+
+# find '/' from right side
+s = '/path/abcd'
+p = s.rfind('/')
 
 
 #### Sorting ####
@@ -240,3 +247,12 @@ def binary_search(search_space):
             right = mid
         else:
             left = mid + 1
+
+#### Backtrack ####
+def function():
+    def backtrack():
+        # for loop
+        # append
+        # pop
+        pass 
+    backtrack()

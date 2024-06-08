@@ -1,4 +1,6 @@
+####################
 ### Array/String ###
+####################
 # 1768. Merge Strings Alternatively - Easy
 def mergeAlternately(self, word1: str, word2: str) -> str:
     l1, l2 = len(word1), len(word2)
@@ -25,8 +27,9 @@ def gcdOfStrings(str1, str2):
         return ""
     return str1[:math.gcd(len(str1), len(str2))]
 
-# 
+####################
 ### Two pointers ###
+####################
 # 283. Move Zeros
 """
 Given an integer array nums, move all 0's to the end of it while maintaining the relative order of the non-zero elements.
@@ -86,8 +89,9 @@ def maxArea(height) -> int:
             r -= 1
     return res
 
-
+######################
 ### Sliding Window ###
+######################
 # 643. Maximum Average Subarray I
 """
 Input: nums = [1,12,-5,-6,50,3], k = 4
@@ -104,7 +108,9 @@ def findMaxAverage(nums, k) -> float:
         res = max(res, moving_sum)
     return res/k
 
+##################
 ### Prefix Sum ###
+##################
 # 1732. Find the highest altitude [easy]
 def largestAltitude(gain) -> int:
     max_altitude = 0
@@ -128,10 +134,15 @@ def pivotIndex(nums) -> int:
         pre_sum += n
     return -1
 
+#######################
 ### Hashmap/Hashset ###
+#######################
 
 
+
+#####################
 ### Stack & Queue ###
+#####################
 # 【栈经典题】735. Asteroid Collision
 """行星碰撞
 Input: asteroids = [5,10,-5]
@@ -196,9 +207,13 @@ def decodeString(s):
             cur_str += c
     return cur_str
 
+###################
 ### Linked List ###
+###################
 
+###############################
 ### Binary Tree - DFS & BFS ###
+###############################
 # 104. Max Depth of Binary Tree
 class TreeNode():
     def __init__(self, val=0, left=None, right=None):
@@ -312,7 +327,9 @@ def maxLevelSum(root):
             max_sum = cur_sum
     return max_sum_level
 
+##########################
 ### Binary Search Tree ###
+##########################
 # 700. Search in BST
 def searchBST(root, val):
     if not root:
@@ -328,9 +345,14 @@ def searchBST(root, val):
 def deleteNode(root, key):
     pass
 
+##########################
 ### Graphs - DFS & BFS ###
+##########################
 
+
+############################
 ### Heap(Priority Queue) ###
+############################
 import heapq
 from operator import itemgetter
 from heapq import heappush, heappop
@@ -345,7 +367,9 @@ def maxScore(nums1, nums2, k):
             prefixSum -= heappop(minHeap)
     return res
 
+#####################
 ### Binary Search ###
+#####################
 # 374. Guess Number higher or lower
 def guess(n):
     pass
@@ -372,7 +396,11 @@ def successfulPairs(spells, potions, success):
         ans.append(m-i)
     return ans    
 
-### Backtrack ###
+        #################
+        ### Backtrack ###
+        #################
+
+# 17.[重点]Letter of Combinations of a Phone number
 """
 Input: digits = "23"
 Output: ["ad","ae","af","bd","be","bf","cd","ce","cf"]
@@ -392,11 +420,69 @@ def letterCombinations(digits):
         return []
     backtrack(0, "")
     return ans
-### Dynamic Programming ###
 
+# 216.[重点]Combination Sum III
+"""
+Find all valid combinations of k numbers that sum up to n such that the following conditions are true:
+    Only numbers 1 through 9 are used.
+    Each number is used at most once.
+    Return a list of all possible valid combinations. The list must not contain the same combination twice, and the combinations may be returned in any order.
+Input: k = 3, n = 9
+Output: [[1,2,6],[1,3,5],[2,3,4]]
+"""
+def combinationSum3(k: int, n: int):
+    ans = []
+    nums = list(range(1, 10))
+    def backtrack(cur_k, cur_num, cur_nums):
+        print(cur_k, cur_nums)
+        if sum(cur_nums) == n and cur_k == k:
+            ans.append(cur_nums.copy())
+        elif sum(cur_nums) > n:
+            return
+        elif sum(cur_nums) < n and cur_k < k:
+            for n_ in range(cur_num, 10):
+                cur_nums.append(n_)
+                backtrack(cur_k+1, n_+1, cur_nums)
+                cur_nums.pop()
+        return
+    backtrack(0, 1, [])
+    return ans
+
+#################################################################################
+###                            Dynamic Programming                            ###
+#################################################################################
+
+# 1137. N-th Tribonacci Number [easy]
+"""
+The Tribonacci sequence Tn is defined as follows: 
+T0 = 0, T1 = 1, T2 = 1, and Tn+3 = Tn + Tn+1 + Tn+2 for n >= 0.
+Given n, return the value of Tn.
+"""
+def tribonacci(n: int) -> int:
+    if 1 <= n < 3:
+        return 1
+    if n == 0:
+        return 0
+    dp = [0 for i in range(n+1)]
+    dp[0], dp[1], dp[2] = 0, 1, 1
+    for i in range(3, n+1):
+        dp[i] = dp[i-1] + dp[i-2] + dp[i-3]
+    return dp[n]
+
+# 746. Min Cost Climbing Stairs [easy]
+"""
+
+"""
+def minCostClimbingStairs(cost):
+    pass
+
+########################
 ### Bit Manipulation ###
+########################
 
+############
 ### Trie ###
+############
 """
 A trie (pronounced as "try") or prefix tree is a tree data structure used to efficiently store and retrieve keys in a dataset of strings. There are various applications of this data structure, such as autocomplete and spellchecker.
 
@@ -410,10 +496,11 @@ boolean startsWith(String prefix) Returns true if there is a previously inserted
 # 208. Implement Trie(Prefix Tree) -> trie.py
 # 1268. Search Suggestions System -> trie.py
 
+#################
 ### Intervals ###
+#################
 
-
-
+#################
 ### Monotonic ###
-
+#################
 print(asteroidsCollision([-2,-2,1,-2]))

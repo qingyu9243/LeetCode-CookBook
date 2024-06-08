@@ -130,9 +130,37 @@ def canJump(nums):
 ####  Two Pointers ####
 #######################
 
-# Valid Palindrome
+# 125. Valid Palindrome
+"""
+Input: s = "A man, a plan, a canal: Panama"
+Output: true
+"""
+def validPalindrome(s):
+    i, j = 0, len(s)-1
+    while i < j:
+        if s[i].lower() == s[j].lower():
+            i += 1
+            j -= 1
+        if not s[i].isalnum() or s[i] == ' ':
+            i += 1
+            continue
+        if not s[j].isalnum() or s[j] == ' ':
+            j -= 1
+        elif s[i].lower() != s[j].lower():
+            return False
+    return True
 
-# Is Subsequence
+# 392. Is Subsequence
+def isSubsequence(s, t):
+    pt = -1
+    for c in s:
+        while pt < len(t) -1:
+            pt += 1
+            if c == t[pt]:
+                break
+        else:
+            return False
+    return True
 
 # Two Sum II - Input Array Is Sorted
 
