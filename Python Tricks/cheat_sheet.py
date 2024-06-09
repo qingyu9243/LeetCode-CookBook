@@ -123,9 +123,9 @@ s.lower()
 s.upper()
 s.isalpha()
 
-# find '/' from right side
+# find parent root from a path
 s = '/path/abcd'
-p = s.rfind('/')
+new = s[:s.rfind('/')] # rfind -> the index of '/'
 
 
 #### Sorting ####

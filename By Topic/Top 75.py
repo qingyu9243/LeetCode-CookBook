@@ -134,11 +134,31 @@ def pivotIndex(nums) -> int:
         pre_sum += n
     return -1
 
-#######################
-### Hashmap/Hashset ###
-#######################
+###################################################
+###                Hashmap/Hashset              ###
+###################################################
+# 1657. Determine if two strings are close
+""" 
+Two strings are considered close if you can attain one from the other using the following operations:
+Operation 1: Swap any two existing characters.
+For example, abcde -> aecdb
+Operation 2: Transform every occurrence of one existing character into another existing character, and do the same with the other character.
+For example, aacabb -> bbcbaa (all a's turn into b's, and all b's turn into a's)
+"""
+from collections import Counter
+def closeStrings(word1, word2):
+    c1 = Counter(word1)
+    c2 = Counter(word2)
+    #print(c1.values(), c2.values())
+    if sorted(c1.keys()) != sorted(c2.keys()):
+        return False
+    elif sorted(c1.values()) != sorted(c2.values()):
+        return False
+    return True
 
-
+# 2352. Equal Row and Column Pairs
+def equalPairs(matrix):
+    pass
 
 #####################
 ### Stack & Queue ###
