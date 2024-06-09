@@ -1,6 +1,6 @@
-####################
-### Array/String ###
-####################
+##############################################################
+###                     Array/String                       ###
+##############################################################
 # 1768. Merge Strings Alternatively - Easy
 def mergeAlternately(self, word1: str, word2: str) -> str:
     l1, l2 = len(word1), len(word2)
@@ -27,9 +27,9 @@ def gcdOfStrings(str1, str2):
         return ""
     return str1[:math.gcd(len(str1), len(str2))]
 
-####################
-### Two pointers ###
-####################
+##############################################################
+###                     Two pointers                       ###
+##############################################################
 # 283. Move Zeros
 """
 Given an integer array nums, move all 0's to the end of it while maintaining the relative order of the non-zero elements.
@@ -89,9 +89,9 @@ def maxArea(height) -> int:
             r -= 1
     return res
 
-######################
-### Sliding Window ###
-######################
+##############################################################
+###                     Sliding Window                     ###
+##############################################################
 # 643. Maximum Average Subarray I
 """
 Input: nums = [1,12,-5,-6,50,3], k = 4
@@ -108,9 +108,9 @@ def findMaxAverage(nums, k) -> float:
         res = max(res, moving_sum)
     return res/k
 
-##################
-### Prefix Sum ###
-##################
+##############################################################
+###                       Prefix Sum                       ###
+##############################################################
 # 1732. Find the highest altitude [easy]
 def largestAltitude(gain) -> int:
     max_altitude = 0
@@ -134,9 +134,9 @@ def pivotIndex(nums) -> int:
         pre_sum += n
     return -1
 
-###################################################
-###                Hashmap/Hashset              ###
-###################################################
+##############################################################
+###                    Hashmap/Hashset                     ###
+##############################################################
 # 1657. Determine if two strings are close
 """ 
 Two strings are considered close if you can attain one from the other using the following operations:
@@ -156,13 +156,23 @@ def closeStrings(word1, word2):
         return False
     return True
 
-# 2352. Equal Row and Column Pairs
-def equalPairs(matrix):
-    pass
+# [重点]2352. Equal Row and Column Pairs
+"""
+count the total num of pairs that col == row.
+"""
+def equalPairs(grid):
+    cnt = 0
+    n = len(grid)
+    row_cnt = Counter(tuple(row) for row in grid)
 
-#####################
-### Stack & Queue ###
-#####################
+    for c in range(n):
+        col = [grid[i][c] for i in range(n)]
+        cnt += row_cnt[tuple(col)]
+    return cnt
+
+##############################################################
+###                    Stack & Queue                       ###
+##############################################################
 # 【栈经典题】735. Asteroid Collision
 """行星碰撞
 Input: asteroids = [5,10,-5]
@@ -227,14 +237,14 @@ def decodeString(s):
             cur_str += c
     return cur_str
 
-###################
-### Linked List ###
-###################
+##############################################################
+###                     Linked List                        ###
+##############################################################
 
-###############################
-### Binary Tree - DFS & BFS ###
-###############################
-# 104. Max Depth of Binary Tree
+##############################################################
+###                Binary Tree - DFS & BFS                 ###
+##############################################################
+#### 104. Max Depth of Binary Tree ####
 class TreeNode():
     def __init__(self, val=0, left=None, right=None):
         self.val = val
@@ -263,7 +273,7 @@ def maxDepth_iter(root:TreeNode):
 
     return depth
 
-# 100. Same Tree
+#### 100. Same Tree ####
 def sameTree(root1, root2):
     if not root1 and not root2:
         return True
@@ -271,7 +281,7 @@ def sameTree(root1, root2):
         return False
     return root1.val == root2.val and sameTree(root1.left, root2.left) and sameTree(root1.right, root2.right)
 
-# 872. Leaf-Similar Trees
+#### 872. Leaf-Similar Trees(DFS) ####
 def leafSimilar(root1, root2):
     def dfs(root, leaf):
         if not root:
@@ -287,7 +297,7 @@ def leafSimilar(root1, root2):
     dfs(root2, leaf2)
     return leaf1 == leaf2
 
-# 1448. Count good nodes in binary tree
+#### 1448. Count good nodes in binary tree(DFS) ####
 def goodNodes(root):
     def dfs(root, max_val):
         res = int(root.val >= max_val)
@@ -299,7 +309,46 @@ def goodNodes(root):
 
     return dfs(root, float('-inf'))
 
-# 199. Binary Tree Right Side View (BFS)
+#### [重点] 112. Path Sum III [dfs+backtrack] ####
+def pathSumIII(root, targetSum):
+    if not root:
+        return 0
+    def dfs(node, cur_path):
+        if not node:
+            return 0
+        cur_path.append(node)
+        path_cnt, path_sum = 0, 0
+        for i in range(len(cur_path)-1, -1, -1):
+            path_sum += cur_path[i]
+            if path_sum == targetSum:
+                path_cnt += 1
+        path_cnt += dfs(node.left, cur_path)
+        path_cnt += dfs(node.right, cur_path)    
+        cur_path.pop()
+        return path_cnt
+    dfs(root, [])  
+
+#### [重点] 1372. Longest ZigZag Path in Binary Tree (DFS) ####
+def longestZigZag(root):
+    max_length = 0
+
+    def dfs(node, is_left, length):
+        if not node:
+            return
+        max_length = max(max_length, length)
+        if is_left:
+            dfs(node.left, False, length+1)
+            dfs(node.right, True, 1)
+        else:
+            dfs(node.right, True, length+1)
+            dfs(node.left, False, 1)
+
+    dfs(root, True, 0)
+    dfs(root, False, 0)
+    return max_length
+
+
+#### 199. Binary Tree Right Side View (BFS) ####
 """
 BFS, level order traversal
 """
@@ -347,10 +396,10 @@ def maxLevelSum(root):
             max_sum = cur_sum
     return max_sum_level
 
-##########################
-### Binary Search Tree ###
-##########################
-# 700. Search in BST
+##############################################################
+###                  Binary Search Tree                    ###
+##############################################################
+#### 700. Search in BST ####
 def searchBST(root, val):
     if not root:
         return
@@ -361,18 +410,18 @@ def searchBST(root, val):
     elif root.val > val:
         return searchBST(root.left, val)    
 
-# [重点题]450. Delete Node in BST
+#### [重点题]450. Delete Node in BST ####
 def deleteNode(root, key):
     pass
 
-##########################
-### Graphs - DFS & BFS ###
-##########################
+##############################################################
+###                  Graphs - DFS & BFS                    ###
+##############################################################
 
 
-############################
-### Heap(Priority Queue) ###
-############################
+##############################################################
+###                 Heap(Priority Queue)                   ###
+##############################################################
 import heapq
 from operator import itemgetter
 from heapq import heappush, heappop
@@ -468,9 +517,9 @@ def combinationSum3(k: int, n: int):
     backtrack(0, 1, [])
     return ans
 
-#################################################################################
-###                            Dynamic Programming                            ###
-#################################################################################
+##############################################################
+###                 Dynamic Programming                    ###
+##############################################################
 
 # 1137. N-th Tribonacci Number [easy]
 """
@@ -496,13 +545,13 @@ def tribonacci(n: int) -> int:
 def minCostClimbingStairs(cost):
     pass
 
-########################
-### Bit Manipulation ###
-########################
+##############################################################
+###                  Bit Manipulation                      ###
+##############################################################
 
-############
-### Trie ###
-############
+##############################################################
+###                        Trie                            ###
+##############################################################
 """
 A trie (pronounced as "try") or prefix tree is a tree data structure used to efficiently store and retrieve keys in a dataset of strings. There are various applications of this data structure, such as autocomplete and spellchecker.
 
@@ -516,11 +565,11 @@ boolean startsWith(String prefix) Returns true if there is a previously inserted
 # 208. Implement Trie(Prefix Tree) -> trie.py
 # 1268. Search Suggestions System -> trie.py
 
-#################
-### Intervals ###
-#################
+##############################################################
+###                      Intervals                         ###
+##############################################################
 
-#################
-### Monotonic ###
-#################
+##############################################################
+###                      Monotonic                         ###
+##############################################################
 print(asteroidsCollision([-2,-2,1,-2]))
