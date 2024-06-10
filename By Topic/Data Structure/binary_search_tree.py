@@ -6,6 +6,21 @@ class TreeNode:
         self.right = right
 
 # 938	Range Sum of BST	86.8%	Easy	
+def rangeSumBST(root, low, high):
+    ans = 0
+    def dfs(root):
+        nonlocal ans
+        if root:
+            if low <= root.val <= high:
+                ans += root.val
+            if root.val > low:
+                dfs(root.left)
+            if root.val < high:
+                dfs(root.right)
+    dfs(root)
+    return ans
+
+
 # 426	Convert Binary Search Tree to Sorted Doubly Linked List64.8%	Medium	
 # 98	Validate Binary Search Tree	32.9%	Medium	
 # 96	Unique Binary Search Trees	61.0%	Medium	
