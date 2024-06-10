@@ -60,8 +60,6 @@ merge the accounts to its owner from a list of emails.
 input: accounts = [["John","1","2"],["John","1","3"],["Mary","6"],["John","5"]]
 output: [["John","1","2","3"],["Mary","6"],["John","5"]]
 algo: union find
-
-
 """
 def accountsMerge(accounts):
     ownership = {}

@@ -1,3 +1,4 @@
+from typing import List
 ##############################################################
 ###                     Array/String                       ###
 ##############################################################
@@ -417,7 +418,86 @@ def deleteNode(root, key):
 ##############################################################
 ###                  Graphs - DFS & BFS                    ###
 ##############################################################
+#### 841. Keys and Rooms
+def canVisitAllRooms(rooms):
+    visited_rooms = set([0])
+    stack = [0]
+    while stack:
+        cur = stack.pop()
+        for key in rooms[cur]:
+            if key not in visited_rooms:
+                stack.append(key)
+                visited_rooms.add(key)
+    return len(visited_rooms) == len(rooms)
 
+#### 547. Number of Provinces
+def findCircleNum(isConnected: List[List[int]]):
+    n = len(isConnected)
+    provinces = 0
+    visited = [False]*n
+    def dfs(city, visited):
+        for j in range(n):
+            if isConnected[city][j] == 1 and not visited[j]:
+                visited[j] = True
+                dfs(j, visited)
+    for i in range(n):
+        if not visited[i]:
+            dfs(i, visited)
+            provinces += 1
+    return provinces    
+
+
+#### [重点]994. Rotting Oranges [BFS]
+"""
+BFS. use queue to store all rotten oranges at first，edge case：2个烂橘子同时出发开始烂。
+"""
+def orangeRotting(grid):
+    m, n = len(grid), len(grid[0])
+    queue = deque()
+    fresh = 0
+
+    for i in range(m):
+        for j in range(n):
+            # append all rotten oranges
+            if grid[i][j] == 2:
+                queue.append((i, j, 0))
+            # count fresh oranges
+            elif grid[i][j] == 1:
+                fresh += 1
+    max_time = 0
+    directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+
+    while queue:
+        x, y, time = queue.popleft()
+        for dx, dy in directions:
+            nx, ny = x+dx, y+dy
+            if 0 <= nx <m and 0 <= ny <n and grid[nx][ny] == 1:
+                grid[nx][ny] = 2
+                fresh -= 1
+                queue.append((nx, ny, time+1))
+                max_time = max(max_time, time+1)
+    return max_time if fresh == 0 else -1
+
+#### 1926. Nearest Exit from Entrance in Maze [BFS]
+def nearestExit(self, maze: List[List[str]], entrance: List[int]) -> int:
+    m, n = len(maze), len(maze[0])
+
+    directions = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+    queue = deque()
+    queue.append((entrance[0], entrance[1], 0))
+    maze[entrance[0]][entrance[1]] = "+"
+
+    while queue:
+        x, y, steps = queue.popleft()
+
+        for dx, dy in directions:
+            nx, ny = x + dx, y + dy
+            if 0 <= nx < m and 0 <= ny <n and maze[nx][ny] == ".":
+                if nx == 0 or nx == m-1 or ny == 0 or ny == n-1:
+                    return steps + 1
+                queue.append((nx, ny, steps+1))
+                maze[nx][ny] = '+'
+    return -1
 
 ##############################################################
 ###                 Heap(Priority Queue)                   ###
@@ -425,7 +505,32 @@ def deleteNode(root, key):
 import heapq
 from operator import itemgetter
 from heapq import heappush, heappop
-# [重点]2542. Maximum Subsequence Score [Medium - Hard]
+#### [重点]215. Kth Largest Element in an Array
+"""
+get the Kth largest element in a unsorted array without using Sort.
+"""
+def findKthLargest(nums, k):
+    min_heap = []
+    for n in nums:
+        heapq.heappush(min_heap, n)
+        if len(min_heap) > k:
+            heapq.heappop(min_heap)
+    return min_heap[0]
+
+#### 2336. Smallest Number in Infinite Set
+"""
+维护一个堆，存加入符合条件的数，并在一个set中存入同样的数，用来判断是否已经存在，
+如果堆里有元素，就pop堆里最小的
+"""
+class SmallestInfiniteSet:
+    def __init__(self):
+        pass
+    def popSmallest(self):
+        pass
+    def addBack(self):
+        pass
+
+#### [重点]2542. Maximum Subsequence Score [Medium - Hard]
 def maxScore(nums1, nums2, k):
     res, prefixSum, minHeap = 0, 0, []
     for a, b in sorted(list(zip(nums1, nums2)), key=itemgetter(1), resverse=True):
