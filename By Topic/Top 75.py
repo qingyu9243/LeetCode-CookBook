@@ -204,6 +204,7 @@ def asteroidsCollision(asteroids):
         else: # ???
             stack.append(star)
     return stack
+#print(asteroidsCollision([-2,-2,1,-2]))
 
 # 【栈经典题】394. Decode String
 """
@@ -446,7 +447,6 @@ def findCircleNum(isConnected: List[List[int]]):
             provinces += 1
     return provinces    
 
-
 #### [重点]994. Rotting Oranges [BFS]
 """
 BFS. use queue to store all rotten oranges at first，edge case：2个烂橘子同时出发开始烂。
@@ -541,9 +541,9 @@ def maxScore(nums1, nums2, k):
             prefixSum -= heappop(minHeap)
     return res
 
-#####################
-### Binary Search ###
-#####################
+##############################################################
+###                    Binary Search                       ###
+##############################################################
 # 374. Guess Number higher or lower
 def guess(n):
     pass
@@ -570,10 +570,45 @@ def successfulPairs(spells, potions, success):
         ans.append(m-i)
     return ans    
 
-        #################
-        ### Backtrack ###
-        #################
+# 162. [重点] Find Peak Element
+"""
+Input: nums = [1,2,3,4,1]
+Output: 2
+Explanation: 3 is a peak element and your function should return the index number 2.
+"""
+def findPeak(nums):
+    l, r = 0, len(nums)-1
+    while l <= r:
+        m = (l+r)//2
+        l_neighbor = nums[m-1] if m-1 >=0 else float('-inf')
+        r_neighbor = nums[m+1] if m+1 < len(nums) else float('-inf')
+        if l_neighbor < nums[m] > r_neighbor:
+            return m
+        elif l_neighbor > nums[m]:
+            r = m
+        elif r_neighbor > nums[m]:
+            l = m+1
 
+# 875. Koko Eating Bananas
+def minEatingSpeed(piles, h):
+    l, r = 1, max(piles)
+    def eatingHours(k):
+        hours = 0
+        for p in piles:
+            hours += math.ceil(p/k)
+        return hours
+    while l < r:
+        mid = (l+r)//2
+        if eatingHours(mid) <= h:
+            r = mid
+        else:
+            l = mid+1
+    return r
+#print(minEatingSpeed([30,11,23,4,20], 5))
+
+##############################################################
+###                      Backtrack                         ###
+##############################################################
 # 17.[重点]Letter of Combinations of a Phone number
 """
 Input: digits = "23"
@@ -645,10 +680,22 @@ def tribonacci(n: int) -> int:
 
 # 746. Min Cost Climbing Stairs [easy]
 """
-
 """
 def minCostClimbingStairs(cost):
     pass
+
+# 198. Hourse Robber
+def houseRobber(nums):
+    l = len(nums)
+    if l == 1:
+        return nums[0]
+    if l == 2:
+        return max(nums)
+    dp = [0 for i in range(l)]
+    dp[0], dp[1] = nums[0], max(nums[0], nums[1])
+    for i in range(2, l):
+        dp[i] = max(dp[i-1], dp[i-2]+nums[i])
+    return dp[-1]
 
 ##############################################################
 ###                  Bit Manipulation                      ###
@@ -677,4 +724,3 @@ boolean startsWith(String prefix) Returns true if there is a previously inserted
 ##############################################################
 ###                      Monotonic                         ###
 ##############################################################
-print(asteroidsCollision([-2,-2,1,-2]))

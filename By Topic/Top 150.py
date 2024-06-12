@@ -244,7 +244,68 @@ def isSubsequence(s, t):
 
 # Evaluate Reverse Polish Notation
 
-# Basic Calculator
+# 224. Basic Calculator[hard]
+"""
+Input: s = "(1+(4+5+2)-3)+(6+8)"
+Output: 23
+"""
+def calculator(s):
+    stack = []
+
+    return 
+# 227. Basic Calculator II [medium]
+"""
+Input: s = "3+2*2"
+Output: 7
+Input: s = " 3+5 / 2 "
+Output: 5
+""" 
+def calculator2(s):
+    stack, cur, op = [], 0, '+'
+    for c in s + '+':
+        if c == " ":
+            continue
+        elif c.isdigit():
+            cur = (cur * 10) + int(c)
+        else:
+            if op == '-':
+                stack.append(-cur)
+            elif op == '+':
+                stack.append(cur)
+            elif op == '*':
+                stack.append(stack.pop() * cur)
+            elif op == '/':
+                stack.append(int(stack.pop() / cur))
+            cur, op = 0, c
+    return sum(stack)    
+print(calculator2(" 3+5 / 2 "))
+
+def calculator2_optimize(s):
+    # 常规：使用栈，遇到加减法，直接把数加到栈中，乘除法需要先进行计算，将计算的结果再加入栈中
+    # 优化：使用last number，不使用stack
+    cur_digit, operator = 0, '+'
+    last_num, ans = 0, 0
+    for c in s+'+':
+        if c == " ":
+            continue
+        elif c.isdigit():
+            cur_digit = cur_digit*10 + int(c)
+        else:
+            if operator == "+" or operator == "-":
+                ans += last_num
+                if operator == "+":
+                    last_num = cur_digit
+                else:
+                    last_num = -cur_digit
+                cur_digit = 0
+            if operator == "/":
+                last_num = int(last_num/cur_digit)
+            if operator == "*":
+                last_num *= cur_digit
+            operator = c
+            cur_digit = 0
+    ans += last_num
+    return ans
 
 ##############################################################
 ##                       Linked List                        ##

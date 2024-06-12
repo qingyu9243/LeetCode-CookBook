@@ -13,14 +13,14 @@ def findValue(nums, target):
     l, r = 0, len(nums)-1
     #print(l, r)
 
-    while l <= r:
+    while l < r:
         mid = (l + r)//2
         mid_value = nums[mid]
         #print(l, r, mid, mid_value)
         if mid_value == target:
             return mid
         elif mid_value > target:
-            r = mid-1
+            r = mid
         else:
             l = mid+1
     #print(l, r)

@@ -95,9 +95,9 @@ for i in range(len(arr)-1, -1, -1):
 # if no break in the for loop, can use else
 for xx loop:
     if xx:
-       break
-else:
-     xxx   
+       break (exit this for loop)
+    else:
+        xxx   
 """
 
 #Python Compare/Check
