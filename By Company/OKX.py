@@ -8,3 +8,21 @@ https://www.1point3acres.com/bbs/thread-1044267-1-1.html
 https://www.1point3acres.com/bbs/thread-1041187-1-1.html
 Find elements of original array from doubled array - https://www.geeksforgeeks.org/find-elements-of-original-array-from-doubled-array/
 """
+from collections import Counter
+# Find elements of original array from doubled array
+def findOriginal(nums):
+    nums.sort()
+    freq = Counter(nums)
+    res = []
+
+    for n in nums:
+        if freq[n] > 0:
+            if freq[2*n] > 0:
+                res.append(n)
+                freq[n] -= 1
+                freq[2*n] -= 1
+    return res
+        
+print(findOriginal([4, 1, 18, 2, 9, 8]))
+print(findOriginal([4, 1, 2, 2, 8, 2, 4, 4]))
+

@@ -100,6 +100,20 @@ for xx loop:
         xxx   
 """
 
+#### matrix ####
+matrix =  [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9]
+]
+matrix.reverse()
+# transpose matrix
+for i in range(len(matrix)):
+    for j in range(i):
+        matrix[i][j], matrix[j][i] = matrix[j][i], matrix[i][j]
+# flip the NxN image
+matrix.reverse() # then transpose
+
 #Python Compare/Check
 
 # if char is an integer.

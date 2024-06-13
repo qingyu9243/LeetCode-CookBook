@@ -165,7 +165,7 @@ def isSubsequence(s, t):
 def twoSum(numbers: List[int], target: int) -> List[int]:
     i, j = 0, len(numbers)-1
     while i < j:
-        print(numbers[i], numbers[j])
+        #print(numbers[i], numbers[j])
         if numbers[i] + numbers[j] == target:
             return [i+1,j+1]
         elif numbers[i] + numbers[j] > target:
@@ -190,6 +190,8 @@ def maxArea(height):
 """
 Given an integer array nums, return all the deduped triplets [nums[i], nums[j], nums[k]] 
 such that i != j, i != k, and j != k, and nums[i] + nums[j] + nums[k] == 0.
+nums = [-1,0,1,2,-1,-4]
+output = [[-1,-1,2],[-1,0,1]]
 """
 def threeSum(nums):
     n = len(nums)
@@ -197,7 +199,27 @@ def threeSum(nums):
     res = []
 
     for i in range(n-2):
-        
+        if nums[i] > 0:
+            break
+        if i > 0 and nums[i] == nums[i-1]:
+            continue
+        j, k = i+1, n-1
+        while j < k:
+            cur = nums[i] + nums[j] + nums[k]
+            if cur > 0:
+                k -= 1
+            elif cur < 0:
+                j += 1
+            else:
+                res.append([nums[i], nums[j], nums[k]])
+                while j+1 < k and nums[j+i] == nums[k]:
+                    j += 1
+                while k-1 > j and nums[k-1] == nums[k]:
+                    k -= 1
+                j += 1
+                k -= 1
+    return res
+#print(threeSum(nums =[-1,0,1,2,-1,-4]))
 
 ##############################################################
 ###                     Sliding Window                     ###
@@ -214,14 +236,61 @@ def threeSum(nums):
 ##############################################################
 ###                          Matrix                        ###
 ##############################################################
+# 36. Valid Sudoku[medium]
+def validSudoku(board):
+    def validRow():
+        for row in board:
+            if not isValid(row):
+                return False
+        return True
 
+    def validCol(board):
+        for col in zip(*board):
+            if not isValid(col):
+                return False
+        return True
+    
+    def validBox(board):
+        for i in (0, 3, 6):
+            for j in (0, 3, 6):
+                if not isValid([board[x][y] for x in range(i, i+3) for y in range(j, j+3)]):
+                    return False
+        return True
 
-# Valid Sudoku
+    def isValid(unit):
+        tmp = [i for i in unit if i != '.']
+        return len(tmp) == len(set(tmp))
+
+    return validBox(board) and validCol(board) and validBox(board)
+board = [["5","3",".",".","7",".",".",".","."]
+,["6",".",".","1","9","5",".",".","."]
+,[".","9","8",".",".",".",".","6","."]
+,["8",".",".",".","6",".",".",".","3"]
+,["4",".",".","8",".","3",".",".","1"]
+,["7",".",".",".","2",".",".",".","6"]
+,[".","6",".",".",".",".","2","8","."]
+,[".",".",".","4","1","9",".",".","5"]
+,[".",".",".",".","8",".",".","7","9"]]
+#print(validSudoku(board))
 
 # Spiral Matrix
 
-# Rotate Image
-
+# 48. [重点]Rotate Image[medium]
+"""
+matrix = [[1,2,3],[4,5,6],[7,8,9]]
+output = [[7,4,1],[8,5,2],[9,6,3]]
+"""
+def rotate(matrix):
+    matrix.reverse()
+    print(matrix)
+    for i in range(len(matrix)):
+        for j in range(i):
+            print(i, j)
+            matrix[i][j], matrix[j][i] = matrix[j][i], matrix[i][j] # tranpose the matrix
+    print(matrix)
+matrix = [[1,2,3],[4,5,6],[7,8,9]]
+print(rotate(matrix))
+#print(matrix)
 # Set Matrix Zeroes
 
 # Game of Life
@@ -306,7 +375,7 @@ def calculator2(s):
                 stack.append(int(stack.pop() / cur))
             cur, op = 0, c
     return sum(stack)    
-print(calculator2(" 3+5 / 2 "))
+#print(calculator2(" 3+5 / 2 "))
 
 def calculator2_optimize(s):
     # 常规：使用栈，遇到加减法，直接把数加到栈中，乘除法需要先进行计算，将计算的结果再加入栈中
