@@ -1,4 +1,5 @@
 from collections import defaultdict
+from typing import List
 ##############################################################
 ###                     Array/String                       ###
 ##############################################################
@@ -34,8 +35,6 @@ follow up
 """
 def productExceptSelf(nums):
     ans = []
-
-
 
 # 88. Merge Sorted Array (easy)
 """
@@ -130,8 +129,7 @@ def canJump(nums):
 ###                     Two pointers                       ###
 ##############################################################
 
-
-# 125. Valid Palindrome
+# 125. Valid Palindrome[easy]
 """
 Input: s = "A man, a plan, a canal: Panama"
 Output: true
@@ -151,7 +149,7 @@ def validPalindrome(s):
             return False
     return True
 
-# 392. Is Subsequence
+# 392. Is Subsequence[easy]
 def isSubsequence(s, t):
     pt = -1
     for c in s:
@@ -164,15 +162,46 @@ def isSubsequence(s, t):
     return True
 
 # Two Sum II - Input Array Is Sorted
+def twoSum(numbers: List[int], target: int) -> List[int]:
+    i, j = 0, len(numbers)-1
+    while i < j:
+        print(numbers[i], numbers[j])
+        if numbers[i] + numbers[j] == target:
+            return [i+1,j+1]
+        elif numbers[i] + numbers[j] > target:
+            j -= 1
+        elif numbers[i] + numbers[j] < target:
+            i += 1
+    return [i+1, j+1]
 
-# Container With Most Water
+# Container With Most Water[easy]
+def maxArea(height):
+    res = 0
+    i, j = 0, len(height)-1
+    while i < j:
+        res = max(res, min(height[i], height[j])*(j-i))
+        if height[i] < height[j]:
+            i += 1
+        else:
+            r -= 1
+    return res
 
-# 3Sum
+# 15. 3Sum[medium]
+"""
+Given an integer array nums, return all the deduped triplets [nums[i], nums[j], nums[k]] 
+such that i != j, i != k, and j != k, and nums[i] + nums[j] + nums[k] == 0.
+"""
+def threeSum(nums):
+    n = len(nums)
+    nums.sort()
+    res = []
+
+    for i in range(n-2):
+        
 
 ##############################################################
 ###                     Sliding Window                     ###
 ##############################################################
-
 
 # Minimum Size Subarray Sum
 
@@ -181,7 +210,6 @@ def isSubsequence(s, t):
 # Substring with Concatenation of All Words
 
 # Minimum Window Substring
-
 
 ##############################################################
 ###                          Matrix                        ###
