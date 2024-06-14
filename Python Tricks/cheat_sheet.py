@@ -107,16 +107,17 @@ matrix =  [
     [7, 8, 9]
 ]
 matrix.reverse()
-# transpose matrix
+# transpose matrix in place
 for i in range(len(matrix)):
     for j in range(i):
         matrix[i][j], matrix[j][i] = matrix[j][i], matrix[i][j]
 # flip the NxN image
 matrix.reverse() # then transpose
 
-#Python Compare/Check
-
-# if char is an integer.
+# iterate the transposed matrix
+transposed = zip(*matrix)
+for col in transposed:
+    print(col)
 
 #### String ####
 

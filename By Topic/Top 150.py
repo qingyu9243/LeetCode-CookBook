@@ -237,6 +237,15 @@ def threeSum(nums):
 ###                          Matrix                        ###
 ##############################################################
 # 36. Valid Sudoku[medium]
+board = [["5","3",".",".","7",".",".",".","."]
+,["6",".",".","1","9","5",".",".","."]
+,[".","9","8",".",".",".",".","6","."]
+,["8",".",".",".","6",".",".",".","3"]
+,["4",".",".","8",".","3",".",".","1"]
+,["7",".",".",".","2",".",".",".","6"]
+,[".","6",".",".",".",".","2","8","."]
+,[".",".",".","4","1","9",".",".","5"]
+,[".",".",".",".","8",".",".","7","9"]]
 def validSudoku(board):
     def validRow():
         for row in board:
@@ -262,18 +271,15 @@ def validSudoku(board):
         return len(tmp) == len(set(tmp))
 
     return validBox(board) and validCol(board) and validBox(board)
-board = [["5","3",".",".","7",".",".",".","."]
-,["6",".",".","1","9","5",".",".","."]
-,[".","9","8",".",".",".",".","6","."]
-,["8",".",".",".","6",".",".",".","3"]
-,["4",".",".","8",".","3",".",".","1"]
-,["7",".",".",".","2",".",".",".","6"]
-,[".","6",".",".",".",".","2","8","."]
-,[".",".",".","4","1","9",".",".","5"]
-,[".",".",".",".","8",".",".","7","9"]]
 #print(validSudoku(board))
 
-# Spiral Matrix
+# 54. Spiral Matrix[顺时针螺旋走位matrix]
+def spiralOrder(matrix):
+    res = []
+    while matrix:
+        res.extend(matrix.pop(0))
+        matrix = [*zip(*matrix)][::-1]
+    return res
 
 # 48. [重点]Rotate Image[medium]
 """
@@ -291,6 +297,7 @@ def rotate(matrix):
 matrix = [[1,2,3],[4,5,6],[7,8,9]]
 print(rotate(matrix))
 #print(matrix)
+
 # Set Matrix Zeroes
 
 # Game of Life
@@ -433,10 +440,34 @@ def calculator2_optimize(s):
 ##############################################################
 ##                  Binary Tree General                     ##
 ##############################################################
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
 
 # Maximum Depth of Binary Tree
+def maximumDepth(root:TreeNode):
+    if not root:
+        return 0
+    return max(maximumDepth(root.left), maximumDepth(root.right))+1
+
+def maximumDepth_interative_dfs(root:TreeNode):
+    stack = [(root, 0)]
+    ans = 0
+    while stack:
+        n, depth = stack.pop()
+        if not n.left and not n.right:
+            ans = max(ans, depth)
+        if n.left:
+            stack.append((n.left, depth+1))
+        if n.right:
+            stack.append((n.right, depth+1))
+    return ans
 
 # Same Tree
+def sameTree(root1, root2):
+    pass
 
 # Invert Binary Tree
 
