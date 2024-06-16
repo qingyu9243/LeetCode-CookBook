@@ -142,6 +142,9 @@ s.isalpha()
 s = '/path/abcd'
 new = s[:s.rfind('/')] # rfind -> the index of '/'
 
+# add variable value to string
+"%s->%s" %(nums[i], nums[j]) # -> "a->b"
+
 
 #### Sorting ####
 """

@@ -298,9 +298,28 @@ matrix = [[1,2,3],[4,5,6],[7,8,9]]
 print(rotate(matrix))
 #print(matrix)
 
-# Set Matrix Zeroes
+# 73. Set Matrix Zeroes
+"""
+Given an m x n integer matrix matrix, if an element is 0, set its entire row and column to 0's.
+You must do it in place.
+"""
+def setZeros(matrix):
+    m, n = len(matrix),len(matrix[0])
+    zeros = []
+    for i in range(m):
+        for j in range(n):
+            if matrix[i][j] == 0:
+                zeros.append([i, j])
 
-# Game of Life
+    for row_n, col_n in zeros:
+        for i in range(m):
+            matrix[i][col_n] = 0
+        for j in range(n):
+            matrix[row_n][j] = 0
+
+# 289. [重点]Game of Life
+def gameOfLife(board):
+    pass
 
 ##############################################################
 ###                    Hashmap/Hashset                     ###
@@ -328,7 +347,29 @@ print(rotate(matrix))
 ###                      Intervals                         ###
 ##############################################################
 
-# Summary Ranges
+# 228.Summary Ranges[easy]
+"""
+Input: nums = [0,1,2,4,5,7]
+Output: ["0->2","4->5","7"]
+"""
+def summaryRanges(nums):
+    l = len(nums)
+    if l == 0:
+        return []
+    ans = []
+    start = 0  # each interval start index
+    nums.append(float('inf'))
+
+    for i in range(l):
+        if nums[i+1] != nums[i]+1: # this interval ends
+            if start == i: # single num interval
+                ans.append(str(nums[i]))
+            else: # multi num interval
+                ans.append("%s->%s", nums[start], nums[i])
+            start = i+1
+        else:
+            continue
+    return ans            
 
 # Merge Intervals
 
