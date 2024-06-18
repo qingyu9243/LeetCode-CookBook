@@ -369,23 +369,113 @@ def summaryRanges(nums):
             start = i+1
         else:
             continue
-    return ans            
+    return ans
 
-# Merge Intervals
+# 56. Merge Intervals[medium]
+"""
+intervals = [[1,4],[2,3]]
+intervals = [[1,3],[2,6],[8,10],[15,18]]
+intervals = [[1,4],[4,5]]
+"""
+def mergeIntervals(intervals):
+    intervals.sort()
+    ans = [].append(intervals[0])
+    for s, e in intervals:
+        p_s, p_e = ans[-1]
+        if p_e >= s:
+            ans.pop()
+            ans.append([p_s, max(e, p_e)])
+        else:
+            ans.append([s, e])
+    return ans
 
-# Insert Interval
+# 57. [重点]Insert Interval[medium]
+"""
+Input: intervals = [[1,3],[6,9]], newInterval = [2,5]
+Output: [[1,5],[6,9]]
+Input: intervals = [[1,2],[3,5],[6,7],[8,10],[12,16]], newInterval = [4,8]
+Output: [[1,2],[3,10],[12,16]]
+case 1: intervals = [[1,3],[6,9]], newInterval = [4,5]
+case 2: intervals = [[1,3],[6,9]], newInterval = [2,5]
+case 3: intervals = [[2,3],[6,9]], newInterval = [0,1]
+"""
+def insertInterval(intervals, newInterval):
+    n = len(intervals)
+    i = 0
+    ans = []
+    # no overlapping, append current interval
+    while i < n and intervals[i][1] < newInterval[0]:
+        ans.append(intervals[i])
+        i += 1
+    # overlapping, merge and append
+    while i < n and intervals[i][0] <= newInterval[1]:
+        newInterval[0] = min(intervals[i][0], newInterval[0])
+        newInterval[1] = max(intervals[i][1], newInterval[1])        
+        i += 1
+    ans.append(newInterval)
+    # append the rest of intervals
+    ans.extend(intervals[i:])
+    return ans
+
 
 # Minimum Number of Arrows to Burst Balloons
+
 
 ##############################################################
 ####                         Stack                        ####
 ##############################################################
 
-# Valid Parentheses
+# 20.Valid Parentheses[easy]
+def validParenthese(s):
+    pare = {']':'[', '}':'{', ')':'('}
+    stack = []
+    for c in s:
+        if c in pare.values():
+            stack.append(c)
+        else:
+            if not stack or stack.pop() != pare[c]:
+                return False
+    return stack == []
 
 # Simplify Path
 
-# Min Stack
+
+
+# 155.Min Stack[medium]
+"""
+Design a stack that supports push, pop, top, and retrieving the minimum element in constant time.
+Implement the MinStack class:
+    MinStack() initializes the stack object.
+    void push(int val) pushes the element val onto the stack.
+    void pop() removes the element on the top of the stack.
+    int top() gets the top element of the stack.
+    int getMin() retrieves the minimum element in the stack.
+You must implement a solution with O(1) time complexity for each function.
+
+4 2 8 2 5 7 1 (stack)
+4 2 2 1 (min stack)
+only push in the the elments smaller
+"""
+class MinStack:
+    def __init__(self):
+        self.stack =[]
+        self.min_stack = [float('inf')]
+
+    def push(self, val: int) -> None:
+        self.stack.append(val)
+        if val <= self.min_stack[-1]:
+            self.min_stack.append(val)
+
+    def pop(self) -> None:
+        tmp = self.stack.pop()
+        if tmp == self.min_stack[-1]:
+            self.min_stack.pop()
+
+    def top(self) -> int:
+        return self.stack[-1]
+
+    def getMin(self) -> int:
+        return self.min_stack[-1]
 
 # Evaluate Reverse Polish Notation
 
