@@ -45,32 +45,46 @@ import random
 map = {key: {id:value, id:value}}
 """
 from collections import defaultdict
+import bisect
 class SnapshotMap:
     def __init__(self):
         # First, initialize your chosen data structure
-        self.map = {} # {k: {s_id:value}, {s_id: valuex}}
+        self.map = defaultdict(list) # {k: [(s_id, value), (s_id, valuex)}
         self.current_snap_id = 1
 
     def take_snapshot(self):
         # Second, create a snapshot of the current state
         self.current_snap_id += 1
-        return self.current_snap_id
+        return self.current_snap_id - 1
 
         # Third, we'll need to cover the basics
     def put(self, k, v):
     #     # Insert or update the value for a key
-        if k not in self.map:
-            self.map[k] = defaultdict(list)
-            self.map[k].append()
+        self.map[k].append((self.current_snap_id, v))
 
     def get(self, k, snap_id=None):
     #     # Retrieve the value for a key - if snap_id is given, grab it from there
-        
-        pass
+        if k not in self.map:
+            raise KeyError("key not exist")
+        else:
+            if not snap_id:
+                value = self.map[k][-1][1]
+                if value == float('-inf'):
+                    raise KeyError("key has been deleted")
+                else:
+                    return value
+            else:
+                index = bisect.bisect_left(self.map[k], (snap_id, float('inf'))) - 1
+                #print(index, snap_id, self.map[k])
+                value = self.map[k][index][1]
+                if value == float('-inf'):
+                    raise KeyError("key has been deleted")
+                else:
+                    return value
     # Now run the Phase 1 tests, and if you have time, begin the Phase 2 key deletion
-    # def delete(self, k):
+    def delete(self, k):
     #     # Delete a key from the map, reflect this deletion in subsequent snapshots
-    #     pass
+        self.map[k].append((self.current_snap_id, float('-inf')))
 
 s = SnapshotMap()
 
@@ -92,7 +106,7 @@ snap_id3 = s.take_snapshot()
 # Uncomment for Phase 2 - reflect deletion in subsequent snapshots
 # remember, below at `assert s.get("b", snap_id1)` we will expect `2`
 # after this deletion step
-# s.delete("b")
+s.delete("b")
 s.put("a", 10)
 snap_id4 = s.take_snapshot()
 snap_id5 = s.take_snapshot()
@@ -116,25 +130,25 @@ print("PHASE 1 PASSED")
 # Great! Time to delete keys, so go ahead and uncomment the s.delete("b") in Phase 1!
 # """
 # # Test for deleted key
-# try:
-#     s.get("b", snap_id4)
-#     raise Exception("KeyError was expected but not raised")
-# except KeyError:
-#     pass
+try:
+    s.get("b", snap_id4)
+    raise Exception("KeyError was expected but not raised")
+except KeyError:
+    pass
 
-# try:
-#     s.get("b", snap_id5)
-#     raise Exception("KeyError was expected but not raised")
-# except KeyError:
-#     pass
+try:
+    s.get("b", snap_id5)
+    raise Exception("KeyError was expected but not raised")
+except KeyError:
+    pass
 
-# try:
-#     s.get("b")
-#     raise Exception("KeyError was expected but not raised")
-# except KeyError:
-#     pass
+try:
+    s.get("b")
+    raise Exception("KeyError was expected but not raised")
+except KeyError:
+    pass
 
-# print("PHASE 2 PASSED")
+print("PHASE 2 PASSED")
 
 """
 PHASE 3 - Efficiency
@@ -142,51 +156,50 @@ Please uncomment one loop at a time, since your system need only deal
 with *up to* 1 million keys!
 """
 # # 10,000 keys
-# for i in range(10_000):
-#     s.put(f"key{i}", i)
+for i in range(10_000):
+    s.put(f"key{i}", i)
 
-# start_time = time.time()
-# for snapshot in range(10):
-#     for i in random.sample(range(10_000), 100):
-#         s.put(f"key{i}", random.randint(0, 10_000))
+start_time = time.time()
+for snapshot in range(10):
+    for i in random.sample(range(10_000), 100):
+        s.put(f"key{i}", random.randint(0, 10_000))
 
-#     s.take_snapshot()
-# end_time = time.time()
+s.take_snapshot()
+end_time = time.time()
 
-# duration = end_time - start_time
-# print("\n\n10,000 keys.\nTotal time for 10 snapshots with 1% key changes each:", round(duration, 6), "seconds")
+duration = end_time - start_time
+print("\n\n10,000 keys.\nTotal time for 10 snapshots with 1% key changes each:", round(duration, 6), "seconds")
 
 # # 100,000 keys
-# for i in range(100_000):
-#     s.put(f"key{i}", i)
+for i in range(100_000):
+    s.put(f"key{i}", i)
 
-# start_time = time.time()
-# for snapshot in range(10):
-#     for i in random.sample(range(100_000), 1000):
-#         s.put(f"key{i}", random.randint(0, 100_000))
+start_time = time.time()
+for snapshot in range(10):
+    for i in random.sample(range(100_000), 1000):
+        s.put(f"key{i}", random.randint(0, 100_000))
 
-#     s.take_snapshot()
-# end_time = time.time()
+s.take_snapshot()
+end_time = time.time()
 
-# duration = end_time - start_time
-# print("\n\n100,000 keys.\nTotal time for 10 snapshots with 1% key changes each:", round(duration, 6), "seconds")
+duration = end_time - start_time
+print("\n\n100,000 keys.\nTotal time for 10 snapshots with 1% key changes each:", round(duration, 6), "seconds")
 
 # # 1,000,000 keys
-# for i in range(1_000_000):
-#     s.put(f"key{i}", i)
+for i in range(1_000_000):
+    s.put(f"key{i}", i)
 
-# start_time = time.time()
-# for snapshot in range(10):
-#     for i in random.sample(range(1_000_000), 10_000):
-#         s.put(f"key{i}", random.randint(0, 1_000_000))
+start_time = time.time()
+for snapshot in range(10):
+    for i in random.sample(range(1_000_000), 10_000):
+        s.put(f"key{i}", random.randint(0, 1_000_000))
 
-#     s.take_snapshot()
-# end_time = time.time()
+    s.take_snapshot()
+end_time = time.time()
 
-# duration = end_time - start_time
-# print("\n\n1,000,000 keys.\nTotal time for 10 snapshots with 1% key changes each:", round(duration, 6), "seconds\n\n")
+duration = end_time - start_time
+print("\n\n1,000,000 keys.\nTotal time for 10 snapshots with 1% key changes each:", round(duration, 6), "seconds\n\n")
 
 # # Assert that the operation is efficient
-# assert duration < 10, "Total operation took longer than expected"
-
-# print("PHASE 3 PASSED")
+assert duration < 10, "Total operation took longer than expected"
+print("PHASE 3 PASSED")

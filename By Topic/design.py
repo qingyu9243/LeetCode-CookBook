@@ -16,14 +16,14 @@ class LRU:
     def get(self, key):
         if key not in self.cache:
             return -1
-        self.dic.move_to_end(key)
+        self.dic.move_to_end(key) # 把item放到cache末尾
         return self.dic[key]
     
     def put(self, key, value):
         self.cache[key] = value
-        self.cache.move_to_end(key)
+        self.cache.move_to_end(key) # 把item放到cache末尾
         if len(self.cache) > self.capacity:
-            self.cache.popitem(last = False)
+            self.cache.popitem(last = False) # 把cache头上最少用的item，pop出去
 
 # 1570	Dot Product of Two Sparse Vectors 89.9%	Medium	
 """
