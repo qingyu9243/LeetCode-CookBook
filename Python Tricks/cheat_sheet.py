@@ -41,6 +41,9 @@ int(math.sqrt(13)) # -> 3.60xxx to 3
 # True -> int 1, False ->int 0
 # round(num, digits)
 a = round(4.56667, 3)
+# character to int(ASCII)
+a = ord("A") # A -> 65
+b = chr(65)  # 65 -> A
 
 #### Array ####
 ## Insert 

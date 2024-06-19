@@ -34,6 +34,11 @@ class LRU:
 
 
 # 588	Design In-Memory File System 48.1%	Hard	
+class FileSystem:
+    def __init__(self) -> None:
+        pass
+
+# 981	Time Based Key-Value Store	49.4%	Medium	
 
 
 # 359	Logger Rate Limiter 75.9%	Easy	
@@ -123,9 +128,6 @@ class MovingAverage:
         return self.sum/min(self.size, self.count)
 
 # 362	Design Hit Counter 68.7%	Medium	
-
-
-# 981	Time Based Key-Value Store	49.4%	Medium	
 
 
 # 295	Find Median from Data Stream	51.9%	Hard	
