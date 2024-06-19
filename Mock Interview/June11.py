@@ -49,7 +49,7 @@ import bisect
 class SnapshotMap:
     def __init__(self):
         # First, initialize your chosen data structure
-        self.map = defaultdict(list) # {k: [(s_id, value), (s_id, valuex)}
+        self.map = defaultdict(list) # {k: [(s_id, value), (s_id, valuex)]}
         self.current_snap_id = 1
 
     def take_snapshot(self):
