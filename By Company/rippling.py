@@ -26,7 +26,7 @@ class Excel:
         #print(n_row, n_col, self.matrix[n_row][n_col])
         return self.matrix[n_row][n_col]
 
-    def sum(self, row: int, column: str, numbers: List[str]) -> int:
+    def sum(self, row: int, column: str, numbers) -> int:
         sum_ = 0
         key_row = row - 1
         key_col = self.convertCol(column)
@@ -65,8 +65,8 @@ This data store should be able to support some basic operations such as Get, Set
 // I would like to see test cases as well as implementation code. You can assume that the input operations are always valid, 
 but the key to operate on may be non-existent.
 
-// We won’t worry about concurrent access to the database. You can handle errors however you think is best. 
-Let’s start with the data structure of this key value store.
+// We won' t worry about concurrent access to the database. You can handle errors however you think is best. 
+Let' s start with the data structure of this key value store.
 
 // Implement methods for Get, Set and Delete.
 
