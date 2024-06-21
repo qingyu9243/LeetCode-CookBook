@@ -1,3 +1,4 @@
+from typing import List
 ####################################
 ######     Search In Array    ###### 
 ####################################
@@ -33,6 +34,21 @@ def searchInsert(nums, target):
 #print(searchInsert([1,3,5,6], 5))
 #print(searchInsert([1,3,5,6], 2))
 #print(searchInsert([1,3,5,6], 7))
+
+# 744. Find Smallest Letter Greater Than Target
+def nextGreatestLetter(letters: List[str], target: str) -> str:
+    l, r = 0, len(letters)
+
+    while l <= r and l < len(letters):
+        mid = (l+r)//2
+        if ord(letters[mid]) - ord(target) > 0:
+            r = mid - 1
+        else:
+            l = mid + 1
+
+    if l >= len(letters):
+        return letters[0]
+    return letters[l]
 
 ####################################
 ######     Rotated Array    ###### 

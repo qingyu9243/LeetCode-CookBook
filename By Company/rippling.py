@@ -1,4 +1,5 @@
 from collections import defaultdict, Counter
+from typing import List
 # 631. Design Excel Sum Formula [hard]
 class Excel:
 
@@ -58,6 +59,10 @@ class Excel:
         return ord(column)-ord("A")
 
 """
+https://leetcode.com/discuss/interview-question/3928848/rippling-phone-screen-sr-software-engineer-us-rejected
+https://leetcode.com/discuss/interview-question/279913/key-value-store-with-transaction
+
+
 
 // Design and implement an in-memory key value data store. 
 This data store should be able to support some basic operations such as Get, Set and Delete for string keys and values.
@@ -68,32 +73,60 @@ but the key to operate on may be non-existent.
 // We won' t worry about concurrent access to the database. You can handle errors however you think is best. 
 Let' s start with the data structure of this key value store.
 
+Pharse 1 
 // Implement methods for Get, Set and Delete.
 
+Pharse 2
 // Add support for transactions - Begin, Commit and Rollback.
 // A transaction is created with the Begin command and creates a context for the other operations to happen.
 // Until the active transaction is committed using the Commit command, those operations do not persist.
 // The Rollback command throws away any changes made by those operations in the context of the active transaction.
 // Commit() and ``Rollback()`` will only happen when inside a transaction, and they both end the transaction.
 // Note: We won't worry about concurrency for this part of the question.
+
+Pharse 3
+/// Support nested transactions. Begin() multiple times and close out the transactions by either rollback or commit.
 """
 class KeyValueStore:
     def __init__(self) -> None:
-        pass
+        self.store = {}
+        self.transactions = {}
+
     def get(self, key):
-        pass
+        if self.transactions and key in self.transactions:
+            return self.transactions[key]
+        elif key not in self.store:
+            raise KeyError("key not exist")
+        
+        return self.store[key]
+
     def set(self, key, value):
-        pass
+        self.store[key] = value
+
     def delete(self, key):
-        pass
+        if key not in self.store:
+            raise KeyError("key not exist")
+        del self.store[key]
+
     def begin(self,):
-        pass
+        self.transactions_stack.append({})
+
     def commit(self,):
         pass
+
     def rollback(self,):
         pass
+
+# phase 1, basic functions
+s = KeyValueStore()
+s.set('1',"abc")
+print(s.store)
+
 
 """
 https://www.1point3acres.com/bbs/thread-1071111-1-1.html
     https://www.1point3acres.com/bbs/thread-1045548-1-1.html
 """
+
+
+## Design Google News
