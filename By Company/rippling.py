@@ -1,5 +1,5 @@
 from collections import defaultdict, Counter
-# 631. Design Excel Sum Formula
+# 631. Design Excel Sum Formula [hard]
 class Excel:
 
     def __init__(self, height: int, width: str):
@@ -86,3 +86,14 @@ class KeyValueStore:
         pass
     def delete(self, key):
         pass
+    def begin(self,):
+        pass
+    def commit(self,):
+        pass
+    def rollback(self,):
+        pass
+
+"""
+https://www.1point3acres.com/bbs/thread-1071111-1-1.html
+    https://www.1point3acres.com/bbs/thread-1045548-1-1.html
+"""
