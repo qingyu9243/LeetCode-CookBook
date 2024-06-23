@@ -90,39 +90,73 @@ Pharse 3
 class KeyValueStore:
     def __init__(self) -> None:
         self.store = {}
-        self.transactions = {}
+        self.transactions = []
 
     def get(self, key):
-        if self.transactions and key in self.transactions:
-            return self.transactions[key]
-        elif key not in self.store:
-            raise KeyError("key not exist")
-        
-        return self.store[key]
+        for transaction in self.transactions[::-1]:
+            if key in transaction:
+                return transaction[key]
+        else:
+            return self.store[key]
 
     def set(self, key, value):
-        self.store[key] = value
+        if self.transactions:
+            self.transactions[-1][key] = value
+        else:
+            self.store[key] = value
 
     def delete(self, key):
-        if key not in self.store:
-            raise KeyError("key not exist")
-        del self.store[key]
+        if self.transactions:
+            self.transactions[-1][key] = None
+        else:
+            del self.store[key]
 
     def begin(self,):
-        self.transactions_stack.append({})
+        self.transactions.append({})
 
     def commit(self,):
-        pass
+        if self.transactions:
+            cur = self.transactions.pop()
+            for k, v in cur.items():
+                if v is None:
+                    #print(k, v)
+                    del self.store[k]
+                else:
+                    self.store[k] = v
 
     def rollback(self,):
-        pass
+        if self.transactions:
+            self.transactions.pop()
 
 # phase 1, basic functions
 s = KeyValueStore()
-s.set('1',"abc")
+s.set('1', 'a')
+s.set('2', 'b')
+s.delete('2')
+s.get('1')
+s.set('2', 'c')
+s.set('3', 'm')
+#s.get('2')
+s.set('1', 3)
+print(s.store)
+
+# phase 2, support commit and rollback
+s.begin()
+s.set('1', 5)
+s.delete('3')
+s.rollback()
+print(s.store)
+s.begin()
+s.set('2', 8)
+print('1 is', s.get('1'))
+s.delete('3')
+s.commit()
 print(s.store)
 
 
+# phase 3, support nested transactions
+s.begin()
+s.set('1', 6)
 """
 https://www.1point3acres.com/bbs/thread-1071111-1-1.html
     https://www.1point3acres.com/bbs/thread-1045548-1-1.html
