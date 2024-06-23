@@ -40,7 +40,14 @@ def convertArray(nums):
     pass
 # 2217	Find Palindrome With Fixed Length	36.9%	Medium	
 
+# 15    3Sum
+def threeSum(nums):
+    pass
+
+
 # 259	3Sum Smaller
+def threeSumSmaller(nums):
+    pass
 
 # 694	[重点]Number of Distinct Islands
 def numDistinctInslands(grid):
@@ -80,7 +87,10 @@ def numDistinctInslands(grid):
 # 1507	Reformat Date	66.1%	Easy	
 # 93	Restore IP Addresses	50.3%	Medium	
 # 1293	Shortest Path in a Grid with Obstacles Elimination	45.2%	Hard	
-# 772	Basic Calculator III	
+# 772	[重点]Basic Calculator III	hard
+def calculate(s):
+    pass
+
 # 1010	Pairs of Songs With Total Durations Divisible by 60	52.9%	Medium	
 # 767	Reorganize String	54.7%	Medium	
 # 1062	Longest Repeating Substring
