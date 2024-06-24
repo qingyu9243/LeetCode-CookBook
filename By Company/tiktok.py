@@ -3,6 +3,7 @@
 # live package tracking system
 # design chat system
 from collections import defaultdict
+from typing import List
 
 
 # 588	Design In-Memory File System	https://leetcode.com/problems/design-in-memory-file-system/description/
@@ -34,20 +35,67 @@ class TreeNode:
 def countPairs(root, distance):
     pair_count = 0
 
-
 # 2263	Make Array Non-decreasing or Non-increasing	
 def convertArray(nums):
     pass
 # 2217	Find Palindrome With Fixed Length	36.9%	Medium	
 
-# 15    3Sum
-def threeSum(nums):
-    pass
+# 15    3Sum Medium
+"""
+[-5, -5, -4, -3, -1, -1, 1, 1, 2, 2, 4], target 5
+ i        j                          k
 
+"""
+def threeSum(self, nums: List[int]) -> List[List[int]]:
+    # three pointers
+    res = []
+    n = len(nums)
+    nums.sort()
+
+    for i in range(n-2):
+        if nums[i] > 0:
+            break # no possible answer
+        if i > 0 and nums[i] == nums[i-1]: # optimize, skip the same number
+            continue
+        j, k = i+1, n-1
+        while j < k:
+            cur = nums[i] + nums[j] + nums[k]
+            if cur > 0:
+                k -= 1
+            elif cur < 0:
+                j += 1
+            else:
+                res.append([nums[i], nums[j], nums[k]])
+                while j + 1 < k and nums[j+1] == nums[k]:
+                    j += 1
+                while k - 1 > j and nums[k-1] == nums[k]:
+                    k -= 1
+                j += 1
+                k -= 1
+    return res
 
 # 259	3Sum Smaller
-def threeSumSmaller(nums):
-    pass
+"""
+[1,2,2,-5,-1,-3,1,-5,-4,-1,4], 5
+ f s    th
+"""
+def threeSumSmaller(nums, target):
+    nums.sort()
+    n = len(nums)
+    ans = 0
+
+    for first in range(n-2):
+        second = first + 1
+        third = n - 1
+        while second < third:
+            three_sum = nums[first] + nums[second] + nums[third]
+            if three_sum < target:
+                ans += third - second
+                second += 1
+            else:
+                third -= 1
+    return ans
+#print(threeSumSmaller([1,2,2,-5,-1,-3,1,-5,-4,-1,4], 5))
 
 # 694	[重点]Number of Distinct Islands
 def numDistinctInslands(grid):
@@ -80,12 +128,39 @@ def numDistinctInslands(grid):
 #print(numDistinctInslands([[1,1,0,0,0],[1,1,0,0,0],[0,0,0,1,1],[0,0,0,1,1]]))
 #print(numDistinctInslands([[1,1,0,1,1],[1,0,0,0,0],[0,0,0,0,1],[1,1,0,1,1]]))
 
-
-# 928	Minimize Malware Spread II	43.8%	Hard	
+# 928	Minimize Malware Spread II	43.8%	Hard
 # 403	Frog Jump	46.1%	Hard	
 # 856	Score of Parentheses	64.1%	Medium	
 # 1507	Reformat Date	66.1%	Easy	
 # 93	Restore IP Addresses	50.3%	Medium	
+"""
+Input: s = "25525511135"
+Output: ["255.255.11.135","255.255.111.35"]
+Input: s = "101023"
+Output: ["1.0.10.23","1.0.102.3","10.1.0.23","10.10.2.3","101.0.2.3"]
+"""
+def restoreIPaddress(s):
+    res = []
+    l = len(s)
+    def is_valid(segment): # 0 ~ 9, or 10 ~ 255 (01, 09, 012 are invalid)
+        #print(segment)
+        if len(segment) == 1 or (segment[0] != '0' and int(segment) <= 255):
+            return True
+
+    def backtrack(cur_index, l_ip):
+        if cur_index == l and len(l_ip) == 4:
+            res.append(".".join(l_ip))
+            return
+        for length in range(1, 4):
+            if cur_index + length <= l:
+                segment = s[cur_index:cur_index+length] # substring, include cur_index
+                if is_valid(segment):
+                    backtrack(cur_index+length, l_ip+[segment])
+
+    backtrack(0, [])
+    return res
+print(restoreIPaddress("25525511135"))
+
 # 1293	Shortest Path in a Grid with Obstacles Elimination	45.2%	Hard	
 # 772	[重点]Basic Calculator III	hard
 def calculate(s):

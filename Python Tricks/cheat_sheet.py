@@ -48,9 +48,12 @@ b = chr(65)  # 65 -> A
 #### Array ####
 ## Insert 
 nums = [1, 2, 3, 5, 6]
+a = [7]
 nums.insert(3, 4) # insert(index, value) -> nums = [1, 2, 3, 4, 5, 6]
 ## Append
 nums.append(7) # -> nums = [1, 2, 3, 4, 5, 6, 7]
+## +
+nums + a # -> [1, 2, 3, 5, 6, 7]
 ## Extend
 nums2 = [8, 9]
 nums.extend(nums2) # -> nums = [1, 2, 3, 4, 5, 6, 7, 8, 9]
