@@ -241,7 +241,8 @@ my_dict.move_to_end(key, last=False)
 my_dict.move_to_start(key)
 # delete item
 my_dict.pop(key)
-
+# get item
+my_dict.get(key, 0) # get key's value, otherwise return 0
 
 
 #### Queue ####
