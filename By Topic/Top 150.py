@@ -1,4 +1,5 @@
 from collections import defaultdict
+from collections import deque
 from typing import List
 ##############################################################
 ###                     Array/String                       ###
@@ -288,14 +289,14 @@ output = [[7,4,1],[8,5,2],[9,6,3]]
 """
 def rotate(matrix):
     matrix.reverse()
-    print(matrix)
+    #print(matrix)
     for i in range(len(matrix)):
         for j in range(i):
             print(i, j)
             matrix[i][j], matrix[j][i] = matrix[j][i], matrix[i][j] # tranpose the matrix
     print(matrix)
 matrix = [[1,2,3],[4,5,6],[7,8,9]]
-print(rotate(matrix))
+#print(rotate(matrix))
 #print(matrix)
 
 # 73. Set Matrix Zeroes
@@ -648,11 +649,9 @@ def sameTree(root1, root2):
 ##############################################################
 ##                      Graph General                       ##
 ##############################################################
-
-# Number of Islands
-
-# Surrounded Regions
-
+# 130. Surrounded Regions
+def solve(board):
+    
 # Clone Graph
 
 # Evaluate Division
@@ -664,11 +663,81 @@ def sameTree(root1, root2):
 ##############################################################
 ##                       Graph BFS                          ##
 ##############################################################
-# Graph BFS
+# 909. snakes and Ladders
+def snakesAndLadders(self, board: List[List[int]]) -> int:
+    def get_board_value(board, n, index):
+        quot, rem = divmod(index - 1, n)
+        row = n - 1 - quot
+        col = rem if (n - 1 - row) % 2 == 0 else n - 1 - rem
+        return board[row][col]
+        
+    n = len(board)
+    target = n * n
+    visited = set()
+    queue = deque([(1, 0)])  # (current square, number of moves)
+
+    while queue:
+        current, moves = queue.popleft()
+        if current == target:
+            return moves
+        for i in range(1, 7):
+            next_square = current + i
+            if next_square <= target:
+                value = get_board_value(board, n, next_square)
+                if value != -1:
+                    next_square = value
+                if next_square not in visited:
+                    visited.add(next_square)
+                    queue.append((next_square, moves + 1))
+    return -1    
 
 # Minimum Genetic Mutation
 
-# Word Ladder
+
+# 127. Word Ladder
+"""
+Input: beginWord = "hit", endWord = "cog", wordList = ["hot","dot","dog","lot","log","cog"]
+Output: 5
+"""
+def wordLadder(beginWord, endWord, wordList):
+    # 典型bfs. 
+
+    # initial check
+    if endWord not in wordList or not endWord or not beginWord or not wordList:
+        return 0
+    
+    # intermediate words dict
+    wordList.append(beginWord)
+    n = len(beginWord)
+    all_comb_dict = defaultdict(list)
+
+    for word in wordList:
+        for i in range(n):
+            genertic_word = word[:i] + '*' + word[i+1:]
+            all_comb_dict[genertic_word].append(word)
+    print(all_comb_dict)
+    # BFS
+    queue = deque()
+    queue.append([beginWord, 1])
+    visited = set(beginWord)
+
+    while queue:
+        cur_word, step = queue.popleft()
+
+        for i in range(n):
+            next_word = cur_word[:i] + '*' + cur_word[i+1:]
+            for word in all_comb_dict[next_word]:
+                if word == endWord:
+                    return step + 1
+                if word not in visited:
+                    visited.add(word)
+                    queue.append([word, step+1])
+            all_comb_dict[next_word] = [] # optional
+    return 0
+
+
+print(wordLadder("hit", "cog", ["hot","dot","dog","lot","log","cog"]))
+print(wordLadder("hit", "cog", ["hot","dot","dog","lot","log"]))
 
 ##############################################################
 ##                          Trie                            ##

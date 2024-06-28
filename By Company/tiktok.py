@@ -129,6 +129,43 @@ def numDistinctInslands(grid):
 #print(numDistinctInslands([[1,1,0,0,0],[1,1,0,0,0],[0,0,0,1,1],[0,0,0,1,1]]))
 #print(numDistinctInslands([[1,1,0,1,1],[1,0,0,0,0],[0,0,0,0,1],[1,1,0,1,1]]))
 
+# 1257 Smallest Common Region
+"""
+Input:
+regions = [["Earth","North America","South America"],
+["North America","United States","Canada"],
+["United States","New York","Boston"],
+["Canada","Ontario","Quebec"],
+["South America","Brazil"]],
+region1 = "Quebec",
+region2 = "New York"
+Output: "North America"
+"""
+def findSmallestRegion(regions, region1, region2):
+    # create parent map
+    parent_map = {}
+    for region in regions:
+        for sub_reg in region[1:]:
+            parent_map[sub_reg] = region[0]
+
+    # create path to root for region1
+    path1 = set()
+    while region1 in parent_map:
+        #print(region1)
+        path1.add(region1)
+        region1 = parent_map[region1]
+    path1.add(region1)
+    #print('path1',path1)
+    
+    # find the first common ancestor
+    while region2 not in path1:
+        region2 = parent_map[region2]
+    return region2
+
+
+#print(findSmallestRegion([["Earth","North America","South America"],["North America","United States","Canada"],["United States","New York","Boston"],["Canada","Ontario","Quebec"],["South America","Brazil"]], "Quebec", "New York"))
+#print(findSmallestRegion([["Earth", "North America", "South America"],["North America", "United States", "Canada"],["United States", "New York", "Boston"],["Canada", "Ontario", "Quebec"],["South America", "Brazil"]], region1 = "Canada", region2 = "South America"))
+
 # 928	Minimize Malware Spread II	43.8%	Hard
 # 403	Frog Jump	46.1%	Hard	
 # 856	Score of Parentheses	64.1%	Medium	

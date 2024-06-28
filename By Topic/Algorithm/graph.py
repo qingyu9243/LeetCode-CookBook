@@ -1,4 +1,6 @@
-#210	Course Schedule II	50.4%	Medium	
+#210	Course Schedule II	50.4%	Medium
+
+
 #207	Course Schedule46.7%	Medium	
 #631	Design Excel Sum Formula43.7%	Hard	
 #269	Alien Dictionary35.8%	Hard	
