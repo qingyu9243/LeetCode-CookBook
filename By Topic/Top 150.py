@@ -651,7 +651,7 @@ def sameTree(root1, root2):
 ##############################################################
 # 130. Surrounded Regions
 def solve(board):
-    
+    pass
 # Clone Graph
 
 # Evaluate Division
