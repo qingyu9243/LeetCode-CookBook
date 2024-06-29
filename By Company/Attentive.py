@@ -8,5 +8,7 @@ Design a system that ingests events from an API for shopping cart status (add to
 4. Evaluate expression - https://www.geeksforgeeks.org/expression-evaluation/
 
 How would you build Twitter for locations?
+
+Determine if dictionary acronyms exist for a list of a strings.
 """
 

@@ -42,7 +42,11 @@ class FileSystem:
 
 
 # 359	Logger Rate Limiter 75.9%	Easy	
-
+class RateLimiter:
+    def __init__(self) -> None:
+        pass
+    
+        
 
 # 460	LFU Cache	44.2%	Hard	
 
