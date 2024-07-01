@@ -1,6 +1,6 @@
 from collections import defaultdict
 from collections import deque
-from typing import List
+from typing import Any, List
 ##############################################################
 ###                     Array/String                       ###
 ##############################################################
@@ -761,7 +761,9 @@ def wordLadder(beginWord, endWord, wordList):
 ##############################################################
 
 # Implement Trie (Prefix Tree)
-class Trie
+class Trie:
+    def __init__(self) -> None:
+        pass
 # Design Add and Search Words Data Structure
 
 # Word Search II
