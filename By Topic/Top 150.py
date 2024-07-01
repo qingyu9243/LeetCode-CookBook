@@ -640,9 +640,28 @@ def sameTree(root1, root2):
 ##                  Binary Search Tree                      ##
 ##############################################################
 
-# Minimum Absolute Difference in BST
-
-# Kth Smallest Element in a BST
+# 530. Minimum Absolute Difference in BST
+"""
+Given the root of a Binary Search Tree (BST), 
+return the minimum absolute difference between the values of any two different nodes in the tree.
+"""
+def getMinimumDifference(root):
+    values = []
+    def inOrder(node):
+        if not node:
+            return
+        values.append(node.val)
+        inOrder(node.left)
+        inOrder(node.right)
+    ans = float('inf')
+    values.sort()
+    for i in range(1, len(values)):
+        ans = min(ans, values[i]-values[i-1])
+    return ans
+# 230. Kth Smallest Element in a BST
+def kthSmallest(root, k):
+    stack = []
+    pass
 
 # Validate Binary Search Tree
 
