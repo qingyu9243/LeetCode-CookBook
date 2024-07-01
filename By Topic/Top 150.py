@@ -734,17 +734,15 @@ def wordLadder(beginWord, endWord, wordList):
                     queue.append([word, step+1])
             all_comb_dict[next_word] = [] # optional
     return 0
-
-
-print(wordLadder("hit", "cog", ["hot","dot","dog","lot","log","cog"]))
-print(wordLadder("hit", "cog", ["hot","dot","dog","lot","log"]))
+#print(wordLadder("hit", "cog", ["hot","dot","dog","lot","log","cog"]))
+#print(wordLadder("hit", "cog", ["hot","dot","dog","lot","log"]))
 
 ##############################################################
 ##                          Trie                            ##
 ##############################################################
 
 # Implement Trie (Prefix Tree)
-
+class Trie
 # Design Add and Search Words Data Structure
 
 # Word Search II
@@ -855,7 +853,17 @@ print(wordLadder("hit", "cog", ["hot","dot","dog","lot","log"]))
 ###                          1D DP                          ##
 ##############################################################
 
-# Climbing Stairs
+# 70. Climbing Stairs
+def climbStairs(n):
+    # dp[i] = dp[i-1]+dp[i-2]
+    dp = [i for i in range(0, n)]
+    if n <= 2:
+        return n
+    dp[0], dp[1] = 1, 2
+    for i in range(2, n):
+        dp[i] = dp[i-1]+dp[i-2]
+    return dp[n-1]
+#print(climbStairs(2))
 
 # House Robber
 
