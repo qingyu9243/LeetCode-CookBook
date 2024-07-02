@@ -206,6 +206,8 @@ def calculate(s):
 
 # 1010	Pairs of Songs With Total Durations Divisible by 60	52.9%	Medium	
 # 767	Reorganize String	54.7%	Medium	
+
+# 
 # 1062	Longest Repeating Substring
 # 2791	Count Paths That Can Form a Palindrome in a Tree	47.8%	Hard	
 # 395	Longest Substring with At Least K Repeating Characters	45.0%	Medium	
