@@ -11,4 +11,3 @@ How would you build Twitter for locations?
 
 Determine if dictionary acronyms exist for a list of a strings.
 """
-
