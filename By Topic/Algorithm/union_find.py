@@ -68,7 +68,7 @@ def accountsMerge(accounts):
 # 130. Surrounded Regions
 
 
-# 200	Number of Islands 59.5%	Medium	
+# 200	Number of Islands  59.5%	Medium	
 
 # 128	Longest Consecutive Sequence	47.3%	Medium
     

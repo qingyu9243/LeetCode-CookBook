@@ -14,15 +14,64 @@ class AllOne:
 
     def getMinKey(self,):
         pass
-# 564	Find the Closest Palindrome	22.5%	Hard	
+# 2508	Add Edges to Make Degrees of All Nodes Even	31.6%	Hard	
+# 564	Find the Closest Palindrome	22.5%	Hard
+	
 # 815	Bus Routes	47.8%	Hard	
-# 305	Number of Islands II 39.9%	Hard	
+    
+# 305	Number of Islands II 39.9%	Hard
+"""
+Input: m = 3, n = 3, positions = [[0,0],[0,1],[1,2],[2,1]]
+Output: [1,1,2,3]
+Algo: Union-Find
+    parent = {} # dict to store the each island cell's root
+    rank = defaultdict(int) # dict to store how many child nodes attached to island cell.
+"""
+from collections import defaultdict
+def numIslands(m, n, positions):
+    parent = {}
+    rank = defaultdict(int)
+    res = [0 for i in range(len(positions))]
+
+    def find(node):
+        if parent[node] != node:
+            parent[node] = find(parent[node])
+        return parent[node]
+
+    def union(n1, n2):
+        p1, p2 = parent[n1], parent[n2]
+        if p1 == p2: # no need to union
+            return False
+        if rank[p1] > rank[p2]:
+            parent[p2] = p1
+            rank[p1] += 1
+        else:
+            parent[p1] = p2
+            rank[p2] += 1
+        return True
+    
+    count = 0
+    for idx, (x, y) in enumerate(positions):
+        # self-isolated island
+        if (x, y) not in parent:
+            parent[(x, y)] = (x, y)
+            count += 1
+        # unioned island
+        for dx, dy in [[0, 1], [0, -1], [1, 0], [-1, 0]]:
+            nx, ny = x + dx, y + dy
+            if (nx, ny) in parent:
+                union((x, y), (nx, ny))
+                count -= 1
+        res[idx] = count
+
+    return res
+
 # 1438	Longest Continuous Subarray With Absolute Diff Less Than or Equal to Limit	49.6%	Medium	
 # 427	Construct Quad Tree	75.6%	Medium	
 # 2468	Split Message Based on Limit	44.3%	Hard	
 # 855	Exam Room	43.5%	Medium	
 # 212	Word Search II	36.4%	Hard	
-# 2508	Add Edges to Make Degrees of All Nodes Even	31.6%	Hard	
+
 # 1428	Leftmost Column with at Least a One 54.5%	Medium	
 # 399	Evaluate Division	61.8%	Medium	
 # 490	The Maze 58.1%	Medium	
