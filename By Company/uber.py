@@ -17,8 +17,44 @@ class AllOne:
 # 2508	Add Edges to Make Degrees of All Nodes Even	31.6%	Hard	
 # 564	Find the Closest Palindrome	22.5%	Hard
 	
-# 815	Bus Routes	47.8%	Hard	
+# 815	Bus Routes	47.8%	Hard
+from collections import deque
+from collections import defaultdict
+def busRoutes(routes, source, target):
+    # construct dict, key: stop, value: buses to this stop
+    if source == target:
+        return 0
+    ans = 0
+
+    route_map = defaultdict(set)
+    for bus, stops in enumerate(routes):
+        for stop in stops:
+            route_map[stop].add(bus)
     
+    # bfs to search shortest path, using queue([route, num_buses_taken])
+    queue = deque()
+    for route in route_map[source]:
+        queue.append((route, 1))
+    visited_stops = set([source])
+    visited_routes = set()
+    
+    while queue:
+        current_route, buses_taken = queue.popleft()
+        if current_route in visited_routes:
+            continue
+        visited_routes.add(current_route)
+
+        for stop in routes[current_route]:
+            if stop == target:
+                return buses_taken
+            if stop not in visited_stops:
+                visited_stops.add(stop)
+                for next_route in route_map[stop]:
+                    if next_route not in visited_routes:
+                        queue.append([next_route, buses_taken + 1])
+    return -1
+print(busRoutes([[1,2,7],[3,6,7]], 1, 6))
+
 # 305	Number of Islands II 39.9%	Hard
 """
 Input: m = 3, n = 3, positions = [[0,0],[0,1],[1,2],[2,1]]
