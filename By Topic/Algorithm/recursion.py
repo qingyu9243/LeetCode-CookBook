@@ -14,14 +14,15 @@ def integerToEnglish(num):
         if n < 20:
             return [to_19[n-1]]
         if n < 100:
-            return [tens[n//10-2]] + word()
+            return [tens[n//10-2]] + word(n%10)
         if n < 1000:
-            return [thousand[n//100-1]] + ['Hundred'] + word(n%100)
+            return [to_19[n//100-1]] + ['Hundred'] + word(n%100)
         p, reminder = n//1000, n%1000
         space = [thousand[idx]] if p%1000 != 0 else []
         return word(p, idx+1) + space + word(reminder)
+    
     return ' '.join(word(num)) or 'Zero'
-
+print(integerToEnglish(0))
 # 50	Pow(x, n)	34.8%	Medium
 
 # 21	Merge Two Sorted Lists	64.3%	Easy	
