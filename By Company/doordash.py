@@ -129,4 +129,60 @@ def jobScheduling(startTime, endTime, profit):
 
 # 1347. Min number of steps to make two strings anagram
 
-# 210. Course 
+# 210. Course Schedule II
+
+# 875. Making a Large Island
+
+# 1779. Find Nearest Point That Has the Same X or Y Coordinate
+
+# 658. Find K Closest Elements
+
+# 772. Basic Calculator III
+
+# 227. Basic Calculator II
+
+# 621. Task Scheduler 
+
+# 1. Two Sum
+
+# 31. Next Permutation
+
+# 164. Maximum Gap
+
+# 1730. Shortest Path to Get Food
+
+# 556. Next Great Element III
+
+#2049. Count Nodes With the Highest ScoreMed.
+
+# 208. Implement Trie (Prefix Tree)Med.
+
+# 224. Basic CalculatorHard
+
+# 277. Find the CelebrityMed.
+
+# 588. Design In-Memory File SystemHard
+
+# 859. Buddy StringsEasy
+
+# 986. Interval List IntersectionsMed.
+
+# 987. Vertical Order Traversal of a Binary TreeHard
+
+# 1173. Immediate Food Delivery IEasy
+
+# 1174. Immediate Food Delivery IIMed.
+
+# 1944. Number of Visible People in a Queue Hard
+
+# 1359. Count All Valid Pickup and Delivery Options Hard
+
+# 1383. Maximum Performance of a TeamHard
+
+# 1522. Diameter of N-Ary Tree Med.
+
+# 2065. Maximum Path Quality of a Graph Hard
+
+# 2565. Subsequence With the Minimum Score Hard
+
+# 2611. Mice and Cheese
