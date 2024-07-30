@@ -57,16 +57,29 @@ class FileSystem:
             return self.paths[path]
         return -1
 
-# 124. Max path sum in binary tree
+# 124. Max path sum in binary tree[h]- **
 """
 A path in a binary tree is a sequence of nodes where each pair of adjacent nodes in the sequence has an edge connecting them. A node can only appear in the sequence at most once. Note that the path does not need to pass through the root.
 The path sum of a path is the sum of the node's values in the path.
 Given the root of a binary tree, return the maximum path sum of any non-empty path.
 """
 def maxPathSum(node):
-    pass
+    def helper(root):
+        if not root:
+            return 0
+        left_max = max(helper(node.left), 0)
+        right_max = max(helper(node.right), 0)
 
-# 286. Walls and Gates
+        current_max = node.val + left_max + right_max
+        max_sum = max(max_sum, current_max)
+
+        return node.val + max(left_max, right_max)
+
+    max_sum = float('inf')
+    helper(node)
+    return max_sum
+
+# 286. Walls and Gates[m] done
 from typing import List
 from collections import deque
 def wallsAndGates(rooms: List[List[int]]) -> None:
@@ -105,8 +118,39 @@ You are given two m x n binary matrices grid1 and grid2 containing only 0's (rep
 An island in grid2 is considered a sub-island if there is an island in grid1 that contains all the cells that make up this island in grid2.
 Return the number of islands in grid2 that are considered sub-islands.
 """
-def countSubIslands(grid1, grid2):
-    pass
+def countSubIslands(self, grid1: List[List[int]], grid2: List[List[int]]) -> int:
+    if not grid1 or not grid1[0] or not grid2 or not grid2[0]:
+        return 0
+
+    ROWS, COLS = len(grid1), len(grid1[0])
+    DIRECTIONS = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+    island_count = 0
+
+    def dfs_explore(r, c):
+        if r < 0 or r >= ROWS or c < 0 or c >= COLS or grid2[r][c] == 0:
+            return True 
+        
+        # Mark cell as visited
+        grid2[r][c] = 0
+
+        # Disqualify as sub-island if cell is water in grid1
+        if grid1[r][c] == 0:
+            nonlocal is_sub_island 
+            is_sub_island = False
+
+        for dr, dc in DIRECTIONS:
+            dfs_explore(r + dr, c + dc)
+        
+        return is_sub_island
+
+    for row in range(ROWS):
+        for col in range(COLS):
+            if grid2[row][col] == 1:
+                is_sub_island = True 
+                if dfs_explore(row, col):
+                    island_count += 1
+
+    return island_count 
 
 # 826. Most Profit Assigning Work
 """
@@ -120,10 +164,67 @@ For example, if three workers attempt the same job that pays $1, then the total 
 Return the maximum profit we can achieve after assigning the workers to the jobs.
 """
 def maxProfitAssignment(difficulty, profit, worker):
-    pass
+    # Combine difficulty and profit into a list of tuples and sort them by difficulty
+    jobs = sorted(zip(difficulty, profit))
+    
+    # Sort worker abilities
+    worker.sort()
+    
+    max_profit = 0
+    best = 0
+    i = 0
+    n = len(jobs)
+    
+    for ability in worker:
+        # Increase the best profit up to the current worker's ability
+        while i < n and jobs[i][0] <= ability:
+            best = max(best, jobs[i][1])
+            i += 1
+        # Add the best profit the current worker can get
+        max_profit += best
+    
+    return max_profit
 
 # 827. Making a Large Island
+"""
+You are given an n x n binary matrix grid. You are allowed to change at most one 0 to be 1.
+Return the size of the largest island in grid after applying this operation.
+An island is a 4-directionally connected group of 1s.
+"""
+def largestIsland(self, grid: List[List[int]]) -> int:
+    def dfs(x, y, index):
+        q = [(x, y)]
+        visit = {(x, y)}
+        while q:
+            curx, cury = q.pop()
+            grid[curx][cury] = index
+            for dx, dy in directions:
+                tx, ty = curx + dx, cury + dy
+                if 0 <= tx < n and 0 <= ty < n and grid[tx][ty] == 1:
+                    q.append((tx, ty))
+                    visit.add((tx, ty))
+        return len(visit)
 
+    n = len(grid)
+    directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+    area = {}
+    index = 2
+    for i in range(n):
+        for j in range(n):
+            if grid[i][j] == 1:
+                area[index] = dfs(i, j, index)
+                index += 1
+    res = max(area.values() or [0])
+    for i in range(n):
+        for j in range(n):
+            if grid[i][j] == 0:
+                tmp = set()
+                for dx, dy in directions:
+                    tx, ty = i + dx, j + dy
+                    if 0 <= tx < n and 0 <= ty < n and grid[tx][ty] > 1:
+                        tmp.add(grid[tx][ty])
+                res = max(res, 1 + sum(area[t] for t in tmp))
+    return res
 
 # 1235. Maximum Profit in Job Scheduling
 """
@@ -133,8 +234,25 @@ You're given the startTime, endTime and profit arrays, return the maximum profit
 
 If you choose a job that ends at time X you will be able to start another job that starts at time X.
 """
+import heapq
 def jobScheduling(startTime, endTime, profit):
-    pass
+    jobs = sorted(zip(startTime, endTime, profit))
+    heap = []
+    max_profit = 0 # represents the max profits from all possible combinations ends before the start time
+
+    for s, e, p in jobs:
+        while heap and s >= heap[0][0]:
+            max_profit = max(max_profit, heap[0][1])
+            heapq.heappop(heap)
+        heapq.heappush(heap, (e, p + max_profit))
+
+    # find the max in the heap
+    ans = 0
+    while heap:
+        ans = max(ans, heap[0][1])
+        heapq.heappop(heap)
+    return ans
+#print(jobScheduling([1,2,3,4,6], [3,5,10,6,9], [20,20,100,70,60]))
 
 # 1790. Check if One String Swap Can Make String Equal
 def areAlmostEqual(self, s1: str, s2: str) -> bool:
@@ -153,14 +271,68 @@ def areAlmostEqual(self, s1: str, s2: str) -> bool:
     if s1[i] == s2[j] and s1[j] == s2[i]:
         return True
     return False
+
 # 1779. Find Nearest Point that has the Same C or Y Coordinate
 
 
 # 1268. Search Suggestion System
+class TrieNode:
+    def __init__(self):
+        self.children = {}
+        self.words = []
+class Trie:
+    def __init__(self):
+        self.root = TrieNode()
+    def insert(self, word):
+        node = self.root
+        for c in word:
+            if c not in node.children:
+                node.children[c] = TrieNode()
+            node = node.children[c]
+            if len(node.words) < 3:
+                node.words.append(word)
+    def prefixSearch(self, pref):
+        node = self.root
+        ans = []
+        for c in pref:
+            if c not in node.children:
+                return ans + [[] for _ in range(len(pref) - len(ans))]
+            node = node.children[c]
+            ans.append(node.words[:])
+        return ans
+
+class Solution:
+    def suggestedProducts(self, products: List[str], searchWord: str) -> List[List[str]]:
+        trie = Trie()
+        for product in sorted(products):
+            trie.insert(product)
+        return trie.prefixSearch(searchWord)
 
 # 329. Longest Increasing Path in a Matrix
-def longestIncreasingPath(matrix):
-    pass
+def longestIncreasingPath(self, matrix: List[List[int]]) -> int:
+    m, n = len(matrix), len(matrix[0])
+    loc_dic = {}
+    
+    def dfs(i, j):
+        if (i, j) in loc_dic:
+            return loc_dic[(i, j)]
+        directions = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+        length = 0
+        for x, y in directions:
+            n_x, n_y = i + x, j + y
+            if 0 <= n_x < m and 0 <= n_y < n and matrix[n_x][n_y] > matrix[i][j]:
+                length = max(length, dfs(n_x, n_y))
+        loc_dic[(i, j)] = length + 1        
+        return length + 1
+        
+    ans = 0
+    for i in range(m):
+        for j in range(n):
+            ans = max(ans, dfs(i, j))
+
+    return ans
+
+
 # 2049. Count Nodes With the Highest Score
 
 # 296. Best Meeting Point
@@ -189,9 +361,65 @@ def minTotalDistance(grid):
 #print(minTotalDistance([[1,0,0,0,1],[0,0,0,0,0],[0,0,1,0,0]]))
 
 # 317. Shortest Distance From All Buildings
+def shortestDistance(self, grid: List[List[int]]) -> int:
+    if not grid:
+        return -1
+    # create a list of buildings and a set of empty lands for easy search later
+    build, land = [], set()
+    for x,y in itertools.product(range(len(grid)), range(len(grid[0]))):
+        if grid[x][y] == 0:
+            land.add((x,y))
+        elif grid[x][y] == 1:
+            build.append((x,y))
+    # if there is no empty land available, we can't proceed further
+    if not land:
+        return -1
+    
+    d = {x: [float('inf')]*len(build) for x in land}
+    
+    # BFS for a given building's location
+    def BFS(loc):
+        x, y = build[loc]
+        q = deque([(x,y,0)]) 
+        while q:
+            x, y, dist = q.popleft()
+            for i, j in [(x-1, y), (x+1, y), (x, y-1), (x, y+1)]:
+                if (i,j) in land and d[(i,j)][loc] > dist + 1:
+                    d[(i,j)][loc] = dist + 1
+                    q.append((i,j,dist+1))
+    
+    # run BFS routine for all buildings
+    for loc in range(len(build)):
+        BFS(loc)
+        
+    # compute the shortest distance to all buildings for each empty land
+    min_dist = min(sum(d[x]) for x in land)
+    return -1 if min_dist == float('inf') else min_dist
 
 # 735. Asteroid Collisions
-
+def asteroidCollision(self, asteroids: List[int]) -> List[int]:
+    stack = []
+    # + + -> append
+    # - - -> append
+    # - + -> append
+    # + - -> collision
+    #    big   -small
+    #    same  same
+    #    small -big
+    for i, star in enumerate(asteroids):
+        if not stack or stack[-1] < 0 or star > 0:
+            stack.append(star)
+            continue
+        while stack and stack[-1] > 0:
+            if stack[-1] > abs(star):
+                break
+            x = stack.pop()
+            if x + star == 0:
+                break
+        else:
+            print(i, star)
+            stack.append(star)
+    return stack
 # 1834. Single-Threaded CPU
 
 # 297. Serialize and Deserialize Binary Tree
