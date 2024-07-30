@@ -67,8 +67,37 @@ def maxPathSum(node):
     pass
 
 # 286. Walls and Gates
-def wallsAndGates(rooms):
-    pass
+from typing import List
+from collections import deque
+def wallsAndGates(rooms: List[List[int]]) -> None:
+    """
+    Do not return anything, modify rooms in-place instead.
+    """
+    # bfs from gates, update the empty room with min value
+    print(rooms)
+    m, n = len(rooms), len(rooms[0])
+    def bfs(i, j):
+        directions = [(1,0), (-1,0), (0, -1), (0, 1)]
+        q = deque()
+        q.append((i, j, 0))
+        while q:
+            cur_x, cur_y, s = q.pop()
+            for x, y in directions:
+                n_x, n_y = cur_x + x, cur_y + y
+                if 0 <= n_x < m and 0 <= n_y < n and rooms[n_x][n_y] > 0:
+                    val = rooms[n_x][n_y]
+                    if val > s + 1:
+                        rooms[n_x][n_y] = s + 1
+                        q.append((n_x, n_y, s+1))
+                
+    for i in range(m):
+        for j in range(n):
+            if rooms[i][j] == 0:
+                print(i, j)
+                bfs(i, j)
+    print(rooms)
+print(wallsAndGates([[2147483647,-1,0,2147483647],[2147483647,2147483647,2147483647,-1],[2147483647,-1,2147483647,-1],[0,-1,2147483647,2147483647]]))
+print(wallsAndGates([[-1]]))
 
 # 1905. Count Sub Islands
 """
@@ -108,13 +137,30 @@ def jobScheduling(startTime, endTime, profit):
     pass
 
 # 1790. Check if One String Swap Can Make String Equal
+def areAlmostEqual(self, s1: str, s2: str) -> bool:
+    if s1 == s2:
+        return True
 
+    diff = []
+    for i in range(len(s1)):
+        if s1[i] != s2[i]:
+            diff.append(i)
+    
+    if len(diff) != 2:
+        return False
+    
+    i, j = diff
+    if s1[i] == s2[j] and s1[j] == s2[i]:
+        return True
+    return False
 # 1779. Find Nearest Point that has the Same C or Y Coordinate
+
 
 # 1268. Search Suggestion System
 
 # 329. Longest Increasing Path in a Matrix
-
+def longestIncreasingPath(matrix):
+    pass
 # 2049. Count Nodes With the Highest Score
 
 # 296. Best Meeting Point
@@ -126,9 +172,78 @@ def jobScheduling(startTime, endTime, profit):
 # 1834. Single-Threaded CPU
 
 # 297. Serialize and Deserialize Binary Tree
+class TreeNode(object):
+    def __init__(self, x):
+        self.val = x
+        self.left = None
+        self.right = None
+class Solution:
+    def serialize(root):
+        """Encodes a tree to a single string.
+        
+        :type root: TreeNode
+        :rtype: str
+        """
+        def helper(root, string):
+            if not root:
+                string += "N,"
+            else:
+                string += root.val
+                string = helper(root.left, string)
+                string = helper(root.right, string)
+            return string
+        
+        return helper(root, "")
+
+    def deserialize(data):
+        """Decodes your encoded data to tree.
+        
+        :type data: str
+        :rtype: TreeNode
+        """
+        def helper(l):
+            if l[0] == "N":
+                l.pop(0)
+                return None
+            root = TreeNode(l[0])
+            l.pop(0)
+            root.left = helper(l)
+            root.right = helper(l)
+            return root
+        
+        list_values = data.split(',')
+        return helper(list_values)
+
+# 428. Serialize and Deserialize Nary Tree
+class NaryNode:
+    def __init__(self, value: str, children: list) -> None:
+        self.val = value
+        self.children = children
+
+class SolutionNary:
+    def serialize(root: NaryNode):
+        if not root:
+            return []
+        else:
+            d
+
+    def deserialize(data: str):
+        pass
 
 # 1347. Min number of steps to make two strings anagram
-
+from collections import Counter
+def minSteps(self, s: str, t: str) -> int:
+    counter_s = Counter(s)
+    counter_t = Counter(t)
+    #print(counter_s, counter_t)
+    steps = 0
+    for char in counter_s:
+        if char in counter_t:
+            if counter_s[char] > counter_t[char]:
+                steps += counter_s[char] - counter_t[char]
+        else:
+            steps += counter_s[char]
+    return steps
 # 210. Course Schedule II
 
 # 875. Making a Large Island
