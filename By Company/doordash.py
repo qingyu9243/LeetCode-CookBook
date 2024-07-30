@@ -96,8 +96,8 @@ def wallsAndGates(rooms: List[List[int]]) -> None:
                 print(i, j)
                 bfs(i, j)
     print(rooms)
-print(wallsAndGates([[2147483647,-1,0,2147483647],[2147483647,2147483647,2147483647,-1],[2147483647,-1,2147483647,-1],[0,-1,2147483647,2147483647]]))
-print(wallsAndGates([[-1]]))
+#print(wallsAndGates([[2147483647,-1,0,2147483647],[2147483647,2147483647,2147483647,-1],[2147483647,-1,2147483647,-1],[0,-1,2147483647,2147483647]]))
+#print(wallsAndGates([[-1]]))
 
 # 1905. Count Sub Islands
 """
@@ -164,6 +164,29 @@ def longestIncreasingPath(matrix):
 # 2049. Count Nodes With the Highest Score
 
 # 296. Best Meeting Point
+from math import ceil
+def minTotalDistance(grid):
+    rows, cols = len(grid), len(grid[0])
+    row_counts, col_counts = [0]*rows, [0]*cols
+    houses = []
+    for r in range(rows):
+        for c in range(cols):
+            if grid[r][c] == 1:
+                row_counts[r] += 1
+                col_counts[c] += 1
+                houses.append((r, c))
+    h = len(houses)
+    #print(row_counts, col_counts, houses)
+    def find_mid(counts):
+        target = ceil(h/2)
+        seen = 0
+        for i in range(len(counts)):
+            seen += counts[i]
+            if seen >= target:
+                return i
+    meet_r, meet_c = find_mid(row_counts), find_mid(col_counts)
+    return sum(abs(r-meet_r) + abs(c-meet_c) for r, c in houses)
+#print(minTotalDistance([[1,0,0,0,1],[0,0,0,0,0],[0,0,1,0,0]]))
 
 # 317. Shortest Distance From All Buildings
 
@@ -225,7 +248,7 @@ class SolutionNary:
         if not root:
             return []
         else:
-            d
+            pass
 
     def deserialize(data: str):
         pass
