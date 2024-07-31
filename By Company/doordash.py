@@ -273,7 +273,19 @@ def areAlmostEqual(self, s1: str, s2: str) -> bool:
     return False
 
 # 1779. Find Nearest Point that has the Same C or Y Coordinate
-
+def nearestValidPoint(self, x: int, y: int, points: List[List[int]]) -> int:
+    valid=[]
+    for i in points:
+        if i[0]==x or i[1]==y:
+            valid.append(i)
+    dist=[]
+    if len(valid) == 0:
+        return -1
+    else :
+        for i in valid:
+            dist.append(abs(x - i[0]) + abs(y - i[1]))
+        if valid[dist.index(min(dist))] in valid:
+            return points.index(valid[dist.index(min(dist))])
 
 # 1268. Search Suggestion System
 class TrieNode:
@@ -334,6 +346,24 @@ def longestIncreasingPath(self, matrix: List[List[int]]) -> int:
 
 
 # 2049. Count Nodes With the Highest Score
+from collections import defaultdict, Counter
+def countHighestScoreNodes(self, parents: List[int]) -> int:
+    graph = defaultdict(list)
+    for node, parent in enumerate(parents):  # build graph
+        graph[parent].append(node)
+    n = len(parents)                         # total number of nodes
+    d = Counter()
+    def count_nodes(node):                   # number of children node + self
+        p, s = 1, 0                          # p: product, s: sum
+        for child in graph[node]:            # for each child (only 2 at maximum)
+            res = count_nodes(child)         # get its nodes count
+            p *= res                         # take the product
+            s += res                         # take the sum
+        p *= max(1, n - 1 - s)               # times up-branch (number of nodes other than left, right children ans itself)
+        d[p] += 1                            # count the product
+        return s + 1                         # return number of children node + 1 (self)
+    count_nodes(0)                           # starting from root (0)
+    return d[max(d.keys())]                  # return max count
 
 # 296. Best Meeting Point
 from math import ceil
@@ -361,6 +391,7 @@ def minTotalDistance(grid):
 #print(minTotalDistance([[1,0,0,0,1],[0,0,0,0,0],[0,0,1,0,0]]))
 
 # 317. Shortest Distance From All Buildings
+import itertools
 def shortestDistance(self, grid: List[List[int]]) -> int:
     if not grid:
         return -1
@@ -421,6 +452,26 @@ def asteroidCollision(self, asteroids: List[int]) -> List[int]:
             stack.append(star)
     return stack
 # 1834. Single-Threaded CPU
+def getOrder(self, tasks: List[List[int]]) -> List[int]:
+    h_tasks, aval_tasks = [], []
+    ans = []
+    for i, t in enumerate(tasks):
+        t_begin, t_len = t
+        heapq.heappush(h_tasks, (t_begin, t_len, i))
+    
+    cur_time = h_tasks[0][0]
+    while len(h_tasks) > 0:
+        while h_tasks[0][0] > cur_time and len(aval_tasks) > 0:
+            cur_task = heapq.heappop(aval_tasks)
+            cur_time += cur_task[0]
+            ans.append(cur_task[1])
+        t_begin, t_len, index = heapq.heappop(h_tasks)
+        heapq.heappush(aval_tasks,(t_len, index))
+    
+    while len(aval_tasks) > 0:
+        cur_task = heapq.heappop(aval_tasks)
+        ans.append(cur_task[1])
+    return ans
 
 # 297. Serialize and Deserialize Binary Tree
 class TreeNode(object):
@@ -496,10 +547,25 @@ def minSteps(self, s: str, t: str) -> int:
             steps += counter_s[char]
     return steps
 # 210. Course Schedule II
-
-# 875. Making a Large Island
-
-# 1779. Find Nearest Point That Has the Same X or Y Coordinate
+from collections import defaultdict
+def findOrder(self, numCourses: int, prerequisites: List[List[int]]) -> List[int]:
+    inbound = [0]*numCourses
+    edge = defaultdict(list)
+    for course, pre_course in prerequisites:
+        inbound[course] += 1
+        edge[pre_course].append(course)
+    q = [i for i in range(numCourses) if inbound[i] == 0]
+    res = []
+    while q:
+        cur = q.pop()
+        res.append(cur)
+        for next_course in edge[cur]:
+            inbound[next_course] -= 1
+            if inbound[next_course] == 0:
+                q.append(next_course)
+    if len(res) < numCourses:
+        return []
+    return res
 
 # 658. Find K Closest Elements
 
@@ -542,7 +608,12 @@ def minSteps(self, s: str, t: str) -> int:
 # 1944. Number of Visible People in a Queue Hard
 
 # 1359. Count All Valid Pickup and Delivery Options Hard
-
+def countOrders(self, n: int) -> int:
+    MOD = 10**9 + 7
+    total_ways = 1 
+    for order_number in range(2, n + 1):
+        total_ways = (total_ways * (2 * order_number - 1) * order_number) % MOD
+    return total_ways
 # 1383. Maximum Performance of a TeamHard
 
 # 1522. Diameter of N-Ary Tree Med.
