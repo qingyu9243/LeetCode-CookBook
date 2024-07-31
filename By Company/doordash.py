@@ -344,7 +344,6 @@ def longestIncreasingPath(self, matrix: List[List[int]]) -> int:
 
     return ans
 
-
 # 2049. Count Nodes With the Highest Score
 from collections import defaultdict, Counter
 def countHighestScoreNodes(self, parents: List[int]) -> int:
