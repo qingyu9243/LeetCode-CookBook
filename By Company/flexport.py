@@ -1,3 +1,5 @@
+## https://steady-way-fde.notion.site/Flexport-f7ed89d1b8d448d3aa363c6f13531d17#9dd53d08088d4f0392f24695c24b8d42
+
 """
 Given a string, implement a method that given a word in the sentence, randomly return one of its following words. 
 Plus, if the given wrod is in the end of the string, the first word is counted as its following word. . Χ
@@ -5,7 +7,6 @@ Plus, if the given wrod is in the end of the string, the first word is counted a
 
 import random
 import logging
-
 def word_generator(corpus, num_words):
     # 处理输入为空的情况
     if not corpus:
@@ -38,25 +39,40 @@ def word_generator(corpus, num_words):
 
         yield next_word
         current_word = next_word
-    
 
 # 示例使用
 corpus = "the quick brown fox jumps over the lazy dog"
 num_words = 3
 
 generator = word_generator(corpus, num_words)
-for word in generator:
-    print(word, end=' ')
+#for word in generator:
+#    print(word, end=' ')
 
-# 981. Time Based Key-Value Store [medium]
+""" https://www.1point3acres.com/bbs/thread-1073476-1-1.html
+偏向ood设计 让你实现一个城市模拟系统 有道路跟汽车还有红绿灯 汽车沿着一个方向在道路上行驶
+红绿灯根据时间来回转换
+"""
+
+"""https://www.1point3acres.com/bbs/thread-1068415-1-1.html
+题目是类似merge interval，不过换成了schedule ship，需要自己处理io，hackerrank 白板写， follow up是如果出现多个ship的话应该‍‍‌‌‌‍‍‌‍‍‌‍‌‍‌‍‍怎么安排。
+"""
+
+"""https://www.1point3acres.com/bbs/thread-1076018-1-1.html
+给一个集装箱比如1000size，然后我们有各种各样的货物，每个货物都有对应的size，比如说50 80 100，我们需要找到任意一个解，就是所有的货物加起来是集装箱的size，这道题乍一看感觉是背包?但是他要求求‍‍‌‌‌‍‍‌‍‍‌‍‌‍‌‍‍任意一个解，
+"""
+
+#################################################################
+         # 981. Time Based Key-Value Store [medium]   
+#################################################################
 """
 Design a time-based key-value data structure that can store multiple values for the same key at different time stamps and retrieve the key's value at a certain timestamp.
 
 Implement the TimeMap class:
 
 TimeMap() Initializes the object of the data structure.
-void set(String key, String value, int timestamp) Stores the key key with the value value at the given time timestamp.
-String get(String key, int timestamp) Returns a value such that set was called previously, with timestamp_prev <= timestamp. If there are multiple such values, it returns the value associated with the largest timestamp_prev. If there are no values, it returns "".
+void set(String key, String value, int timestamp) Stores the key `key` with the value value at the given time timestamp.
+String get(String key, int timestamp) Returns a value such that set was called previously, with timestamp_prev <= timestamp. 
+If there are multiple such values, it returns the value associated with the largest timestamp_prev. If there are no values, it returns "".
  
 
 Example 1:
@@ -76,27 +92,68 @@ timeMap.set("foo", "bar2", 4); // store the key "foo" and value "bar2" along wit
 timeMap.get("foo", 4);         // return "bar2"
 timeMap.get("foo", 5);         // return "bar2"
 """    
-
+from collections import defaultdict
 class TimeMap:
     def __init__(self) -> None:
-        
-        pass
+        """
+        self.map = {key: [(ts, value), (ts, value), ...]}
+        """
+        self.map = defaultdict(list)
 
     def set(self, key, value, ts):
-        pass
+        self.map[key].append((ts, value))
 
     def get(self, key, ts):
-        pass
+        # binary search to find the stored value with neareast ts
+        print(self.map)
 
-# 729. My Calendar I [medium]
+        arr = self.map[key]
+        l, r = 0, len(arr)
+
+        if not arr or ts < arr[0][0]:
+            return ""
+        if ts >= arr[-1][0]:
+            return arr[-1][1]
+
+        while l < r:
+            mid = (l+r)//2
+            if arr[mid][0] == ts:
+                return arr[mid][1]
+            elif arr[mid][0] > ts:
+                r = mid
+            else:
+                l = mid+1
+
+        return arr[l-1][1]
+    
+tmap = TimeMap()
+tmap.set("foo", "bar", 1)
+assert tmap.get("foo", 1) == "bar"
+assert tmap.get("foo", 3) == "bar"
+
+tmap.set("foo", "bar2", 4)
+assert tmap.get("foo", 4) == "bar2"
+assert tmap.get("foo", 5) == "bar2"
+
+tmap.set("foo","zigzag", 7)
+tmap.set("foo","conundrum",8)
+tmap.set("foo","hyperbole",9)
+tmap.set("foo","blasphemy",11)
+assert tmap.get("foo", 10) == "hyperbole"
+print("passed all")
+
+#################################################################
+                  # 729. My Calendar I [medium]
+#################################################################
 class MyCalender:
     def __init__(self) -> None:
         pass
 
     def book(self, start, end):
         pass
-
-# 17. letter of combinations of a phone number [medium]
+#################################################################
+   # 17. letter of combinations of a phone number [medium]
+#################################################################
 """
 Given a string containing digits from 2-9 inclusive, return all possible letter combinations that the number could represent. 
 Return the answer in any order.
@@ -106,11 +163,15 @@ A mapping of digits to letters (just like on the telephone buttons) is given bel
 def letterComb(digits):
     pass
 
-# 1958. Check if Move is Legal [medium]
+#################################################################
+            # 1958. Check if Move is Legal [medium]
+#################################################################
 def checkMove(board, rMove, cMove, color):
     pass
 
-# 2747. Count Zero Request Servers
+#################################################################
+            # 2747. Count Zero Request Servers
+#################################################################
 """
 You are given an integer n denoting the total number of servers and a 2D 0-indexed integer array logs, where logs[i] = [server_id, time] denotes that the server with id server_id received a request at time time.
 You are also given an integer x and a 0-indexed integer array queries.
@@ -119,3 +180,9 @@ Note that the time intervals are inclusive.
 """
 def countServers(n, logs, x, queries):
     pass
+
+
+#################################################################
+            # 253. Meeting Rooms II
+#################################################################
+
