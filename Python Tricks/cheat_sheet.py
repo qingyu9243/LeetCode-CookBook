@@ -278,12 +278,27 @@ import heapq
 arr = []
 
 heapq.heappush(arr, 3) # Push the value item onto the heap, maintaining the heap invariant.
+
 heapq.heappop(arr) # Pop and return the smallest item from the heap, maintaining the heap invariant.
+        # If the heap is empty, IndexError is raised. To access the smallest item without popping it, use heap[0].
 arr[0] # acess the smallest item without popping it.
 item = ""
+
 heapq.heappushpop(arr, item) # Push item on the heap, then pop and return the smallest item from the heap.
+
 heapq.heapify(arr) # Transform list x into a heap, in-place, in linear time.
-#heapq.nlargest(
+
+heapq.heapreplace(arr, item) # Pop and return the smallest item from the heap, and also push the new item. The heap size doesn’t change. If the heap is empty, IndexError is raised.
+
+heapq.merge() # Merge multiple sorted inputs into a single sorted output (for example, merge timestamped entries from multiple log files). Returns an iterator over the sorted values.
+
+heapq.nlargest(arr, 2) # Pop and return the smallest item from the heap, and also push the new item. The heap size doesn’t change. If the heap is empty, IndexError is raised.
+
+heapq.merge() # Merge multiple sorted inputs into a single sorted output (for example, merge timestamped entries from multiple log files). Returns an iterator over the sorted values.
+
+heapq.nlargest(arr, 2) # Return a list with the n largest elements from the dataset defined by iterable. key, if provided, specifies a function of one argument that is used to extract a comparison key from each element in iterable (for example, key=str.lower). Equivalent to: sorted(iterable, key=key, reverse=True)[:n].
+
+heapq.nsmallest(arr, 2) # Return a list with the n smallest elements from the dataset defined by iterable. key, if provided, specifies a function of one argument that is used to extract a comparison key from each element in iterable (for example, key=str.lower). Equivalent to: sorted(iterable, key=key)[:n].
 
 """
 https://docs.python.org/3/library/heapq.html

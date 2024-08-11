@@ -105,7 +105,7 @@ class TimeMap:
 
     def get(self, key, ts):
         # binary search to find the stored value with neareast ts
-        print(self.map)
+        #print(self.map)
 
         arr = self.map[key]
         l, r = 0, len(arr)
@@ -140,7 +140,7 @@ tmap.set("foo","conundrum",8)
 tmap.set("foo","hyperbole",9)
 tmap.set("foo","blasphemy",11)
 assert tmap.get("foo", 10) == "hyperbole"
-print("passed all")
+#print("passed all")
 
 #################################################################
                   # 729. My Calendar I [medium]
@@ -198,6 +198,43 @@ def countServers(n, logs, x, queries):
 
 
 #################################################################
-            # 253. Meeting Rooms II
+            # 253. Meeting Rooms
 #################################################################
 
+# meeting room I (easy)
+"""
+Given an array of meeting time intervals where intervals[i] = [starti, endi], determine if a person could attend all meetings.
+Example 1:
+Input: intervals = [[0,30],[5,10],[15,20]]
+Output: false
+"""
+def meetingRoomsI(intervals):
+    intervals.sort()
+    for i in range(len(intervals)-1):
+        cur, next = intervals[i], intervals[i+1]
+        if cur[1] > next[0]:
+            return False
+    return True
+
+# meeting room II (medium)
+"""
+Given an array of meeting time intervals intervals where intervals[i] = [starti, endi], return the minimum number of conference rooms required.
+Example 1:
+Input: intervals = [[0,30],[5,10],[15,20]]
+Output: 2
+"""
+import heapq
+def meetingRoomsII(intervals):
+    free_rooms = [] # heap initialization
+    intervals.sort(key = lambda x:x[0]) # sort by start time
+
+    for i in intervals:
+        # need new meeting room
+        if free_rooms == [] or free_rooms[0] > i[0]:
+            heapq.heappush(free_rooms, i[1]) # add [end] in heap, heap contains the unfinished meetings
+        # no need meeting room, update ending time
+        else:
+            heapq.heapreplace(free_rooms, i[1])
+            #free_rooms[0] = i[1]
+    return len(free_rooms)
+assert meetingRoomsII([[0,30],[5,10],[15,20]]) == 2
