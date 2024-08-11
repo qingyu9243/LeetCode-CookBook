@@ -282,7 +282,7 @@ heapq.heappop(arr) # Pop and return the smallest item from the heap, maintaining
 arr[0] # acess the smallest item without popping it.
 item = ""
 heapq.heappushpop(arr, item) # Push item on the heap, then pop and return the smallest item from the heap.
-heapq.heapfy(arr) # Transform list x into a heap, in-place, in linear time.
+heapq.heapify(arr) # Transform list x into a heap, in-place, in linear time.
 #heapq.nlargest(
 
 """
