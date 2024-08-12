@@ -117,7 +117,7 @@ def get_max_inventory_in_warehouse(loads):
 #print(get_max_inventory_in_warehouse([[1, 5, 10], [2, 6, 5], [5, 7, 7], [7, 8, 15]]))
 
 """
-
+Token Game
 """
 from collections import defaultdict
 class Player:
@@ -285,13 +285,26 @@ Implement the MyCalendar class:
 MyCalendar() Initializes the calendar object.
 boolean book(int start, int end) Returns true if the event can be added to the calendar successfully without causing a double booking. Otherwise, return false and do not add the event to the calendar.
 """
-
+import bisect
 class MyCalender: # ds: a list of events sorted. algo: binary search
-    def __init__(self) -> None:
+    def __init__(self):
         self.events = []
 
-    def book(self, start, end):
-        pass
+    def book(self, start: int, end: int) -> bool:
+        if len(self.events) == 0:
+            self.events.append([start, end])
+            return True
+
+        ind = bisect.bisect(self.events, [start, end])
+        if ind > 0:
+            if self.events[ind-1][1] > start:
+                return False
+        if ind < len(self.events):
+            if self.events[ind][0] < end:
+                return False
+        self.events.insert(ind, [start, end])
+
+        return True
 
 
 #################################################################
@@ -303,14 +316,55 @@ Return the answer in any order.
 
 A mapping of digits to letters (just like on the telephone buttons) is given below. Note that 1 does not map to any letters.
 """
-def letterComb(digits): # algo: backtrack
-    pass
+def letterCombinations(digits: str) -> List[str]: # algo: backtrack
+    ans = []
+    dic = {"2": "abc", "3":"def", "4":"ghi", "5":"jkl",
+        "6": "mno", "7": "qprs", "8":"tuv", "9": "wxyz"}
+    def backtrack(cur_digit, cur_str):
+        if cur_digit == len(digits):
+            ans.append(cur_str)
+        else:
+            char = dic[digits[cur_digit]]
+            for c in char:
+                backtrack(cur_digit+1, cur_str+c)
+    if len(digits) == 0:
+        return []
+    backtrack(0, "")
+    return ans
 
 #################################################################
             # 1958. Check if Move is Legal [medium]
 #################################################################
-def checkMove(board, rMove, cMove, color):
-    pass
+from typing import List
+def checkMove(board: List[List[str]], rMove: int, cMove: int, color: str) -> bool:
+    def isLegal(r, c, direction):
+        initial = color
+        cur_x, cur_y = r+direction[0], c+direction[1]
+        rack = [initial]
+        state = 0
+        # 0: pending middle, 1: ready for end
+        while 0 <= cur_x < len(board) and 0 <= cur_y < len(board[0]):
+            cur = board[cur_x][cur_y]
+            rack.append(cur)
+            if cur == ".":
+                return False
+            if state == 0:
+                if cur == initial:
+                    return False
+                else:
+                    state = 1
+            elif state == 1:
+                if cur == initial:
+                    return True
+            cur_x += direction[0]
+            cur_y += direction[1]
+        return False               
+
+    directions = [(1, 0), (-1, 0), (0, 1), (0, -1), (-1, -1), (1, 1), (-1, 1), (1, -1)]
+    for di in directions:
+        if isLegal(rMove, cMove, di):
+            return True
+    return False
 
 #################################################################
             # 2747. Count Zero Request Servers
