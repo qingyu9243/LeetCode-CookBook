@@ -478,3 +478,187 @@ Output: 0
 """
 def meetingRoomsIII(n, meetings):
     pass
+
+
+"""
+ood设计 让你实现一个城市模拟系统 有道路跟汽车还有红绿灯 汽车沿着一个方向在道路上行驶
+"""
+class City:
+    def __init__(self):
+        self.roads = []
+        self.traffic_lights = []
+        self.cars = []
+
+    def add_road(self, road):
+        self.roads.append(road)
+
+    def add_traffic_light(self, traffic_light):
+        self.traffic_lights.append(traffic_light)
+
+    def add_car(self, car):
+        self.cars.append(car)
+
+    def simulate(self, time_step):
+        for light in self.traffic_lights:
+            light.update(time_step)
+        for car in self.cars:
+            car.move(time_step)
+        for road in self.roads:
+            road.update(time_step)
+
+
+class Road:
+    def __init__(self, start, end):
+        self.start = start
+        self.end = end
+        self.lanes = []
+
+    def add_lane(self, lane):
+        self.lanes.append(lane)
+
+    def update(self, time_step):
+        for lane in self.lanes:
+            lane.update(time_step)
+
+
+class Lane:
+    def __init__(self):
+        self.cars = []
+
+    def add_car(self, car):
+        self.cars.append(car)
+
+    def update(self, time_step):
+        for car in self.cars:
+            car.move(time_step)
+
+
+class Car:
+    def __init__(self, position, speed):
+        self.position = position
+        self.speed = speed
+
+    def move(self, time_step):
+        self.position += self.speed * time_step
+
+
+class TrafficLight:
+    def __init__(self, location, green_duration, red_duration):
+        self.location = location
+        self.green_duration = green_duration
+        self.red_duration = red_duration
+        self.current_state = 'red'
+        self.time_elapsed = 0
+
+    def update(self, time_step):
+        self.time_elapsed += time_step
+        if self.current_state == 'red' and self.time_elapsed >= self.red_duration:
+            self.current_state = 'green'
+            self.time_elapsed = 0
+        elif self.current_state == 'green' and self.time_elapsed >= self.green_duration:
+            self.current_state = 'red'
+            self.time_elapsed = 0
+
+"""
+# exchange system
+
+
+# Intro 
+# You are the owner of a container yard, i.e. a facility where ocean containers are stored before and after a sailing, and where carriers store empty containers. You have several clients that store their containers at your location.
+# You’d like to build a computer system that helps manage the day-to-day operations of the facility.
+# Additionally, you’d like to provide a way for clients to buy and sell containers to each other, which would be a fairly unique feature of your business.
+
+Part 1)
+First and foremost, you would like to be able to manage your clients’ inventory. Completion of this part should enable the storage aspect of our facility.
+Task: Design and code a solution that satisfies the following requirements:
+
+Keep track of each client (who they are, how many containers they own, their account balance)
+Add and remove resources (containers, money) for some client
+
+Note: The real-life attributes of each container are the same: we don’t need to make containers unique and containers can be exchanged between clients freely.
+
+Part 2) 
+Next, we would like to implement the order placing functionality.
+
+We will allow two types of orders: BUY and SELL. Orders should include a price, e.g. semantically: "Alice wants to buy a container for $100"
+
+In our system, we want a running log of all orders that were placed, i.e. an order book. This represents the state of all orders placed in the system.
+
+Task: Assume your system receives a stream of orders. Design and code an order book that keeps track of all orders made in the system; use this to write functions for placing "buy" and "sell" orders.
+
+Note: We do not need to actually fill the order at this stage of the problem, but that will be done in the next part, so it might be helpful to think ahead.
+
+Part 3) 
+
+Now, we would like to be able to fill the orders. In order to match a new order with an existing order, the bid price of the buyer must be >= to the ask price of the seller (and vice versa).
+
+Additionally we want to give the best price when fulfilling an incoming order. When a customer places a new order:
+
+If a SELL offer exists that is lower than or equal to the desired BUY price, we should fill at the lower price.
+
+If a BUY offer exists that is higher than or equal to the desired SELL price, we should fill at the higher price.
+
+Task: Update your buy and sell functions to find the best matching offer for an incoming order, and make the appropriate updates to the clients’ accounts.
+
+If no match can be found, we simply add the order to the book as we have been doing in the previous part.
+
+"""
+class Client:
+    def __init__(self, name):
+        self.name = name
+        self.container_amount = 0
+        self.balance = 0
+        
+    def add_container(self, amount):
+        self.container_amount += amount
+        
+    def remove_container(self, amount):
+        if amount > self.container_amount:
+            raise ValueError("Amount remove is larger than client's current containers")
+        else:
+            self.container_amount -= amount
+        
+    def ajust_balance(self, dollor_amount):
+        self.balance += dollor_amount
+
+#import heapq
+purchase_order_history = []
+sell_order_history = []
+
+# order_stream = [] # [(client, count, price), ...]
+def buy_containers(client, buy_price):
+    best_buy_price = float('inf')
+    seller_index = -1
+
+    for i, (client, sell_price) in enumerate(sell_order_history):
+        if sell_price <= buy_price:
+            best_buy_price = min(sell_price, best_buy_price)
+            
+    if best_buy_price < buy_price: # fulfill order.
+        # remove sell order
+        
+        # add container
+        client.add_container(1)
+        client.ajust_balance(-best_buy_price)
+
+    else: # add to purchase order
+        order_info = (buy_price, client.name)
+        #heapq.heappush(purchase_order_history, order_info)
+        purchase_order_history.append(order_info)
+
+def sell_containers(client, price):
+    
+    order_info = [(client.name, price)]
+    sell_order_history.append(order_info)
+
+# purchase = [(a, 100), (b, 98), (c, 105)]
+# sell = [(a, 100), (b, 98), (c, 105)]
+
+
+# purchase = [--(bob, 100), --(bob, 105)]
+# sell = [--(sarah, 100), (alice, 101), --(li, 98)]
+
+    
+    
+    
+    
