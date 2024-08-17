@@ -316,7 +316,7 @@ Return the answer in any order.
 
 A mapping of digits to letters (just like on the telephone buttons) is given below. Note that 1 does not map to any letters.
 """
-def letterCombinations(digits: str) -> List[str]: # algo: backtrack
+def letterCombinations(digits: str): # algo: backtrack
     ans = []
     dic = {"2": "abc", "3":"def", "4":"ghi", "5":"jkl",
         "6": "mno", "7": "qprs", "8":"tuv", "9": "wxyz"}
@@ -485,79 +485,120 @@ ood设计 让你实现一个城市模拟系统 有道路跟汽车还有红绿灯
 """
 class City:
     def __init__(self):
-        self.roads = []
-        self.traffic_lights = []
+        self.roads = {}
         self.cars = []
+        self.lights = []
+        self.ts = 0
 
-    def add_road(self, road):
-        self.roads.append(road)
+    def add_road(self, name, road):
+        self.roads[name] = road
 
-    def add_traffic_light(self, traffic_light):
-        self.traffic_lights.append(traffic_light)
+    def add_light(self, lights):
+        self.lights.extend(lights)
 
     def add_car(self, car):
         self.cars.append(car)
 
-    def simulate(self, time_step):
-        for light in self.traffic_lights:
-            light.update(time_step)
-        for car in self.cars:
-            car.move(time_step)
-        for road in self.roads:
-            road.update(time_step)
 
+    def simulate(self, time_step=1):
+        self.ts += time_step
+        print(f"Current time: {self.ts}")
+        for light in self.lights:
+            light.update()
+        exit_cars = []
+        for car in self.cars:
+            section = self.roads[car.road_name].sections[car.section_idx]
+            if car.direction == 0:
+                #print(section.next_light[0].direction, self.roads[car.road_name].direction)
+                if car.position + car.speed < section.length:
+                    car.position += car.speed
+                elif not section.next_light[0]:
+                    exit_cars.append(car)
+                elif section.next_light[0].direction != self.roads[car.road_name].direction:
+                    car.position = section.length - 1
+                else:
+                    if car.section_idx == len(self.roads[car.road_name].sections) - 1:
+                        exit_cars.append(car)
+                    else:
+                        car.position = car.position + car.speed - self.roads[car.road_name].sections[car.section_idx].length
+                        car.section_idx += 1
+            else:
+                if car.position - car.speed >= 0:
+                    car.position -= car.speed
+                elif not section.next_light[1]:
+                    exit_cars.append(car)
+                elif section.next_light[1].direction != self.roads[car.road_name].direction:
+                    car.position = 0
+                else:
+                    if car.section_idx == 0:
+                        exit_cars.append(car)
+                    else:
+                        car.position = car.position + car.speed - self.roads[car.road_name].sections[car.section_idx].length
+                        car.section_idx -= 1
+        for exit_car in exit_cars:
+            self.cars.remove(exit_car)
+            print(f"{exit_car.name} exited")
+        for car in self.cars:
+            car.report()
 
 class Road:
-    def __init__(self, start, end):
-        self.start = start
-        self.end = end
-        self.lanes = []
-
-    def add_lane(self, lane):
-        self.lanes.append(lane)
-
-    def update(self, time_step):
-        for lane in self.lanes:
-            lane.update(time_step)
+    def __init__(self, sections, lights, direction=0):
+        self.sections = sections
+        self.lights = lights
+        self.direction = direction # 0: east-west, 1: north-south
+        for i, section in enumerate(self.sections):
+            if i < len(self.lights):
+                section.next_light.append(self.lights[i])
+            if i > 1:
+                section.next_light.append(self.lights[i-1])
 
 
-class Lane:
-    def __init__(self):
+class Section:
+    def __init__(self, length):
+        self.length = length
         self.cars = []
+        self.next_light = []
 
-    def add_car(self, car):
-        self.cars.append(car)
 
-    def update(self, time_step):
-        for car in self.cars:
-            car.move(time_step)
+class Light:
+    def __init__(self, name, direction=0, flip=True):
+        self.name = name
+        # 0: east-west green
+        # 1: north-south green
+        self.direction = direction
+        self.flip = flip
+
+    def update(self):
+        if self.flip:
+            self.direction = not self.direction
 
 
 class Car:
-    def __init__(self, position, speed):
+    def __init__(self, name, road_name, section_idx, position=0, speed=1, direction=0):
+        self.name = name
+        self.road_name = road_name
+        self.section_idx = section_idx
         self.position = position
         self.speed = speed
+        #-1: east or south
+        #1: west or north
+        self.direction = direction
 
-    def move(self, time_step):
-        self.position += self.speed * time_step
+    def report(self):
+        print(f"{self.name} at {self.road_name} section {self.section_idx} position {self.position}")
 
 
-class TrafficLight:
-    def __init__(self, location, green_duration, red_duration):
-        self.location = location
-        self.green_duration = green_duration
-        self.red_duration = red_duration
-        self.current_state = 'red'
-        self.time_elapsed = 0
+city = City()
+#lights = [Light("AJ"), Light("BJ")]
+lights = [Light("AJ", 1, False), Light("BJ", 1, False)]
+city.add_light(lights)
+road0 = Road([Section(2), Section(1), Section(1)], lights, 1)
+city.add_road("road0", road0)
+car = Car("car0", "road0", 0)
+city.add_car(car)
 
-    def update(self, time_step):
-        self.time_elapsed += time_step
-        if self.current_state == 'red' and self.time_elapsed >= self.red_duration:
-            self.current_state = 'green'
-            self.time_elapsed = 0
-        elif self.current_state == 'green' and self.time_elapsed >= self.green_duration:
-            self.current_state = 'red'
-            self.time_elapsed = 0
+for i in range(5):
+    city.simulate()
 
 """
 # exchange system
@@ -650,7 +691,7 @@ def sell_containers(client, price):
     
     order_info = [(client.name, price)]
     sell_order_history.append(order_info)
-
+    return
 # purchase = [(a, 100), (b, 98), (c, 105)]
 # sell = [(a, 100), (b, 98), (c, 105)]
 
@@ -659,6 +700,15 @@ def sell_containers(client, price):
 # sell = [--(sarah, 100), (alice, 101), --(li, 98)]
 
     
+################################################       
+################################################      
+#######           System Design          #######
+################################################       
+################################################  
+
+# Design a flight reservation system
     
-    
-    
+
+# Design Open Table
+
+# database schema design, avoid double booking
