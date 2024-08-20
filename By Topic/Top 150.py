@@ -87,7 +87,15 @@ def removeElement(nums, val): # -> return end index
 
 #Rotate Array
 
-#Best Time to Buy and Sell Stock
+# 121. Best Time to Buy and Sell Stock
+def maxProfit(prices):
+    cur_min = float('inf')
+    ans = -float('inf')
+    for p in prices:
+        cur_min = min(cur_min, p)
+        cur_profit = p - cur_min
+        ans = max(ans, cur_profit)
+    return ans
 
 #Best Time to Buy and Sell Stock II
 
@@ -842,11 +850,54 @@ class Trie:
 ##                    Bit Manipulation                      ##
 ##############################################################
 
-# Add Binary
+# 67. Add Binary [easy]
+"""
+Given two binary strings a and b, return their sum as a binary string.
+"""
+def addBinary(a, b):
+    res = ""
+    i, j, carry = len(a) - 1, len(b) - 1, 0
+    while i >= 0 or j >= 0:
+        sum = carry
+        if i >= 0 : 
+            sum += int(a[i])
+        if j >= 0 : 
+            sum += int(b[j])
+        i, j = i - 1, j - 1
+        carry = 1 if sum > 1 else 0
+        res += str(sum % 2)
 
-# Reverse Bits
+    if carry != 0 : res += str(carry)
+    return res[::-1]
+assert addBinary("11", "1") == "100"
 
-# Number of 1 Bits
+# 190. Reverse Bits [easy]
+"""
+Reverse bits of a given 32 bits unsigned integer.
+Note:
+Note that in some languages, such as Java, there is no unsigned integer type. In this case, both input and output will be given as a signed integer type. They should not affect your implementation, as the integer's internal binary representation is the same, whether it is signed or unsigned.
+In Java, the compiler represents the signed integers using 2's complement notation. Therefore, in Example 2 above, the input represents the signed integer -3 and the output represents the signed integer -1073741825.
+"""
+def reverseBits(n: int) -> int:
+    res, power = 0, 31
+    while n:
+        res += (n & 1) << power
+        n >>= 1
+        power -= 1
+    return res
+# assert reverseBits(00000010100101000001111010011100) == 964176192
+
+# 191. Number of 1 Bits [easy]
+"""
+Write a function that takes the binary representation of a positive integer and returns the number of 
+set bits it has (also known as the Hamming weight).
+"""
+def hammingWeight(n: int) -> int:
+    res = 0
+    while n:
+        res += n & 1
+        n >>= 1
+    return res
 
 # Single Number
 

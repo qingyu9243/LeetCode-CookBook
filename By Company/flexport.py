@@ -179,13 +179,13 @@ playerA = Player("playerA", token_dic_default)
 card_1 = Card("card_1", [('Red', 5), ('White', 3), ('Blue', 3)], 0, 'Red')
 card_2 = Card("card_2", [('Red', 2), ('Green', 1)], 0, 'Blue')
 card_3 = Card("card_3", [('Blue', 2)], 1, 'White')
-print(canPurchase(playerA, card_1))
-purchase(playerA, card_1)
-print(canPurchase(playerA, card_2))
-purchase(playerA, card_2)
+#print(canPurchase(playerA, card_1))
+#purchase(playerA, card_1)
+#print(canPurchase(playerA, card_2))
+#purchase(playerA, card_2)
 #print(canPurchase(playerA, card_3))
 #purchase(playerA, card_3)
-print(playerA.token_dic, playerA.discount_dic)
+#print(playerA.token_dic, playerA.discount_dic)
 
 
 
@@ -587,7 +587,7 @@ class Car:
     def report(self):
         print(f"{self.name} at {self.road_name} section {self.section_idx} position {self.position}")
 
-
+"""
 city = City()
 #lights = [Light("AJ"), Light("BJ")]
 lights = [Light("AJ", 1, False), Light("BJ", 1, False)]
@@ -599,6 +599,8 @@ city.add_car(car)
 
 for i in range(5):
     city.simulate()
+"""
+
 
 """
 # exchange system
