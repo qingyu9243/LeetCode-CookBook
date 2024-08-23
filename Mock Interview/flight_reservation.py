@@ -149,3 +149,122 @@ credit_card = CreditCard(
 
 booking = flight_booking_service.book_flight(flight, credit_card, user)
 print(f"Booking completed: {booking.uuid}")
+
+######################################################
+"""
+Flight reservation(Need to book space by weight, allow overbooking) 
+
+To begin implementing our booking system, we must first determine if orders can be fulfilled.
+For now, each order consists of an origin and a destination. Given a network of flights,
+create a function to determine if a booking order can be satisfied (a direct flight exists
+between origin and destination.
+How you choose to model orders, the flights, and the network is totally up to you.
+
+"""
+@dataclass
+class Flight:
+    flight_number: str
+    departure: datetime
+    departure_airport: str
+    arrival_airport: str
+    airline_code: str
+    cabin: Cabin
+    price: Decimal  
+
+@dataclass
+class FlightNetwork:
+    network: dict #{ city1: 
+                  #     {city2: number1, 
+                  #     city3: number2}
+                  # }
+    
+from collections import deque
+
+class FlightReservationSystem:
+    # task 1 direct flights
+    def canDirectBook(self, origin, destination, flight_network):
+        if origin in flight_network.network:
+            if destination in flight_network.network[origin]:
+                return True
+        return False
+    # task 2 connected flights
+    def canConnectBook(self, origin, destination, flight_network):
+        if origin not in flight_network.network:
+            return False
+        queue =deque([origin])
+        visited = set()
+
+        while queue:
+            cur_start = queue.popleft()
+            if cur_start == destination:
+                return True
+            if cur_start in flight_network.network:
+                cur_possible_next = flight_network.network[cur_start].keys()
+                for city in cur_possible_next:
+                    if city not in visited:
+                        queue.append(city)
+                        visited.add(city)
+        return False
+    
+    # task 3 fewest connection
+    def fewestConnect(self, origin, destination, flight_network):
+        if origin not in flight_network.network:
+            return False
+        queue =deque([origin])
+        visited = set()
+        reversed_path = {}
+        while queue:
+            cur_start = queue.popleft()
+            if cur_start == destination:
+                path = []
+                while cur_start in reversed_path:
+                    #print(cur_start, reversed_path)
+                    path.append(cur_start)
+                    pre_start = cur_start
+                    cur_start = reversed_path[cur_start]
+                    del reversed_path[pre_start]
+                return path[::-1]
+            if cur_start in flight_network.network:
+                cur_possible_next = flight_network.network[cur_start].keys()
+                for city in cur_possible_next:
+                    if city not in visited:
+                        queue.append(city)
+                        visited.add(city)
+                        reversed_path[city] = cur_start
+        return []
+    
+    # task 4 lowest cost connection
+    def lowestCostConnect(self, origin, destination, flight_network_cost):
+        if origin not in flight_network.network:
+            return False
+        queue =deque([origin])
+        visited = set()
+        reversed_path = {}
+        while queue:
+            cur_start = queue.popleft()
+            if cur_start == destination:
+                path = []
+                while cur_start in reversed_path:
+                    #print(cur_start, reversed_path)
+                    path.append(cur_start)
+                    pre_start = cur_start
+                    cur_start = reversed_path[cur_start]
+                    del reversed_path[pre_start]
+                return path[::-1]
+            if cur_start in flight_network.network:
+                cur_possible_next = flight_network.network[cur_start].keys()
+                for city in cur_possible_next:
+                    if city not in visited:
+                        queue.append(city)
+                        visited.add(city)
+                        reversed_path[city] = cur_start
+        return []    
+
+flight_network = FlightNetwork(network={'sf': {'la':'a88', 'ny':'a5'}, 'la': {'sf':'a89', 'dc':'a6'}})
+flight_network_cost = FlightNetwork(network={'sf': {'la':['a88', 100], 'ny':['a5',400]}, 'la': {'sf':['a89', 100], 'dc':['a6', 500]}})
+flight_sys = FlightReservationSystem()
+print(flight_sys.canDirectBook('sf', 'la', flight_network))
+print(flight_sys.canConnectBook('sf', 'dc', flight_network))
+print(flight_sys.fewestConnect('sf', 'dc', flight_network))
+
+

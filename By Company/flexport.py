@@ -712,5 +712,231 @@ def sell_containers(client, price):
     
 
 # Design Open Table
+"""
+Requirement:
+    1. Customer can reserve a table for a certain restaurant.
+    2. Customer can cancel the reservation.
+    3. Customer can add to a waiting list if reservations are full.
+    4. Customer can cancel waiting list.
+"""
+
+class tableReservation:
+    pass
+
+
 
 # database schema design, avoid double booking
+
+#### cheker game ####
+class Position:
+    def __init__(self, row, col):
+        self.row = row
+        self.col = col
+
+    def __repr__(self):
+        return f"({self.row}, {self.col})"
+
+# Initialize the checkers board
+def initialize_board(n):
+    board = [[' ' for _ in range(n)] for _ in range(n)] # initialize 4 x 4 with all " "
+    # Place pieces for Player 'b' (black) on the board
+    for i in range(n//2-1):
+        for j in range(n):
+            if (i + j) % 2 == 1:  # Only place on black squares
+                board[i][j] = 'b'
+
+    # Place pieces for Player 'r' (red) on the board
+    for i in range(n//2+1, n):
+        for j in range(n):
+            if (i + j) % 2 == 1:  # Only place on black squares
+                board[i][j] = 'r'
+
+    return board
+
+# Print the board for visualization
+def print_board(board):
+    for row in board:
+        print(''.join(row))
+    print("\n")
+
+board_10 = initialize_board(10)
+board_8 = initialize_board(8)
+
+def getAllNextStep(turn, board):
+    moves = []
+    directions = [(-1, -1), (-1, 1)] if turn == 'r' else [(1, -1), (1, 1)]
+    n = len(board)
+
+    for row in range(n):
+        for col in range(n):
+            if board[row][col] == turn:
+                current_position = Position(row, col)
+                for d_row, d_col in directions:
+                    target_position = Position(row+d_row, col+d_col)
+                    if canMove(current_position, target_position, board):
+                        moves.append((current_position, target_position))
+    return moves
+
+def canMove(current, target, board):
+    n = len(board)
+    if 0 <= target.row < n and 0 <= target.col < n:
+        # move to available " " position
+        if board[target.row][target.col] == " ": 
+            return True
+        # check capture move
+    return False
+
+def move(current, target, board):
+    if canMove(current, target, board):
+        board[target.row][target.col] = board[current.row][current.col]
+        board[current.row][current.col] = " "
+        return True
+    else:
+        return False
+
+print_board(board_8)
+#print(getAllNextStep('b', board_4))
+#print(getAllNextStep('r', board_4))
+
+########################################################################
+################      Restaurant Reservation            ################
+########################################################################
+
+from dataclasses import dataclass, field
+from typing import Dict, List
+from datetime import datetime
+import uuid
+import mysql.connector
+
+@dataclass
+class Reservation:
+    reservation_id: uuid.UUID
+    restaurant_id: str
+    party_size: int
+    time_start: datetime
+    length: int  # minutes
+
+@dataclass
+class Restaurant:
+    restaurant_id: str
+    zip_code: str
+    capacity: int
+    start_time: int
+    end_time: int
+    reserved_slots: Dict[str, List[int]] = field(default_factory=dict)
+
+    def is_available(self, timestamp: datetime, party_size: int = 2, slot_length: int = 4) -> bool:
+        """
+        Check if the restaurant has enough capacity for a party size at a given timestamp.
+        """
+        date_str = timestamp.strftime("%Y-%m-%d")
+        time_index = (timestamp.hour - self.start_time) * 4 + timestamp.minute // 15
+
+        # Ensure date is in reserved_slots
+        if date_str not in self.reserved_slots:
+            self.reserved_slots[date_str] = [0] * ((self.end_time - self.start_time) * 4)
+
+        # Check availability in the slot
+        if time_index < 0 or time_index >= len(self.reserved_slots[date_str]):
+            return False
+
+        for i in range(slot_length):
+            if time_index + i >= len(self.reserved_slots[date_str]) or \
+                    self.reserved_slots[date_str][time_index + i] + party_size > self.capacity:
+                return False
+        return True
+
+    def make_reservation(self, timestamp: datetime, party_size: int = 2, slot_length: int = 4):
+        """
+        Make a reservation if possible. Returns True if the reservation is successful, False otherwise.
+        """
+        if self.is_available(timestamp, party_size, slot_length):
+            date_str = timestamp.strftime("%Y-%m-%d")
+            time_index = (timestamp.hour - self.start_time) * 4 + timestamp.minute // 15
+            for i in range(slot_length):
+                self.reserved_slots[date_str][time_index + i] += party_size
+
+            reservation = Reservation(uuid.uuid4(), self.restaurant_id, party_size, timestamp, slot_length * 15)
+            self.insert_reservation_to_db(reservation)
+            return reservation
+        else:
+            return None
+
+    def insert_reservation_to_db(self, reservation: Reservation):
+        """
+        Insert the reservation into the MySQL database.
+        """
+        connection = mysql.connector.connect(
+            host="localhost",
+            user="your_user",  # replace with your MySQL username
+            password="your_password",  # replace with your MySQL password
+            database="restaurant_db"  # replace with your database name
+        )
+        cursor = connection.cursor()
+
+        add_reservation = (
+            "INSERT INTO reservations (reservation_id, restaurant_id, party_size, time_start, length) "
+            "VALUES (%s, %s, %s, %s, %s)"
+        )
+
+        data_reservation = (
+            str(reservation.reservation_id), 
+            reservation.restaurant_id, 
+            reservation.party_size, 
+            reservation.time_start, 
+            reservation.length
+        )
+
+        try:
+            cursor.execute(add_reservation, data_reservation)
+            connection.commit()
+            print(f"Reservation {reservation.reservation_id} inserted successfully.")
+        except mysql.connector.Error as err:
+            print(f"Error: {err}")
+            connection.rollback()
+        finally:
+            cursor.close()
+            connection.close()
+
+class RestaurantManager:
+    def __init__(self, restaurants: List[Restaurant]):
+        self.restaurants = restaurants
+
+    def list_availabilities(self, timestamp: datetime, zip_code: str) -> List[str]:
+        """
+        Lists restaurant_ids that have availability at a given timestamp and zip code.
+        """
+        available_restaurants = []
+        for restaurant in self.restaurants:
+            if restaurant.zip_code == zip_code and restaurant.is_available(timestamp):
+                available_restaurants.append(restaurant.restaurant_id)
+        return available_restaurants
+
+    def make_reservation(self, restaurant_id: str, timestamp: datetime, party_size: int):
+        """
+        Make a reservation at the specified restaurant if possible.
+        """
+        for restaurant in self.restaurants:
+            if restaurant.restaurant_id == restaurant_id:
+                return restaurant.make_reservation(timestamp, party_size)
+        return False
+
+# Example usage:
+restaurants = [
+    Restaurant(restaurant_id="1", zip_code="12345", capacity=20, start_time=9, end_time=22),
+    Restaurant(restaurant_id="2", zip_code="12345", capacity=15, start_time=10, end_time=19)
+]
+
+restaurant_manager = RestaurantManager(restaurants=restaurants)
+
+# List available restaurants at a certain time
+timestamp = datetime(2024, 8, 22, 18, 0)  # August 22, 2024, at 6:00 PM
+print(restaurant_manager.list_availabilities(timestamp, "12345"))
+
+# Make a reservation
+restaurant_id = "1"
+party_size = 4
+reserved = restaurant_manager.make_reservation(restaurant_id, timestamp, party_size)
+print(reserved)
+
+
