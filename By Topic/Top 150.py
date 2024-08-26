@@ -1068,18 +1068,63 @@ assert findMin([11,13,15,17]) == 11
 assert findMin([3,1,2]) == 1
 
 # 4. Median of Two Sorted Arrays[hard]
+def findMedianSortedArrays(nums1: List[int], nums2: List[int]) -> float:
+    if len(nums1) > len(nums2):
+        nums1, nums2 = nums2, nums1
+    
+    m, n = len(nums1), len(nums2)
+    low, high = 0, m
+    
+    while low <= high:
+        partitionX = (low + high) // 2
+        partitionY = (m + n + 1) // 2 - partitionX
+        
+        maxX = float('-inf') if partitionX == 0 else nums1[partitionX - 1]
+        maxY = float('-inf') if partitionY == 0 else nums2[partitionY - 1]
+        minX = float('inf') if partitionX == m else nums1[partitionX]
+        minY = float('inf') if partitionY == n else nums2[partitionY]
+        
+        if maxX <= minY and maxY <= minX:
+            if (m + n) % 2 == 0:
+                return (max(maxX, maxY) + min(minX, minY)) / 2
+            else:
+                return max(maxX, maxY)
+        elif maxX > minY:
+            high = partitionX - 1
+        else:
+            low = partitionX + 1
+assert findMedianSortedArrays([1,3], [2]) == 2
+assert findMedianSortedArrays([1,2], [3, 4]) == 2.5
 
 ##############################################################
 ##                          Heap                            ##
 ##############################################################
+from collections import heapq
+# 215. Kth Largest Element in an Array[medium]
+def findKthLargest(nums: List[int], k: int) -> int:
+    min_heap = []
+    for num in nums:
+        heapq.heappush(min_heap, num)
+        if len(min_heap) > k:
+            heapq.heappop(min_heap)
+    return min_heap[0]
 
-# Kth Largest Element in an Array
+# 502. IPO[hard]
+def findMaximizedCapital(self, k: int, w: int, profits: List[int], capital: List[int]) -> int:
+    pass
 
-# IPO
+# 373. Find K Pairs with Smallest Sums[medium]
+def kSamllestPairs(nums1, nums2, k):
+    pass
 
-# Find K Pairs with Smallest Sums
-
-# Find Median from Data Stream
+# 295. Find Median from Data Stream[hard]
+class MedianFinder:
+    def __init__(self) -> None:
+        pass
+    def addNum(self, num):
+        pass
+    def findMedium(self):
+        pass
 
 ##############################################################
 ##                    Bit Manipulation                      ##
