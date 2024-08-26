@@ -806,7 +806,7 @@ from dataclasses import dataclass, field
 from typing import Dict, List
 from datetime import datetime
 import uuid
-import mysql.connector
+#import mysql.connector
 
 @dataclass
 class Reservation:

@@ -247,6 +247,51 @@ def minSubArray(target, nums):
 # Substring with Concatenation of All Words
 
 # Minimum Window Substring
+from collections import Counter
+def minWindow(self, s, t):
+    # Create hashmaps to keep track of counts of characters in t and in the current window
+    need = Counter(t)
+    window = {}
+
+    # Initialize two pointers for the sliding window
+    left, right = 0, 0
+    # Initialize variables for tracking the number of valid characters and the minimum window length
+    valid = 0
+    min_length = float('inf')
+    start = 0
+
+    # Expand the window to the right
+    while right < len(s):
+        # Get the character at the right pointer
+        char = s[right]
+        right += 1
+        
+        # Update the window hashmap
+        if char in need:
+            window[char] = window.get(char, 0) + 1
+            # Check if we have the correct count for this character
+            if window[char] == need[char]:
+                valid += 1
+        
+        # Check if the current window is valid
+        while valid == len(need):
+            # Update the minimum window if necessary
+            if right - left < min_length:
+                min_length = right - left
+                start = left
+            
+            # Prepare to contract the window by moving the left pointer
+            char = s[left]
+            left += 1
+            
+            # Update the window hashmap
+            if char in need:
+                if window[char] == need[char]:
+                    valid -= 1
+                window[char] -= 1
+
+    # Return the minimum window substring found, or an empty string if no valid window was found
+    return "" if min_length == float('inf') else s[start:start + min_length]
 
 ##############################################################
 ###                          Matrix                        ###
@@ -825,20 +870,204 @@ class Trie:
 ##############################################################
 ##                      Binary Search                       ##
 ##############################################################
+"""
+Binary Search Template
 
-# Search Insert Position
+Template 1: Classic Binary Search
+This template is used when you want to find the exact position of an element in a sorted array.
+"""
+def binary_search_classic(nums, target):
+    left, right = 0, len(nums) - 1
+    
+    while left <= right:
+        mid = left + (right - left) // 2
+        
+        if nums[mid] == target:
+            return mid  # Return the index of the found target
+        elif nums[mid] < target:
+            left = mid + 1  # Target is in the right half
+        else:
+            right = mid - 1  # Target is in the left half
+            
+    return -1  # Target not found
+"""
+Template 2: Binary Search for Lower Bound (First Occurrence)
+This template finds the first occurrence (lower bound) of the target in a sorted array.
+"""
+def binary_search_lower_bound(nums, target):
+    left, right = 0, len(nums) - 1
+    
+    while left <= right:
+        mid = left + (right - left) // 2
+        
+        if nums[mid] < target:
+            left = mid + 1  # Target is in the right half
+        else:
+            right = mid - 1  # Continue searching in the left half
+    
+    if left < len(nums) and nums[left] == target:
+        return left  # Return the first occurrence index
+    return -1  # Target not found
+"""
+Template 3: Binary Search for Upper Bound (Last Occurrence)
+This template finds the last occurrence (upper bound) of the target in a sorted array.
+"""
+def binary_search_upper_bound(nums, target):
+    left, right = 0, len(nums) - 1
+    
+    while left <= right:
+        mid = left + (right - left) // 2
+        
+        if nums[mid] <= target:
+            left = mid + 1  # Continue searching in the right half
+        else:
+            right = mid - 1  # Target is in the left half
+    
+    if right >= 0 and nums[right] == target:
+        return right  # Return the last occurrence index
+    return -1  # Target not found
 
-# Search a 2D Matrix
+"""
+Template 4: Binary Search for a Condition
+This template is used when the search is not for a specific element but for the first element that satisfies a certain condition. 
+This is common in problems where you're asked to find the minimum or maximum value that satisfies a condition.
+"""
+def binary_search_condition(nums, condition):
+    left, right = 0, len(nums) - 1
+    
+    while left < right:
+        mid = left + (right - left) // 2
+        
+        if condition(nums[mid]):
+            right = mid  # Continue searching in the left half
+        else:
+            left = mid + 1  # Continue searching in the right half
+            
+    return left if condition(nums[left]) else -1  # Return the index of the first element that satisfies the condition
 
-# Find Peak Element
 
-# Search in Rotated Sorted Array
+import bisect
+# 35. Search Insert Position
+def searchInsert(nums, target):
+    l, r = 0, len(nums)
+    while l < r:
+        mid = l + (r-l)//2
+        if nums[mid] == target:
+            return mid
+        elif nums[mid] > target:
+            r = mid
+        else:
+            l = mid + 1
+    return l
+    #return bisect.bisect_left(nums, target)
 
-# Find First and Last Position of Element in Sorted Array
+assert searchInsert([1,3,5,6], 5) == 2
+assert searchInsert([1,3,5,6], 2) == 1
+assert searchInsert([1,3,5,6], 7) == 4
 
-# Find Minimum in Rotated Sorted Array
+# 74. Search a 2D Matrix
+def search2DMatrix(matrix, target):
+    m = len(matrix)
+    if m == 0:
+        return False
+    n = len(matrix[0])
+    if n == 0:
+        return False
+    if matrix[0][0] > target or matrix[m - 1][n - 1] < target:
+        return False
+    tmp = []
+    for i in range(m):
+        tmp.append(matrix[i][0])
+    ind = bisect.bisect_left(tmp, target)
+    if ind == len(tmp):
+        ind = ind - 1
+    if target < matrix[ind][0]:
+        ind = ind - 1
+    ind2 = bisect.bisect_left(matrix[ind], target)
+    if ind2 == n:
+        return False
+    return matrix[ind][ind2] == target
+assert search2DMatrix([[1,3,5,7],[10,11,16,20],[23,30,34,60]], 3) == True
+assert search2DMatrix([[1,3,5,7],[10,11,16,20],[23,30,34,60]], 13) == False
 
-# Median of Two Sorted Arrays
+# 162. Find Peak Element [medium]
+def findPeakElement(nums: List[int]) -> int:
+    l, r = 0, len(nums)
+    while l < r:
+        mid = l + (r-l)//2
+        l_neighbor = nums[mid-1] if mid-1 >= 0 else float('-inf')
+        r_neighbor = nums[mid+1] if mid+1 < len(nums) else float('-inf')
+        # find the peak
+        if l_neighbor < nums[mid] > r_neighbor:
+            return mid
+        # check right neighbor
+        elif r_neighbor > nums[mid]:
+            l = mid + 1
+        # check left neighbor
+        elif l_neighbor > nums[mid]:
+            r = mid
+assert findPeakElement([1,2,3,1]) == 2
+assert findPeakElement([1,2,1,3,5,6,4]) == 5
+
+# 33. Search in Rotated Sorted Array[medium]
+def findMin(nums):
+    i, j = 0, len(nums)-1
+    while i < j:
+        mid = (i+j)//2
+        if nums[mid] <= nums[j]:
+            j = mid
+        else:
+            i = mid + 1
+    return nums[i]
+
+### 34. Find First and Last Position of Element in Sorted Array[medium]
+def searchRange(nums: List[int], target: int) -> List[int]:
+    l, r = 0, len(nums)-1
+    res = [-1, -1]
+    
+    # first binary search to find lower bound
+    while l <= r:
+        mid = l + (r-l)//2
+        if nums[mid] < target:
+            l = mid + 1
+        else:
+            r = mid - 1
+    if l < len(nums) and nums[l] == target:
+        res[0] = l
+
+    # second binary search to find upper bound
+    l, r = 0, len(nums)-1
+    while l <= r:
+        mid = l + (r-l)//2
+        if nums[mid] > target:
+            r = mid - 1
+        else:
+            l = mid + 1
+    if r >= 0 and nums[r] == target:
+        res[1] = r
+
+    return res
+assert searchRange([5,7,7,8,8,10], 8) == [3, 4]
+assert searchRange([5,7,7,8,8,10], 8) == [3, 4]
+assert searchRange([], 0) == [-1,-1]
+assert searchRange([1], 1) == [0,0]
+
+# 153. Find Minimum in Rotated Sorted Array[medium]
+def findMin(nums):
+    l, r = 0, len(nums)-1
+    while l < r:
+        mid = l + (r-l)//2
+        if nums[mid] <= nums[r]:
+            r = mid
+        else:
+            l = mid + 1
+    return nums[l]
+assert findMin([3,4,5,1,2]) == 1
+assert findMin([4,5,6,7,0,1,2]) == 0
+assert findMin([11,13,15,17]) == 11
+assert findMin([3,1,2]) == 1
+
+# 4. Median of Two Sorted Arrays[hard]
 
 ##############################################################
 ##                          Heap                            ##
