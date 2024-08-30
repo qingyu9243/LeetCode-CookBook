@@ -118,12 +118,16 @@ user1.return_bike(rental1.rental_id, time_e)
 print(user1.rental_history)
 print(rental1.cost)
 
-#152. Maximum Product Subarray Med.
+#######################################
+#######          Coding         ####### 
+#######################################
+
+# 152. Maximum Product Subarray Med.
 def maxProductSubarray(nums):
     pass
 
-#415. Add Strings Easy
-#
+# 415. Add Strings Easy
+
 
 # 2235. Add two integers
 

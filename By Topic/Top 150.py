@@ -79,13 +79,61 @@ def removeElement(nums, val): # -> return end index
             i += 1
     return i
 
-#Remove Duplicates from Sorted Array
+# 26. Remove Duplicates from Sorted Array[easy]
+"""
+two pointers: insert_index as index to replace value, j is the moving index
+Java:
+public int removeDuplicates(int[] nums) {
+    int insert = 1;
+    for (int j = 1; j < nums.length; j++) {
+        if (nums[j-1] != nums[j]) {// swap
+            nums[insert] = nums[j];
+            insert ++;
+        }
+    }
+    return insert;
+"""
+def removeDuplicates(nums):
+    insert = 1
+    # [0,1,2,3,1,2,2,3,3,4]
+    #    i
+    #    j
+    for j in range(1, len(nums)):
+        if nums[j-1] != nums[j]:
+            nums[insert] = nums[j]
+            insert += 1
+    return insert
 
-#Remove Duplicates from Sorted Array II
+# 80. Remove Duplicates from Sorted Array II
+"""
+allow at most twice for each num. in-place modify
+[1,1,2,2,3,3]
+           i
+           j
+"""
+def removeDuplicates2(nums):
+    insert = 1
+    pass
 
-#Majority Element
+# 169. Majority Element[easy]
+"""
+Boyer-Moore Voting Algorithm
+"""
+def majorityElement(nums):
+    count = 0
+    candidate = None
 
-#Rotate Array
+    for num in nums:
+        if count == 0:
+            candidate = num
+        if num == candidate:
+            count += 1
+        else:
+            count -= 1
+    return candidate
+assert majorityElement([2,2,1,1,1,2,2]) == 2
+
+# Rotate Array
 
 # 121. Best Time to Buy and Sell Stock
 def maxProfit(prices):
@@ -122,13 +170,13 @@ def canJump(nums):
 #Integer to Roman
 
 # Length of Last Word
-# 
+
 # Longest Common Prefix
-# 
+
 # Reverse Words in a String
-# 
+
 # Zigzag Conversion
-# 
+
 # Find the Index of the First Occurrence in a String
 
 # Text Justification
@@ -1099,7 +1147,7 @@ assert findMedianSortedArrays([1,2], [3, 4]) == 2.5
 ##############################################################
 ##                          Heap                            ##
 ##############################################################
-from collections import heapq
+import heapq
 # 215. Kth Largest Element in an Array[medium]
 def findKthLargest(nums: List[int], k: int) -> int:
     min_heap = []
