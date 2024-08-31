@@ -789,6 +789,7 @@ def solve(board):
 ##############################################################
 ##                       Graph BFS                          ##
 ##############################################################
+
 # 909. snakes and Ladders
 def snakesAndLadders(self, board: List[List[int]]) -> int:
     def get_board_value(board, n, index):
@@ -817,7 +818,9 @@ def snakesAndLadders(self, board: List[List[int]]) -> int:
                     queue.append((next_square, moves + 1))
     return -1    
 
-# Minimum Genetic Mutation
+
+# 433. Minimum Genetic Mutation
+def 
 
 
 # 127. Word Ladder
@@ -863,17 +866,130 @@ def wordLadder(beginWord, endWord, wordList):
 #print(wordLadder("hit", "cog", ["hot","dot","dog","lot","log","cog"]))
 #print(wordLadder("hit", "cog", ["hot","dot","dog","lot","log"]))
 
+
 ##############################################################
 ##                          Trie                            ##
 ##############################################################
 
-# Implement Trie (Prefix Tree)
+# 208. Implement Trie (Prefix Tree) [medium]
 class Trie:
     def __init__(self) -> None:
-        pass
-# Design Add and Search Words Data Structure
+        self.dic = {}
 
-# Word Search II
+    def insert(self, word):
+        cur = self.dic
+        for w in word:
+            if w not in cur:
+                cur[w] = {}
+            cur = cur[w]
+        cur['#'] = True
+        
+    def search(self, word):
+        cur = self.dic
+        for w in word:
+            if w not in cur:
+                return False
+            cur = cur[w]
+        return "#" in cur
+
+    def startWith(self, prefix):
+        cur = self.dic
+        for w in prefix:
+            if w not in cur:
+                return False
+            cur = cur[w]
+        return True
+    
+trie = Trie()
+trie.insert("apple")
+assert trie.search("apple") == True
+assert trie.search("app") == False
+assert trie.startWith("app") == True
+trie.insert("app")
+assert trie.search("app") == True
+
+
+# 211. Design Add and Search Words Data Structure[medium]
+"""
+word_dict = WordDictionary()
+word_dict.addWord("bad")
+word_dict.addWord("dad")
+word_dict.addWord("mad")
+assert word_dict.search("pad") == False
+assert word_dict.search("bad") == True
+assert word_dict.search(".ad") == True
+assert word_dict.search("b..") == True
+"""
+class WordDictionary:
+    def __init__(self):
+        self.dic = {}
+
+    def addWord(self, word):
+        cur = self.dic
+        for w in word:
+            if w not in cur:
+                cur[w] = {}
+            cur = cur[w]
+        cur["#"] = True
+
+    """
+    Returns true if there is any string in the data structure that matches word or false otherwise. 
+    word may contain dots '.' where dots can be matched with any letter.
+    """
+    def search(self, word):
+        return self.dfs(self.dic, word, 0)
+    
+    def dfs(self, node, word, i):
+        if i == len(word):
+            return "#" in node
+        if word[i] == '.':
+            for child in node:
+                if child != "#" and self.dfs(node[child], word, i+1):
+                    return True
+            return False
+        if word[i] not in node:
+            return False
+        return self.dfs(node[word[i]], word, i+1)
+    
+
+# 212. Word Search II [hard][重点]
+def findWords(board, words):
+    # construct trie for words. Using dfs to find matching word in the board
+    def dfs(x, y, root):
+        letter = board[x][y]
+        cur = root[letter]
+        word = cur.pop("#", False)
+        if word:
+            res.append(word)
+        board[x][y] = '*'
+        for dirx, diry in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
+            curx, cury = x + dirx, y + diry
+            if 0 <= curx < m and 0 <= cury < n and board[curx][cury] in cur:
+                dfs(curx, cury, cur)
+        board[x][y] = letter
+        if not cur:
+            root.pop(letter)
+
+    trie = {} # only need insert func
+    for word in words:
+        cur = trie
+        for w in word:
+            cur = cur.setdefault(w, {}) # set key -> value if key doesn't exist.
+            #print(cur)
+        cur["#"] = word
+    
+
+    m, n = len(board), len(board[0])
+    res = []
+    for i in range(m):
+        for j in range(n):
+            if board[i][j] in trie:
+                dfs(i, j, trie)
+
+    return res
+
+#print(findWords([["o","a","a","n"],["e","t","a","e"],["i","h","k","r"],["i","f","l","v"]], ["oath","pea","eat","rain"]))
+#print(findWords([["a","b"],["c","d"]], ["abcb"]))
 
 ##############################################################
 ##                       Backtracking                       ##

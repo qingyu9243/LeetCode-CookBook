@@ -206,6 +206,23 @@ https://www.freecodecamp.org/news/lambda-sort-list-in-python/
 
 #### Dictionary ####
 from collections import Counter
+
+### {} setdefault(k, v) ###
+"""
+Parameter	        Description
+
+keyname	            Required. The keyname of the item you want to return the value from
+
+value	            Optional.
+                    If the key exist, this parameter has no effect.
+                    If the key does not exist, this value becomes the key's value
+                    Default value None
+
+Return value -> is the value for the input key
+"""
+d = {}
+d.setdefault("k", "v")
+
 ### counter ###
 cnt = Counter(nums)
 
