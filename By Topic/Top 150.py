@@ -1002,9 +1002,7 @@ def findWords(board, words):
 # Permutations
 
 # Combination Sum
-# Solution
-# Medium
-# 
+
 # N-Queens II
 
 # Generate Parentheses
