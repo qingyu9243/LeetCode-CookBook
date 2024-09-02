@@ -433,9 +433,33 @@ def gameOfLife(board):
 ###                    Hashmap/Hashset                     ###
 ##############################################################
 
-# Ransom Note
+# 383. Ransom Note [easy]
+def canConstruct(ransomNote: str, magazine: str) -> bool:
+    cnt1 = Counter(ransomNote)
+    cnt2 = Counter(magazine)
+    print(cnt1, cnt2)
+    for k in cnt1.keys():
+        if k not in cnt2.keys():
+            return False
+        elif k in cnt2.keys() and cnt1[k] > cnt2[k]:
+            return False
+    return True
 
-# Isomorphic Strings
+# 205. Isomorphic Strings [easy]
+def isIsomorphic(s: str, t: str) -> bool:
+    dic_s, dic_t = defaultdict(list), defaultdict(list)
+    for i, char in enumerate(s):
+        dic_s[char].append(i)
+    for i, char in enumerate(t):
+        dic_t[char].append(i)  
+
+    count = 0
+    if len(dic_s) != len(dic_t):
+        return False
+    for k, v in dic_s.items():
+        if v in dic_t.values():
+            count += 1
+    return len(dic_s) == count
 
 # Word Pattern
 
@@ -525,7 +549,6 @@ def insertInterval(intervals, newInterval):
     ans.extend(intervals[i:])
     return ans
 
-
 # Minimum Number of Arrows to Burst Balloons
 
 
@@ -545,8 +568,21 @@ def validParenthese(s):
                 return False
     return stack == []
 
-# Simplify Path
+# 71. Simplify Path [medium]
+def simplifyPath(path):
+    res = []
+    splited = path.rstrip('/').split('/')
+    for e in splited:
+        if e == '.' or e == '':
+            continue
+        elif e == '..':
+            if len(res) > 0:
+                res.pop()
+        else:
+            res.append(e)
+    return '/'+ '/'.join(res)
 
+print(simplifyPath("/home/user/Documents/../Pictures"))
 
 
 # 155.Min Stack[medium]
@@ -819,8 +855,94 @@ def snakesAndLadders(self, board: List[List[int]]) -> int:
     return -1    
 
 
-# 433. Minimum Genetic Mutation
-def 
+# 433. Minimum Genetic Mutation [medium]
+"""Java
+import java.util.*;
+
+class Solution {
+    public int minMutation(String startGene, String endGene, String[] bank) {
+        // Use a queue to perform BFS
+        Queue<Pair<String, Integer>> queue = new LinkedList<>();
+        queue.offer(new Pair<>(startGene, 0));
+        Set<String> visited = new HashSet<>();
+        
+        // Convert the bank to a set for faster lookups
+        Set<String> bankSet = new HashSet<>(Arrays.asList(bank));
+
+        while (!queue.isEmpty()) {
+            Pair<String, Integer> current = queue.poll();
+            String cur = current.getKey();
+            int step = current.getValue();
+            
+            // Check if the current gene is the end gene
+            if (cur.equals(endGene)) {
+                return step;
+            }
+            
+            // Try all possible mutations
+            for (int i = 0; i < cur.length(); i++) {
+                for (char c : new char[]{'A', 'C', 'G', 'T'}) {
+                    // Generate the next mutation by changing one character at a time
+                    String nextCur = cur.substring(0, i) + c + cur.substring(i + 1);
+                    
+                    // If the next mutation is in the bank and hasn't been visited
+                    if (bankSet.contains(nextCur) && !visited.contains(nextCur)) {
+                        queue.offer(new Pair<>(nextCur, step + 1));
+                        visited.add(nextCur);
+                    }
+                }
+            }
+        }
+        
+        // If no mutation path leads to the endGene, return -1
+        return -1;
+    }
+
+    // Helper class to store a pair of String and Integer
+    static class Pair<K, V> {
+        private final K key;
+        private final V value;
+
+        public Pair(K key, V value) {
+            this.key = key;
+            this.value = value;
+        }
+
+        public K getKey() {
+            return key;
+        }
+
+        public V getValue() {
+            return value;
+        }
+    }
+
+    public static void main(String[] args) {
+        Solution sol = new Solution();
+        String startGene = "AACCGGTT";
+        String endGene = "AACCGGTA";
+        String[] bank = {"AACCGGTA"};
+        System.out.println(sol.minMutation(startGene, endGene, bank)); // Output: 1
+    }
+}
+"""
+def minMutation(startGene: str, endGene: str, bank: List[str]):
+    # bfs to get min mutations
+    queue = deque()
+    queue.append((startGene, 0))
+    visited = set()
+    while queue:
+        cur, step = queue.pop()
+        # check mutation in bank
+        if cur == endGene:
+            return step
+        for char in "ACGT":
+            for i in range(len(endGene)):
+                next_cur = cur[:i]+char+cur[i+1:]
+                if next_cur in bank and next_cur not in visited:
+                    queue.append((next_cur, step+1))
+                    visited.add(next_cur)
+    return -1
 
 
 # 127. Word Ladder
