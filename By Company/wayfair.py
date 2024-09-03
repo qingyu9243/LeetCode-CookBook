@@ -44,6 +44,8 @@ from typing import List
 ######       Bike Rental      ######
 ####################################
 """
+https://excalidraw.com/#json=dNJe3KfPNFzGvkZhdtsXI,oWlrAvozR2TXhIMx0j_ipA
+
 requirement:
     1. user can rent a bike
     2. when user return the bike, calculate the cost
@@ -101,13 +103,11 @@ class User:
 
         print("User paid invoice")
         return True
-
 class Payment:
     def __init__(self, cost, transaction_id, datetime):
         pass
     def pay(self):
         pass
-
 class Bike:
     def __init__(self, bike_id, bike_type, price_per_hour):
         self.bike_id = bike_id
@@ -120,8 +120,6 @@ class Bike:
 
     def update_status(self, new_status):
         self.status = new_status
-
-
 class Rental:
     def __init__(self, rental_id, user, bike, rental_start_time):
         self.rental_id = rental_id
@@ -140,27 +138,20 @@ class Rental:
         self.cost = duration_hours * self.bike.price_per_hour
         return self.cost
 
-    
 from datetime import datetime, timedelta
-
 # Create a user
 user1 = User(user_id=1, name="Alice", email="alice@example.com")
-
 # Create some bikes
 bike1 = Bike(bike_id=101, bike_type="standard", price_per_hour=5)
 bike2 = Bike(bike_id=102, bike_type="electric", price_per_hour=10)
-
 # User rents a bike
 time_s = datetime.now()
 rental1 = user1.rent_bike(bike1, time_s)
-
 # Simulate some time passing...
 time_e = time_s + timedelta(hours = 1)
-
 # User returns the bike
 user1.return_bike(rental1.rental_id, time_e)
 #user1.make_payment(rental1)
-
 # Check rental history and cost
 print(user1.rental_history)
 print(rental1.cost)
@@ -338,10 +329,64 @@ def makeFancyString(s: str) -> str:
     return "".join(res)
 
 #2139. Minimum Moves to Reach Target Score Med.
-
+def minMoves(target: int, maxDoubles: int) -> int:
+    c = 0
+    while maxDoubles and  target > 1:
+        if target % 2 == 0 and maxDoubles :
+            c += 1
+            maxDoubles -= 1
+            target //= 2
+        else:
+            target -= 1
+            c += 1
+    if target>1:
+        c += target-1
+    return c 
 
 #1405. Longest Happy String Med.
-#
+import heapq
+"""
+use Max-heap to store(-count, 'char') in the max-heap.
+"""
+def longestDiverseString(a, b, c):
+    # Initialize a max heap with negative counts since heapq is a min heap by default
+    max_heap = []
+    if a > 0:
+        heapq.heappush(max_heap, (-a, 'a'))
+    if b > 0:
+        heapq.heappush(max_heap, (-b, 'b'))
+    if c > 0:
+        heapq.heappush(max_heap, (-c, 'c'))
+    
+    result = []
+    
+    while max_heap:
+        count1, char1 = heapq.heappop(max_heap) # Most frequent character
+
+        # Check if we can add two of char1 without forming three consecutive characters
+        if len(result) >= 2 and result[-1] == char1 and result[-2] == char1:
+            if not max_heap:
+                break # Can't use char1 and no other chars are left
+            count2, char2 = heapq.heappop(max_heap) # Second most frequent character
+            result.append(char2)
+            count2 += 1 # Used one instance of char2
+            
+            # Push back the second character if it is still available
+            if count2 < 0:
+                heapq.heappush(max_heap, (count2, char2))
+            
+            # Push back the first character
+            heapq.heappush(max_heap, (count1, char1))
+        else:
+            # Add one or two of the most frequent character
+            result.append(char1)
+            count1 += 1 # Used one instance of char1
+            
+            if count1 < 0:
+                heapq.heappush(max_heap, (count1, char1))
+    
+    return ''.join(result)    
+
 #1895. Largest Magic Square Med.
 #
 #1194. Tournament Winners Hard
@@ -357,9 +402,16 @@ def makeFancyString(s: str) -> str:
 #300. Longest Increasing Subsequence Med.
 #
 #647. Palindromic Substrings Med.
-def countSubstrings(s):
+def countSubstrings(s: str) -> int:
     res = 0
-
+    l = len(s)
+    for mid in range(l * 2 - 1):
+        left = mid // 2
+        right = left + mid % 2
+        while left >= 0 and right < l and s[left] == s[right]:
+            res += 1
+            left -= 1
+            right += 1
     return res
 
 #1456. Maximum Number of Vowels in a Substring of Given Length Med.

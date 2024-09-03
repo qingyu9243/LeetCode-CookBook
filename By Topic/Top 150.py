@@ -569,6 +569,52 @@ def validParenthese(s):
     return stack == []
 
 # 71. Simplify Path [medium]
+"""Java
+import java.util.*;
+
+class Solution {
+    public String simplifyPath(String path) {
+        // Initialize a stack to use as a list for the simplified path parts
+        LinkedList<String> res = new LinkedList<>();
+        
+        // Split the path by "/" and process each part
+        String[] splited = path.split("/");
+        
+        // Iterate over each part of the path
+        for (String e : splited) {
+            // If the part is "." or empty, we skip it
+            if (e.equals(".") || e.isEmpty()) {
+                continue;
+            } 
+            // If the part is "..", pop the last valid part from the list (if any)
+            else if (e.equals("..")) {
+                if (!res.isEmpty()) {
+                    res.removeLast();
+                }
+            } 
+            // Otherwise, it's a valid directory name, so add it to the list
+            else {
+                res.add(e);
+            }
+        }
+        
+        // Construct the simplified path from the list
+        return "/" + String.join("/", res);
+    }
+
+    public static void main(String[] args) {
+        Solution sol = new Solution();
+        String path = "/a/./b/../../c/";
+        System.out.println(sol.simplifyPath(path));  // Output: "/c"
+        
+        path = "/../";
+        System.out.println(sol.simplifyPath(path));  // Output: "/"
+        
+        path = "/home//foo/";
+        System.out.println(sol.simplifyPath(path));  // Output: "/home/foo"
+    }
+}
+"""
 def simplifyPath(path):
     res = []
     splited = path.rstrip('/').split('/')
@@ -581,9 +627,7 @@ def simplifyPath(path):
         else:
             res.append(e)
     return '/'+ '/'.join(res)
-
-print(simplifyPath("/home/user/Documents/../Pictures"))
-
+#print(simplifyPath("/home/user/Documents/../Pictures"))
 
 # 155.Min Stack[medium]
 """
@@ -621,7 +665,7 @@ class MinStack:
     def getMin(self) -> int:
         return self.min_stack[-1]
 
-# Evaluate Reverse Polish Notation
+# 150. Evaluate Reverse Polish Notation [medium]
 
 # 224. Basic Calculator[hard]
 """
@@ -632,6 +676,7 @@ def calculator(s):
     stack = []
 
     return 
+
 # 227. Basic Calculator II [medium]
 """
 Input: s = "3+2*2"
