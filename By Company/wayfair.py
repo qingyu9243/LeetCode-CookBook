@@ -249,7 +249,7 @@ def findCoupon(coupon_map, parent_map, category):
             if k == "Category Name":
                 c_category = v
         coupon_map_new[c_category] = c_name
-    print(coupon_map_new)
+    #print(coupon_map_new)
 
     category_parent = {}
     for parent in parent_map:
@@ -260,7 +260,7 @@ def findCoupon(coupon_map, parent_map, category):
             if k == "Parent category Name":
                 parent_name = v
         category_parent[category_name] = parent_name
-    print(category_parent)
+    #print(category_parent)
 
     # find category's coupon(if not, check its parent's)
     if category in coupon_map_new:
@@ -275,7 +275,7 @@ def findCoupon(coupon_map, parent_map, category):
 
 coupon_map = [{"Coupon Name" : "50% off", "Category Name": "Bedding"}, {"Coupon Name" : "BOGO", "Category Name": "Kitchen"}]
 parent_map = [{"Category Name" : "Comforter", "Parent category Name": "Bedding"}, {"Category Name" : "Kitchen", "Parent category Name": None},{"Category Name" : "Patio", "Parent category Name": "Garden"}]
-assert findCoupon(coupon_map, parent_map, "Kitchen") == "BOGO"
+#assert findCoupon(coupon_map, parent_map, "Kitchen") == "BOGO"
 #assert findCoupon(coupon_map, parent_map, "Comforter") == "50% off"
 #assert findCoupon(coupon_map, parent_map, "Patio") == None
 
@@ -285,15 +285,49 @@ def maxProductSubarray(nums):
 
 # 415. Add Strings Easy
 
-
 # 2235. Add two integers
 
 
 #1604. Alert Using Same Key-Card Three or More Times in a One Hour Period Med.
+def alertNames(keyName: List[str], keyTime: List[str]) -> List[str]:
+    d, alerts = defaultdict(list), []
+    keyTime = map(lambda x: int(x[:2])*60 + int(x[3:]), keyTime) # <-- 1.
 
+    for name,time in zip(keyName,keyTime):                       # <-- 2.
+        d[name].append(time)
+    
+    for name in d:                                               # <-- 3.
+        uses = sorted(d[name])
+        if any(third - first <= 60 for third, first in zip(uses[2:], uses)):
+            alerts.append(name)                                  # <-- 4.
+
+    return sorted(alerts)        
 #1014. Best Sightseeing Pair  Med.
 
 #1244. Design A Leaderboard Med.
+class Leaderboard:
+
+    def __init__(self):
+        self.scores = {}        
+
+    def addScore(self, playerId: int, score: int) -> None:
+        if playerId not in self.scores:
+            self.scores[playerId] = 0
+        self.scores[playerId] += score        
+
+    def top(self, K: int) -> int:
+        heap = []
+        for x in self.scores.values():
+            heapq.heappush(heap, x)
+            if len(heap) > K:
+                heapq.heappop(heap)
+        res = 0
+        while heap:
+            res += heapq.heappop(heap)
+        return res        
+
+    def reset(self, playerId: int) -> None:
+        self.scores[playerId] = 0
 
 #1189. Maximum Number of Balloons Easy
 from collections import defaultdict
@@ -388,31 +422,85 @@ def longestDiverseString(a, b, c):
     return ''.join(result)    
 
 #1895. Largest Magic Square Med.
-#
-#1194. Tournament Winners Hard
-#
+def largestMagicSquare(grid: List[List[int]]) -> int:
+    m = len(grid)
+    n = len(grid[0])
+    
+    # Row sum matrix
+    rowPrefixSum = [[0]*(n+1) for r in range(m)]
+    for r in range(m):
+        for c in range(n):
+            rowPrefixSum[r][c+1] = rowPrefixSum[r][c] + grid[r][c]
+            
+    #column sum Matrix        
+    columnPrefixSum = [[0]*(m+1) for c in range(n)]
+    for c in range(n):
+        for r in range(m):
+            columnPrefixSum[c][r+1] = columnPrefixSum[c][r] + grid[r][c]
+    print(rowPrefixSum)
+    print(columnPrefixSum)
+    k = min(m, n)
+
+    while k > 1:
+        # find top left
+        for r in range(m - k + 1):
+            for c in range(n - k + 1):
+                z = rowPrefixSum[r][c+k] - rowPrefixSum[r][c]
+                valid = True
+                for i in range(k):
+                    if z != rowPrefixSum[r+i][c+k]-rowPrefixSum[r+i][c] or \
+                        z != columnPrefixSum[c+i][r+k]-columnPrefixSum[c+i][r]:
+                        valid = False
+                        break
+                if valid:
+                    diag0, diag1 = 0, 0
+                    for i in range(k):
+                        diag0 += grid[r+i][c+i]
+                        diag1 += grid[r+i][c+k-i-1]
+                    if z == diag0 == diag1:
+                        return k
+        k -= 1
+    return 1
+
 #5. Longest Palindromic Substring Med.
-#
+
 #49. Group Anagrams Med.
-#
-# 125. Valid Palindrome Easy
 
 #236. Lowest Common Ancestor of a Binary Tree Med.
-#
+
 #300. Longest Increasing Subsequence Med.
-#
+
 #647. Palindromic Substrings Med.
+"""
+Given a string s, return the number of palindromic substrings in it.
+A string is a palindrome when it reads the same backward as forward.
+A substring is a contiguous sequence of characters within the string.
+
+Example 1:
+Input: s = "abc"
+Output: 3
+Explanation: Three palindromic strings: "a", "b", "c".
+"""
 def countSubstrings(s: str) -> int:
+# 0 1 2 3 4  original index
+# a b c d e  
+# 012345678  expanded index
     res = 0
     l = len(s)
     for mid in range(l * 2 - 1):
         left = mid // 2
         right = left + mid % 2
+        print(mid, left, right)
         while left >= 0 and right < l and s[left] == s[right]:
             res += 1
             left -= 1
             right += 1
+        print(mid, left, right)
+        print("end")
+    print("res",res)
     return res
+#print("test")
+#countSubstrings("abbc")
 
 #1456. Maximum Number of Vowels in a Substring of Given Length Med.
 def maxVowels(s, k):
