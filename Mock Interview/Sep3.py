@@ -2,8 +2,6 @@
 Description
 An order management system for a restaurant is being developed. Implement the OrderSystem class and the IOrderSystem interface as described.
 
- 
-
 The IOrder interface contains the methods that the Order class should implement.
 
 Add the following properties to the class:
@@ -24,7 +22,6 @@ categoryDiscounts(): Calculate discounts for each product category in the cart. 
 cartItems(): This method retrieves the list of items in the cart along with their quantities. It groups the products by their names and counts the number of products ordered for each group. The method returns this map of names of items in the cart and their quantities. (key = name, value = item count)
 
  
-
 Category determination is done as follows:
 
 Order Price <= 10: Cheap
