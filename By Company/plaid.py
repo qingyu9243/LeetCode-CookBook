@@ -123,22 +123,30 @@ class MinStack:
 # Design Hit Counter
 """
 Design a hit counter which counts the number of hits received in the past 5 minutes (i.e., the past 300 seconds).
-
-Your system should accept a timestamp parameter (in seconds granularity), and you may assume that calls are being made to the system in chronological order (i.e., timestamp is monotonically increasing). Several hits may arrive roughly at the same time.
-
+Your system should accept a timestamp parameter (in seconds granularity), and you may assume that calls are being made to the system in chronological order 
+(i.e., timestamp is monotonically increasing). Several hits may arrive roughly at the same time.
 Implement the HitCounter class:
 
 HitCounter() Initializes the object of the hit counter system.
 void hit(int timestamp) Records a hit that happened at timestamp (in seconds). Several hits may happen at the same timestamp.
 int getHits(int timestamp) Returns the number of hits in the past 5 minutes from timestamp (i.e., the past 300 seconds).
 """
+from collections import OrderedDict
 class HitCounter:
     def __init__(self) -> None:
-        pass
+        self.dict_ts = OrderedDict()
+        self.dict_len = 0
+
     def hit(self, timestamp):
-        pass
+        if timestamp in self.dict_ts:
+            self.dict_ts[timestamp] += 1
+        elif len(self.dict_len) == 300:
+            self.dict_ts.popitem(last=False)
+        self.dict_ts[timestamp] = 1
+
+
     def getHits(self, timestamp):
-        pass
+        return self.dict_ts[timestamp]
 
 
 #############################
@@ -184,7 +192,7 @@ def bankTransferWithoutCenterBank(list):
 
     return bankTransfer(list, center_bank)
 
-print(bankTransfer(["AB1", "BA2", "BC3"], "A"))
+#print(bankTransfer(["AB1", "BA2", "BC3"], "A"))
 #assert bankTransfer(["AB1", "BA2", "BC3"]) == ["BA4", "AC3"]
 
 
@@ -193,9 +201,48 @@ print(bankTransfer(["AB1", "BA2", "BC3"], "A"))
 #############################
 
 
+"""
+要求：优惠券有两种形式，一个是打折，一个是减额度，但两者都有或两者都没有，优惠券无效报错。最少购买数量和最少购买金额就是满足了才能用，可以是无。
+求使用优惠券后，购物车里的产品的总价。这题输出是1.6+5+15=21.6
 
-coupons = [{"catogories": ["electronic", "food"], "percentage": 20, "off": 0, "min_quant": 0,
-            }]
+"""
 
+def coupon_discount():
+    coupons = [{"catogories": ["electronic", "food"], "percentage": 20, "off": 0, "min_quant": 0,},
+            {"catogories": ["food"], "percentage": 20, "off": 0, "min_quant": 0,}]
 
+    cart = [{"price": 2, "category": "electronic"}, {"price": 5, "category": "kitchen"}, {"price": 15, "category": "food"}]
 
+    # part 1.
+    coupon_dict = {}
+    for i, coupon in enumerate(coupons):
+
+        category_list, percentage, off, min_quantity = coupon["catogories"], coupon["percentage"], coupon["off"], coupon["min_quant"]
+        for cate in category_list:
+            coupon_dict[cate] = [i, percentage, off, min_quantity]
+    print(coupon_dict)
+    #for product in cart:
+    num_categories = len(cart)
+    num_coupons = len(coupons)
+    res = 0
+    cur_discount = [0] * num_categories
+    def findMaxDiscount(cur_discount, coupon_idx, used_coupons):
+        nonlocal res
+        if used_coupons == num_categories:
+            res = max(sum(cur_discount), res)
+            return
+        if coupon_idx == num_coupons:
+            res = max(sum(cur_discount), res)
+            return
+        for i, cart_item in enumerate(cart):
+            print(coupons[coupon_idx])
+            if cart_item["category"] in coupons[coupon_idx]["catogories"] and cur_discount[i] == 0:
+                cur_discount[i] = cart_item["price"] * coupons[coupon_idx]["percentage"] /100
+                findMaxDiscount(cur_discount, coupon_idx+1, used_coupons+1)
+                cur_discount[i] = 0
+        findMaxDiscount(cur_discount, coupon_idx+1, used_coupons+1)
+
+    findMaxDiscount(cur_discount, 0, 0)
+    return res
+print(coupon_discount())
+        

@@ -766,7 +766,7 @@ class TreeNode:
         self.left = left
         self.right = right
 
-# Maximum Depth of Binary Tree
+# 104. Maximum Depth of Binary Tree
 def maximumDepth(root:TreeNode):
     if not root:
         return 0
@@ -785,15 +785,39 @@ def maximumDepth_interative_dfs(root:TreeNode):
             stack.append((n.right, depth+1))
     return ans
 
-# Same Tree
+# 100. Same Tree [easy]
 def sameTree(root1, root2):
-    pass
+    if not root1 and not root2:
+        return True
+    elif not root1 or not root2:
+        return False
+    elif root1.val != root2.val:
+        return False
+    return root1.val == root2.val \
+        and sameTree(root1.left, root2.left) \
+        and sameTree(root1.right, root2.right)
 
-# Invert Binary Tree
+# 226. Invert Binary Tree
+def invertTree(root):
+    return
 
-# Symmetric Tree
+# 101. Symmetric Tree [easy]
+"""
+典型recursive
+"""
+def isSymmetric(node):
+    def isMirror(n1, n2):
+        if not n1 and not n2:
+            return True
+        elif not n1 or not n2:
+            return False
+        elif n1.val != n2.val:
+            return False
+        return n1.val == n2.val and isMirror(n1.left, n2.right) and isMirror(n1.right, n2.left)
+    isMirror(node.left, node.right)
 
 # Construct Binary Tree from Preorder and Inorder Traversal
+
 
 # Construct Binary Tree from Inorder and Postorder Traversal
 

@@ -33,6 +33,7 @@ def letterComb(digits):
         return []
     backtrack(0, "")
     return ans
+#print(letterComb("23"))
 
 # 79	Word Search	42.8%	Medium	
 """
@@ -70,6 +71,7 @@ def wordSearch(board, word): # -> True/False
 # 465	Optimal Account Balancing 49.6%	Hard
 
 # 51	N-Queens	68.2%	Hard
+
 
 # 1239 Maximum Length of a Concatenated String with Unique Characters	54.1%	Medium
 
