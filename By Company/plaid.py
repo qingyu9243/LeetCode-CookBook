@@ -150,6 +150,111 @@ class HitCounter:
 
 
 #############################
+#   Recurring Transactions  #
+#############################
+"""
+Part 1.
+Minimum 3 transactions are required to consider it as a recurring transaction
+Same company, same amount, same number of days apart - recurring transactions
+Input: Company, Amount, Timestamp (Day of the transaction)
+Output: An array of companies who made recurring transactions
+"""
+transactions = [
+  ("Netflix", 9.99, 0),
+  ("Netflix", 9.99, 10),
+  ("Netflix", 9.99, 20),
+  ("Netflix", 9.99, 30),
+  ("Amazon", 27.12, 32),
+  ("Sprint", 50.11, 45),
+  ("Sprint", 50.11, 55),
+  ("Sprint", 50.11, 65),
+  ("Sprint", 60.13, 77),
+  ("Netflix", 9.99, 50),
+]
+
+transactions = [
+  ("Netflix", 0.99, 0),
+  ("Netflix", 0.99, 10),
+  ("Netflix", 9.99, 20),
+  ("Netflix", 0.99, 25),
+  ("Netflix", 0.99, 30),
+  ("Amazon", 27.12, 32),
+  ("Sprint", 50.11, 55),
+  ("Sprint", 50.11, 65),
+  ("Sprint", 60.13, 75),
+  ("Netflix", 0.99, 50),
+]
+from collections import defaultdict
+
+def trans1(transactions):
+    tran_dict = defaultdict(dict)
+    for company, price, date in transactions:
+        if price not in tran_dict[company]:
+            tran_dict[company][price] = [date]
+        else:
+            tran_dict[company][price].append(date)
+    print(tran_dict)
+    res = []
+    for company, price_date_dict in tran_dict.items():
+        for price, dates in price_date_dict.items():
+            count_same_dates_apart = defaultdict(int)
+            for i in range(1, len(dates)):
+                dates_apart = dates[i] - dates[i-1]
+                count_same_dates_apart[dates_apart] += 1 
+            print(company, price, count_same_dates_apart)
+            for v in count_same_dates_apart.values():
+                if v >= 2:
+                    res.append(company)
+    print(res)
+
+def trans2(transactions):
+    transactions.sort()
+    tran_dict = defaultdict(dict)
+    res = []
+    for company, price, date in transactions:
+        print(tran_dict)
+        if company not in tran_dict:
+            tran_dict[company] = [price, date, 0, 0]
+        else:
+            if price <= tran_dict[company][0] * 1.2 and price >= tran_dict[company][0]:
+                if tran_dict[company][3] == 0:
+                    tran_dict[company] = [price, date, date - tran_dict[company][1], 1]
+                elif tran_dict[company][3] == 1 and ((date - tran_dict[company][1]) == tran_dict[company][2]):
+                    res.append(company)
+                else:
+                    continue
+            else:
+                tran_dict[company] = [price, date, 0, 0]
+    print(res)
+
+def trans3(transactions):
+    tran_dict = defaultdict(dict)
+    for company, price, date in transactions:
+        if price not in tran_dict[company]:
+            tran_dict[company][price] = [date]
+        for p in tran_dict[company].keys():
+            print(p, price)
+            if price >= p and price <= p * 1.2 and tran_dict[company][p][-1] != date:
+                tran_dict[company][p].append(date)
+    
+    print(tran_dict)
+    res = set()
+    for company, price_date_dict in tran_dict.items():
+        for price, dates in price_date_dict.items():
+            delta_dict = defaultdict(dict)
+            dates.sort()
+            for i, date in enumerate(dates):
+                print(delta_dict)
+                for delta, prev_date in delta_dict.items():
+                    if delta == date - prev_date:
+                        res.add(company)
+                for j in range(i):
+                    delta_dict[date-dates[j]] = date
+    res = list(res)
+    print(res)
+trans3(transactions)
+
+#############################
 # transfer between accounts #
 #############################
 from collections import defaultdict
@@ -244,5 +349,5 @@ def coupon_discount():
 
     findMaxDiscount(cur_discount, 0, 0)
     return res
-print(coupon_discount())
+#print(coupon_discount())
         
