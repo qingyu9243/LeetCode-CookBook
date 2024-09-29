@@ -54,7 +54,7 @@ def wordSearch(board, word): # -> True/False
                 if dfs(x+dirx, y+diry, l+1):
                     return True
                 flag[x+dirx][y+diry] = True
-                   
+
         return False            
 
     m, n = len(board), len(board[0])
