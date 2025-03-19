@@ -25,10 +25,60 @@ class LRU:
         if len(self.cache) > self.capacity:
             self.cache.popitem(last = False) # 把cache头上最少用的item，pop出去
 
+class Node:
+    def __init__(self, key=None, value=None) -> None:
+        self.key = key
+        self.value = value
+        self.prev = None
+        self.next = None
+
+class LRU_dll:
+    def __init__(self, capacity) -> None:
+        self.capacity = capacity
+        self.cache = {}
+        self.head = Node()
+        self.tail = Node()
+        self.head.next = self.tail
+        self.tail.prev = self.head
+
+    def get(self, key):
+        if key in self.cache:
+            node = self.cache[key]
+            self._remove(node)
+            self._add_to_head(node)
+        return -1
+    
+    def put(self, key, value):
+        if key in self.cache:
+            node = self.cache[key]
+            node.value = value
+            self._remove(node)
+            self._add_to_head(node)
+        else:
+            if len(self.cache) >= self.capacity:
+                lru_node = self.tail.prev
+                self._remove(lru_node)
+                del self.cache[lru_node.key]
+            new_node = Node(key, value)
+            self.cache[key] = new_node
+            self._add_to_head(new_node)        
+
+    def _remove(self, node):
+        prev_node = node.prev
+        next_node = node.next
+        prev_node.next = next_node
+        next_node.prev = prev_node
+
+    def _add_to_head(self, node):
+        node.prev = self.head
+        node.next = self.head.next
+        self.head.next.prev = node
+        self.head.next = node
+    
 # 1570	Dot Product of Two Sparse Vectors 89.9%	Medium	
 """
 
-"""     
+"""
        
 # 380	Insert Delete GetRandom O(1)	54.4%	Medium	
 
