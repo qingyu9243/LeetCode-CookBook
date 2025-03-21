@@ -231,13 +231,192 @@ prereqs_courses3 = [['Data Structures', 'Algorithms']]
 ###########################
 # 矩阵题
 ###########################
-# 1. 
+# 1. 找一个矩形 find a retangular
+"""
+there is an image filled with 0s and 1s.  There is at most one rectangle in this image filled with 0s, find the rectangle. 
+Output could be the coordinates of top-left and bottom-right elements of the rectangle, or top-left element, width and height.
+"""
+def findRetangular(grid):
+    if not grid or len(grid) == 0 or len(grid[0]) == 0:
+        return []
+    result =[]
+    for i in range(len(grid)):
+        for j in range(len(grid[0])):
+            if grid[i][j] == 0:
+                result.append([i, j])
+                height = 1
+                width = 1
+                # find height
+                while i + height < len(grid) and grid[i + height][j] == 0:
+                    height += 1
+                # find width
+                while j + width < len(grid[0]) and grid[i][j+width] == 0:
+                    width += 1
+                result.append([i+height-1, j+width-1])
+                return result
+    return result       
+#print(findRetangular([[1, 1, 1, 1, 1, 1],[1, 0, 0, 0, 1, 1],[1, 0, 0, 0, 1, 1],[1, 0, 0, 0, 1, 1],[1, 1, 1, 1, 1, 1]]))               
+
+# 2. 找多个矩形 find multiple retangle
+"""
+for the same image, it is filled with 0s and 1s. It may have multiple rectangles filled with 0s. The rectangles are separated by 1s. Find all the rectangles.
+"""
+def findMultipleRetangle(board):
+    if not board or len(board) == 0 or len(board[0]) == 0:
+        return []
+    rows, cols = len(board), len(board[0])
+    result =[]
+    visited = [[False]*cols for _ in range(rows)]
+
+    for i in range(len(board)):
+        for j in range(len(board[0])):
+            if board[i][j] == 0 and not visited[i][j]:
+                retangle = []
+                retangle.append([i, j])
+                height, width = 1, 1
+                while i + height < rows and board[i+height][j] == 0:
+                    height += 1
+                while j + width < cols and board[i][j+width] == 0:
+                    width += 1
+                retangle.append([i+height-1, j+width-1])
+                print("retangle")
+                print(retangle)
+                print(height, width)
+                for m in range(i, i+height):
+                    for n in range(j, j+width):
+                        visited[m][n] = True
+                result.append(retangle)
+
+    return result
+#print(findMultipleRetangle([[1, 1, 1, 1, 1, 1, 1],[1, 0, 0, 1, 0, 0, 1],[1, 0, 0, 1, 0, 0, 1],[1, 1, 1, 1, 1, 1, 1],[1, 0, 0, 0, 1, 0, 1],[1, 0, 0, 0, 1, 0, 1],[1, 1, 1, 1, 1, 1, 1]]))
+
+# 3. 
+"""
+the image has random shapes filled with 0s, separated by 1s. Find all the shapes. Each shape is represented by coordinates of all the elements inside.
+"""
+def findMultipleShapes(board):
+    rows, cols = len(board), len(board[0])
+    visited = [[False]*cols for _ in range(rows)]
+    result = []
+
+    def bfs(i, j):
+        queue = []
+        queue.append([i, j])
+        directions = [(1, 0), (-1, 0), (0, 1),(0, -1)]
+        shape = []
+        while queue:
+            curi, curj = queue.pop(0)
+            shape.append([curi, curj])
+            for nx, ny in directions:
+                ni, nj = curi + nx, curj + ny
+                if 0 <= ni < rows and 0 <= nj < cols and board[ni][nj] == 0 and not visited[ni][nj]:
+                    queue.append([ni, nj])
+                    visited[ni][nj] = True
+        return shape
+
+    for i in range(rows):
+        for j in range(cols):
+            if board[i][j] == 0 and not visited[i][j]:
+                visited[i][j] = True
+                t_result = bfs(i, j)
+                result.append(t_result)
+
+    return result
+#print(findMultipleShapes(([[1, 1, 1, 1, 1, 1, 1],[1, 0, 0, 1, 0, 0, 1],[1, 0, 1, 1, 0, 0, 1],[1, 1, 0, 1, 1, 1, 1],[1, 0, 0, 0, 1, 1, 1],[1, 0, 0, 0, 1, 1, 1],[1, 1, 1, 1, 1, 1, 1]])))
 
 ###########################
 # reflow字符串
 ###########################
+# 1. word wrap
+"""
+给一个word list 和最大的长度，要求把这些word用 "-" 串联起来，但不能超过最大的长度。
+"""
+def wordWrap(words, maxLength):
+    if not words:
+        return ""
+    if len(words[0]) > maxLength:
+        return ""
+    # try to add word one by one
+    cur_length = len(words[0])
+    result = words[0]
+    for i in range(1, len(words)):
+        if cur_length + len(words[i]) + 1 <= maxLength:
+            result += "-" + words[i]
+            cur_length += len(words[i]) + 1
+        else:
+            break
+    return result
+#print(wordWrap(["apple", "banana", "cherry", "date"], 20))
 
+# 2. word processor
+"""
+We are building a word processor and we would like to implement a "reflow" functionality that also applies full justification to the text.
+Given an array containing lines of text and a new maximum width, re-flow the text to fit the new width. Each line should have the exact specified width. If any line is too short, insert '-' (as stand-ins for spaces) between words as equally as possible until it fits.
+Note: we are using '-' instead of spaces between words to make testing and visual verification of the results easier.
 
+lines = [ "The day began as still as the",
+          "night abruptly lighted with",
+          "brilliant flame" ]
+
+reflowAndJustify(lines, 24) ... "reflow lines and justify to length 24" =>
+
+        [ "The--day--began-as-still",
+          "as--the--night--abruptly",
+          "lighted--with--brilliant",
+          "flame" ] // <--- a single word on a line is not padded with spaces
+
+"""
+def reflow_text(lines, max_width):
+    words = []
+    for line in lines:
+        words.extend(line.split())
+
+    # add each line with fixed length, including words as much as possible
+    result = []
+    i, l = 0, len(words)
+    while i < l:
+        cur_line = []
+        cur_length = 0
+
+        # add as many words as possible to the current line
+        while i < l and cur_length + len(words[i]) + (1 if cur_line else 0) <= max_width:
+            if cur_line:
+                cur_length += 1
+
+            cur_line.append(words[i])
+            cur_length += len(words[i])
+            i += 1
+        print(cur_line)
+        # if we have at least one word
+        if cur_line:
+            if len(cur_line) == 1:
+                # single word case - no padding needed
+                result.append(cur_line[0])
+            else:
+                # multiple words - justify the word
+                total_word_length = sum(len(word) for word in cur_line)
+                total_gaps = len(cur_line) - 1
+                total_separators = max_width - total_word_length
+                # Calculate distribution of separators
+                separators_per_gap = total_separators // total_gaps
+                extra_separators = total_separators % total_gaps
+                # Build justified line
+                justified_line = ""
+                for j in range(len(cur_line) - 1):
+                    justified_line += cur_line[j]
+                    # Add separators for this gap
+                    num_separators = separators_per_gap + (1 if j < extra_separators else 0)
+                    justified_line += "-" * num_separators     
+                # Add last word
+                justified_line += cur_line[-1]
+                result.append(justified_line)
+        
+    return result
+
+lines = [ "The day began as still as the",
+          "night abruptly lighted with",
+          "brilliant flame" ]
+print(reflow_text(lines, 24))
 ###########################
 # 计算器
 ###########################
