@@ -290,9 +290,25 @@ subarray whose sum is greater than or equal to target. If there is no such subar
 def minSubArray(target, nums):
     pass
 
-# Longest Substring Without Repeating Characters
+# 3. Longest Substring Without Repeating Characters
+def longestSubtringWithoutRepeatChar(s):
+    max_length = 0
+    left = 0
+    cur_str = set()
+
+    for right in range(len(s)):
+        while s[right] in cur_str:
+            left += 1
+            cur_str.remove(s[left])
+        cur_str.add(s[right])
+        max_length = max(max_length, right - left + 1)
+
+    return max_length
+#print(longestSubtringWithoutRepeatChar("bbbbb"))
+#print(longestSubtringWithoutRepeatChar("abcabcbb"))
 
 # Substring with Concatenation of All Words
+
 
 # Minimum Window Substring
 from collections import Counter
