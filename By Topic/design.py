@@ -29,57 +29,63 @@ class Node:
     def __init__(self, key=None, value=None) -> None:
         self.key = key
         self.value = value
-        self.prev = None
         self.next = None
+        self.prev = None
 
 class LRU_dll:
     def __init__(self, capacity) -> None:
-        self.capacity = capacity
+        self.capcaity = capacity
         self.cache = {}
         self.head = Node()
         self.tail = Node()
+        # connect head and tail (dummy nodes)
         self.head.next = self.tail
         self.tail.prev = self.head
 
-    def get(self, key):
+    def get(self, key): # O(1)
         if key in self.cache:
             node = self.cache[key]
             self._remove(node)
             self._add_to_head(node)
-        return -1
-    
-    def put(self, key, value):
-        if key in self.cache:
+            return node.value
+        else:
+            return -1
+
+    def put(self, key, value): # O(1)
+        if key in self.cache: # update value
             node = self.cache[key]
             node.value = value
             self._remove(node)
             self._add_to_head(node)
-        else:
-            if len(self.cache) >= self.capacity:
+        else: # consider of the cache capacity
+            if len(self.cache) >= self.capcaity:
                 lru_node = self.tail.prev
                 self._remove(lru_node)
                 del self.cache[lru_node.key]
             new_node = Node(key, value)
             self.cache[key] = new_node
-            self._add_to_head(new_node)        
+            self._add_to_head(new_node)
 
-    def _remove(self, node):
-        prev_node = node.prev
-        next_node = node.next
-        prev_node.next = next_node
-        next_node.prev = prev_node
+    def _remove(self, node): # O(1)
+        # head <-> n1 <-> node <-> n2 <-> tail
+        n1 = node.prev
+        n2 = node.next
+        n1.next = n2
+        n2.prev = n1
 
-    def _add_to_head(self, node):
+    def _add_to_head(self, node): # O(1)
+        # head <-> n1 <-> n2 <-> n3 <-> tail
         node.prev = self.head
         node.next = self.head.next
         self.head.next.prev = node
         self.head.next = node
-    
+
 # 1570	Dot Product of Two Sparse Vectors 89.9%	Medium	
 """
 
 """
-       
+
+
 # 380	Insert Delete GetRandom O(1)	54.4%	Medium	
 
 
