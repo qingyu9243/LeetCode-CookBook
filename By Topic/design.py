@@ -1,4 +1,5 @@
 import random
+from collections import defaultdict
 # 146	LRU Cache()	42.5%	Medium
 """
 LRUCache(int capacity) # evict the least used element
@@ -82,9 +83,29 @@ class LRU_dll:
         self.head.next = node
 
 # 1570	Dot Product of Two Sparse Vectors 89.9%	Medium	
-"""
-"""
+class SparseVector:
+    def __init__(self, nums) -> None:
+        self.pairs = []
+        for i, n in enumerate(nums):
+            if n != 0:
+                self.pairs.append([i, n])
 
+    def dotProduct(self, vec):
+        res = 0
+        i, j = 0, 0
+        n1 = self.pairs
+        n2 = vec.pairs
+
+        while i < len(n1) and j < len(n2):
+            if n1[i][0] == n2[j][0]:
+                result += n1[i][1]*n2[j][1]
+                i += 1
+                j += 1
+            elif n1[i][0] < n2[j][0]:
+                i += 1
+            else:
+                j += 1
+        return res
 
 # 380	Insert Delete GetRandom O(1)	54.4%	Medium	
 class RandomizedSet:
@@ -126,7 +147,38 @@ class FileSystem:
         pass
 
 # 981	Time Based Key-Value Store	49.4%	Medium	
+class TimeMap:
+    def __init__(self) -> None:
+        self.time_map = defaultdict(list)
 
+    def set(self, key, value, ts):
+        self.time_map[key].append((ts, value))
+
+    def get(self, key, ts):
+        arr = self.time_map[key]
+        if not arr or ts < arr[0][0]:
+            return ""
+        if ts >= arr[-1][0]:
+            return arr[-1][1]
+        # [(ts1, value1), (ts2, value1), (ts3, value1)]
+        l, r = 0, len(arr)
+        while l < r:
+            mid = (l+r)//2
+            if arr[mid][0] == ts:
+                return arr[mid][1]
+            elif arr[mid][0] > ts:
+                r = mid
+            else:
+                l = mid + 1
+        return arr[l-1][1]
+    
+timeMap = TimeMap()
+timeMap.set("foo", "bar", 1)
+#print(timeMap.get("foo", 1))
+#print(timeMap.get("foo", 3))
+timeMap.set("foo", "bar2", 4)
+#print(timeMap.get("foo", 4))
+#print(timeMap.get("foo", 5))
 
 # 359	Logger Rate Limiter 75.9%	Easy	
 class RateLimiter:
