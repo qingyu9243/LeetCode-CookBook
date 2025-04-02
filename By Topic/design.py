@@ -1,3 +1,4 @@
+import random
 # 146	LRU Cache()	42.5%	Medium
 """
 LRUCache(int capacity) # evict the least used element
@@ -82,12 +83,42 @@ class LRU_dll:
 
 # 1570	Dot Product of Two Sparse Vectors 89.9%	Medium	
 """
-
 """
 
 
 # 380	Insert Delete GetRandom O(1)	54.4%	Medium	
+class RandomizedSet:
 
+    def __init__(self):
+        self.values = []
+        self.value_to_index = {}
+
+    def insert(self, val: int) -> bool:
+        if val in self.value_to_index:
+            return False
+
+        self.values.append(val)
+        self.value_to_index[val] = len(self.values)-1
+        return True
+
+    def remove(self, val: int) -> bool:
+        if val not in self.value_to_index:
+            return False
+
+        # find index    
+        index = self.value_to_index[val]
+        last_value = self.values[-1]
+
+        #exchange the value to be removed with the last value
+        self.values[index] = last_value
+        self.value_to_index[last_value] = index
+        
+        self.values.pop()
+        del self.value_to_index[val]
+        return True
+
+    def getRandom(self) -> int:
+        return random.choice(self.values)
 
 # 588	Design In-Memory File System 48.1%	Hard	
 class FileSystem:

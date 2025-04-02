@@ -1,3 +1,4 @@
+from collections import defaultdict
 # 146. LRU cache - least recently used cache.
 class Node:
     def __init__(self, key = None, value = None) -> None:
@@ -53,15 +54,97 @@ class LRUCache:
         self.head.next.prev = node
         self.head.next = node
 
+# 3438. Find Valid Pair of Adjacent Digits in String
+def findValidPair(self, s: str) -> str:
+    # construct to map
+    _map = defaultdict(int)
+    for char in s:
+        _map[char] += 1
+    print(_map)
 
+    for i in range(len(s)-1):
+        first_digit = s[i]
+        second_digit = s[i+1]
+        if first_digit != second_digit:
+            if int(first_digit) == _map[first_digit] and int(second_digit) == _map[second_digit]:
+                return first_digit + second_digit
+    return ""
 
+# 200. number of islands
+def numOfIslands(board):
+    pass
 
+# 1. two sum
+def twoSum():
+    pass
 
+# 3. longest substring without repeating characters
 
+# 49. group anagrams
 
+# 239. Sliding window maximum
+def slidingWinMax(nums, k):
+    
 
+# 1797. Design authentication manager
 
+# 1200. minimum absolute difference
 
+# 347. Top k frequent elements
+
+# 23. merge k sorted lists
+
+# 199. binary tree right side view
+
+# 15. 3 sum
+
+# 54. spiral matrix
+
+# 56. merge intervals
+
+# 206 reverse linked list
+
+# 253. meeting rooms II
+
+# 20. valid parentheses
+
+# 33. search in rotated sorted arry
+
+# 71. simplify path
+
+# 2062. Count Vowel Substrings of a String-Easy
+
+# 1209. Remove All Adjacent Duplicates in String II-Med.
+
+# 300. Longest Increasing Subsequence-Med.
+
+# 322. Coin Change-Med.
+
+# 4. Median of Two Sorted Arrays-Hard
+
+# 5. Longest Palindromic Substring-Med.
+
+# 987. Vertical Order Traversal of a Binary Tree-Hard
+
+# 994. Rotting Oranges-Med.
+
+# 13. Roman to Integer-Easy
+
+# 51. N-Queens-Hard
+
+# 55. Jump Game-Med.
+
+# 124. Binary Tree Maximum Path Sum-Hard
+
+# 647. Palindromic Substrings-Med.
+
+# 155. Min Stack-Med.
+
+# 215. Kth Largest Element in an Array-Med.
+
+# 221. Maximal Square-Med.
+################################################
+# 
 ## product prices ##
 class ProductPrice:
     def __init__(self) -> None:
