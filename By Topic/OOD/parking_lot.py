@@ -3,13 +3,11 @@ from enum import Enum
 from datetime import datetime
 from typing import Dict, List, Optional
 
-
 class VehicleType(Enum):
     MOTORCYCLE = 1
     CAR = 2
     BUS = 3
     TRUCK = 4
-
 
 class ParkingSpotType(Enum):
     MOTORCYCLE = 1
