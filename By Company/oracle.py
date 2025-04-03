@@ -84,7 +84,7 @@ def twoSum():
 
 # 239. Sliding window maximum
 def slidingWinMax(nums, k):
-    
+    pass
 
 # 1797. Design authentication manager
 
