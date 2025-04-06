@@ -190,34 +190,106 @@ def orangesRotting(grid) -> int:
     return max_minutes if fresh_count == 0 else -1
 
 # 42. Trapping Rain Water - hard
+def trap(height):
+    # Edge case: empty array or array with less than 3 elements
+    if not height or len(height) < 3:
+        return 0
+    
+    n = len(height)
+    left_max = [0] * n
+    right_max = [0] * n
+    
+    # Fill left_max array
+    left_max[0] = height[0]
+    for i in range(1, n):
+        left_max[i] = max(left_max[i-1], height[i])
+    
+    # Fill right_max array
+    right_max[n-1] = height[n-1]
+    for i in range(n-2, -1, -1):
+        right_max[i] = max(right_max[i+1], height[i])
+    
+    # Calculate trapped water
+    water = 0
+    for i in range(n):
+        water += min(left_max[i], right_max[i]) - height[i]
+    
+    return water
 
 # 53. Maximum Subarray
+def maxSubarray(nums):
+    if not nums:
+        return 0
+        
+    # Initialize DP array
+    # dp[i] represents the maximum subarray sum ending at index i
+    dp = [0] * len(nums)
+    
+    # Base case: the maximum subarray ending at index 0 is just nums[0]
+    dp[0] = nums[0]
+    
+    # Fill the dp array
+    for i in range(1, len(nums)):
+        # For each position, we have two choices:
+        # 1. Add the current element to the previous subarray (dp[i-1] + nums[i])
+        # 2. Start a new subarray from the current element (nums[i])
+        dp[i] = max(dp[i-1] + nums[i], nums[i])
+    
+    # The result is the maximum value in the dp array
+    return max(dp)
 
 # 23. Merge k Sorted Lists - hard
 class ListNode:
     def __init__(self, val=0, next=None):
         self.val = val
         self.next = next
-        
+
 def mergeKLists(lists) -> Optional[ListNode]:
-    q = []
-    # put the first node from each list
-    for i in range(len(lists)):
-        if lists[i]:
-            #print(lists[i])
-            heapq.heappush(q, (lists[i].val, i))
-            lists[i] = lists[i].next
-    #print(q)
-    res = ListNode()
-    cur = res
-    while q:
-        val, i = heapq.heappop(q)
-        cur.next = ListNode(val)
-        cur = cur.next
-        if lists[i]:
-            heapq.heappush(q, (lists[i].val, i))
-            lists[i] = lists[i].next
-    return res.next
-
-
+    # Handle edge cases
+    if not lists:
+        return None
+    if len(lists) == 1:
+        return lists[0]
+    
+    # Remove any None/empty lists
+    lists = [lst for lst in lists if lst]
+    if not lists:
+        return None
+    
+    # Using a min heap
+    #import heapq
+    
+    # Create a dummy head for the result list
+    dummy = ListNode(0)
+    current = dummy
+    
+    # Create a min heap
+    # We need to use a counter to break ties when values are equal
+    # (since ListNode doesn't implement comparison)
+    heap = []
+    counter = 0
+    
+    # Add the first node from each list to the heap
+    for i, head in enumerate(lists):
+        if head:
+            # Use (value, counter, node) tuple for heap
+            # counter is used as a tiebreaker when values are equal
+            heapq.heappush(heap, (head.val, counter, head))
+            counter += 1
+    
+    # Process the heap until it's empty
+    while heap:
+        # Pop the smallest element
+        val, _, node = heapq.heappop(heap)
+        
+        # Add it to our result list
+        current.next = node
+        current = current.next
+        
+        # If this node has a next, add it to the heap
+        if node.next:
+            heapq.heappush(heap, (node.next.val, counter, node.next))
+            counter += 1
+    
+    return dummy.next
 
