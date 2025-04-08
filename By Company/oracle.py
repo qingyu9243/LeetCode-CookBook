@@ -150,6 +150,17 @@ class AuthenticationManager:
         return cnt
 
 # 1200. minimum absolute difference
+def minimumAbsDifference(arr):
+    arr.sort()
+    min_abs = float('inf')
+    for i in range(1, len(arr)):
+        min_abs = min(min_abs, arr[i]-arr[i-1])
+    ans = []
+    for i in range(1, len(arr)):
+        diff = arr[i] - arr[i-1]
+        if diff == min_abs:
+            ans.append([arr[i-1], arr[i]])
+    return ans
 
 # 347. Top k frequent elements
 def topKelements(nums, k):
@@ -217,6 +228,9 @@ def mergeKLists(lists):
             counter += 1
     
     return dummy.next
+
+# 1209. Remove All Adjacent Duplicates in String II-Med.
+
 # 199. binary tree right side view
 class TreeNode:
     def __init__(self, val = 0, left = None, right = None) -> None:
@@ -245,28 +259,105 @@ def binaryTreeRightView(root):
 
     return ans
 
-# 15. 3 sum
+# [15]. 3 sum
+"""
+Given an integer array nums, return all the triplets [nums[i], nums[j], nums[k]] such that 
+i != j, i != k, and j != k, and nums[i] + nums[j] + nums[k] == 0.
 
+Notice that the solution set must not contain duplicate triplets.
+"""
+def threeSum(nums):
+    # three pointers
+    res = []
+    n = len(nums)
+    nums.sort()
+
+    for i in range(n-2):
+        if nums[i] > 0:
+            break
+        if i > 0 and nums[i] == nums[i-1]:
+            continue
+        j, k = i + 1, n-1
+        while j < k:
+            cur = nums[i] + nums[j] + nums[k]
+            if cur > 0:
+                k -= 1
+            elif cur < 0:
+                j += 1
+            else: # cur == 0
+                res.append((nums[i], nums[j], nums[k]))
+                while j + 1 < k and nums[j+1] == nums[k]:
+                    j += 1
+                while k - 1 > j and nums[k-1] == nums[j]:
+                    k -= 1
+                j += 1
+                k -= 1
+    return res
 
 # 54. spiral matrix
+def spiral_order(matrix):
+    m, n = len(matrix), len(matrix[0])
+    direction = 1
+    i, j = 0, -1
+    result = []
+    # right -> down(direction is 1), then left -> up(direction is -1)
+    while m*n > 0:
+        for _ in range(n): # move right(1) or left(-1)
+            j += direction
+            result.append(matrix[i][j])
+        n -= 1
+        for _ in range(m): # move down(1) or up(-1)
+            i += direction
+            result.append(matrix[i][j])
+        m -= 1
+        direction *= -1
+    return result
+#print(spiral_order([[1,2,3],[4,5,6],[7,8,9]]))
 
-# 56. merge intervals
+# 56. merge intervals - medium
+def mergeIntervals(intervals):
+    intervals.sort()
+    merged = [intervals[0]]
+    for i in range(1, len(intervals)):
+        current = intervals[i]
+        prev = merged[-1]
+        if prev[1] >= current[0]:
+            merged[-1][1] = max(prev[1], current[1])
+        else:
+            merged.append(intervals[i])
+    return merged
+
+# 140. word break II
+def wordBreak():
+    pass
 
 # 206 reverse linked list
 
 # 253. meeting rooms II
 
 # 20. valid parentheses
+def validParenthese(s):
+    pass
 
 # 33. search in rotated sorted arry
+def searchInRotatedArray(arr):
+    pass
+
+# 772. Basic Calculator III
+def basicCaculator():
+    pass
 
 # 71. simplify path
 
 # 2062. Count Vowel Substrings of a String-Easy
 
-# 1209. Remove All Adjacent Duplicates in String II-Med.
-
 # 300. Longest Increasing Subsequence-Med.
+def longestIncreaseingSequence(nums):
+    pass
+
+# 134. Gas Station
+def gasStation():
+    pass
 
 # 322. Coin Change-Med.
 
@@ -275,24 +366,106 @@ def binaryTreeRightView(root):
 # 5. Longest Palindromic Substring-Med.
 
 # 987. Vertical Order Traversal of a Binary Tree-Hard
+def verticalOrderBinaryTree(root):
+    col_dict = defaultdict(list) # key: col, value:(level, node.value)
+    queue = [(root, 0, 0)] # node, col, level
+
+    while queue:
+        node, col, level = queue.pop(0)
+        col_dict[col].append((level, node.val))
+        if node.left:
+            queue.append([node.left, col - 1, level + 1])
+        if node.right:
+            queue.append([node.right, col + 1, level + 1])
+    
+    result = []
+    # sort col first
+    for col in sorted(col_dict.keys()):
+        values = sorted(col_dict[col])
+        tmp = []
+        for level, node_value in values:
+            tmp.append(node_value)
+        result.append(tmp)
+    return result
 
 # 994. Rotting Oranges-Med.
 
 # 13. Roman to Integer-Easy
 
 # 51. N-Queens-Hard
+def nQueens(martix):
+    pass
 
 # 55. Jump Game-Med.
 
-# 124. Binary Tree Maximum Path Sum-Hard
+# [124]. Binary Tree Maximum Path Sum-Hard
+def binaryTreeMaxPathSum(root):
+    max_sum = float('-inf')
+
+    def max_gain(node):
+        nonlocal max_sum
+        if not node:
+            return 0
+        left_gain = max(max_gain(node.left), 0)
+        right_gain = max(max_gain(node.right), 0)
+
+        cur_path_sum = node.val + left_gain + right_gain
+        max_sum = max(max_sum, cur_path_sum)
+
+        return node.val + max(left_gain, right_gain)
+    
+    max_gain(root)
+    return max_sum
+
+""" LC 112. Path Sum
+Given the root of a binary tree and an integer targetSum, 
+return true if the tree has a root-to-leaf path such that adding up all the values along the path equals targetSum. """
+def hasPathSum(root, targetSum):
+    if not root:
+        return False
+    targetSum -= root.val
+    if targetSum == 0 and not root.left and not root.right:
+        return True
+    return hasPathSum(root.left, targetSum) or hasPathSum(root.right, targetSum)
 
 # 647. Palindromic Substrings-Med.
+def palindromicSubstrings(s):
+    if not s:
+        return 0
+    n = len(s)
+    def expand_around_center(left, right):
+        palindrome = 0
+        while 0 <= left and right < n and s[left] == s[right]:
+            palindrome += 1
+            left -= 1
+            right += 1
+        return palindrome
+
+    count = 0
+    for i in range(n):
+        count += expand_around_center(i, i)
+        count += expand_around_center(i, i+1)
+    return count
+#print(palindromicSubstrings("abc"))
 
 # 155. Min Stack-Med.
 
 # 215. Kth Largest Element in an Array-Med.
 
 # 221. Maximal Square-Med.
+
+# 9. Palindrome Number
+def palindromeNumber(x):
+    if x < 0:
+        return False
+    s = str(x)
+    i, j = 0, len(s)-1
+    while i < j:
+        if s[i] != s[j]:
+            return False
+        i += 1
+        j -= 1
+    return True
 ################################################
 # 
 ## product prices ##
