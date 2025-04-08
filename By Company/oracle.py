@@ -327,9 +327,51 @@ def mergeIntervals(intervals):
             merged.append(intervals[i])
     return merged
 
-# 140. word break II
-def wordBreak():
-    pass
+# 140. word break II - hard - dfs
+"""
+Given a string s and a dictionary of strings wordDict, add spaces in s to construct a sentence where each word is a valid dictionary word. 
+Return all such possible sentences in any order.
+
+Note that the same word in the dictionary may be reused multiple times in the segmentation.
+Example 1:
+
+Input: s = "catsanddog", wordDict = ["cat","cats","and","sand","dog"]
+Output: ["cats and dog","cat sand dog"]
+Example 2:
+
+Input: s = "pineapplepenapple", wordDict = ["apple","pen","applepen","pine","pineapple"]
+Output: ["pine apple pen apple","pineapple pen apple","pine applepen apple"]
+Explanation: Note that you are allowed to reuse a dictionary word.
+"""
+def wordBreak(s, wordDict):
+    # convert wordDict to a set for O(1) lookups
+    word_set = set(wordDict)
+
+    # memoization cache
+    memo = {}
+    def backtrack(start):
+        # If we've already solved this subproblem, return the result
+        if start in memo:
+            return memo[start]
+        result = []
+        if start == len(s):
+            result.append("")
+            return result
+        for end in range(start+1, len(s)+1):
+            word = s[start:end]
+            if word in word_set:
+                sentences = backtrack(end)
+                for sentence in sentences:
+                    if sentence == "":
+                        result.append(word)
+                    else:
+                        result.append(word+" "+sentence)
+        memo[start] = result
+        return result
+
+    return backtrack(0)
+print(wordBreak("catsanddog", ["cat","cats","and","sand","dog"]))
+
 
 # 206 reverse linked list
 
