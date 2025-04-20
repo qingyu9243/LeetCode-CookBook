@@ -1264,11 +1264,47 @@ def permute(nums):
 
 # N-Queens II
 
-# Generate Parentheses
+# LC 22. Generate Parentheses. given n pairs of (), generate all possible well-formed paratheses.
+def generateParenthese(n):
+    def backtrack(cur_path, l, r):
+        if len(cur_path) == 2*n:
+            ans.append(cur_path)
+            return
+        # given a cur_path with l and r count, add l first.
+        if l < n:
+            backtrack(cur_path + "(", l+1, r)
+        if l > r:
+            backtrack(cur_path + ")", l, r+1)
+    ans = []
+    backtrack("", 0, 0)
+    return ans
+#print(generateParenthese(3))
 
-# Word Search
-def wordSearch():
-    pass
+# Word Search - search a word in letter grid
+def wordSearch(grid, word):
+    rows, cols = len(grid), len(grid[0])
+    directions = [(-1, 0), (1, 0), (0, 1), (0, -1)]
+
+    def backtrack(r, c, i): # return True/False
+        if i == len(word):
+            return True
+        if 0 > r or r >= rows or 0 > c  or c >= cols or grid[r][c] != word[i]:
+            return False
+        temp = grid[r][c]
+        grid[r][c] = "#"
+        for dx, dy in directions:
+            if backtrack(r+dx, c+dy, i+1):
+                return True
+        grid[r][c] = temp
+        return False
+
+    for i in range(rows):
+        for j in range(cols):
+            if grid[i][j] == word[0]:
+                if backtrack(i, j, 0):
+                    return True
+    return False
+print(wordSearch([["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]], "ABCCED"))
 
 ##############################################################
 ##                   Divide & Conquer                       ##
