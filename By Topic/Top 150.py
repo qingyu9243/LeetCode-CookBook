@@ -1202,11 +1202,63 @@ def findWords(board, words):
 ##                       Backtracking                       ##
 ##############################################################
 
-# Letter Combinations of a Phone Number
+# LC 17. Letter Combinations of a Phone Number
+def lettersComb(digits):
+    digit_map = {'2':'abc', '3':'def', '4':'ghi', 
+        '5':'jkl', '6':'mno', '7':'pqrs',
+        '8':'tuv', '9':'wxyz'}
+    def backtrack(cur_path, index):
+        if len(cur_path) == len(digits):
+            ans.append(cur_path)
+            return
+        cur_digit = digits[index]
+        for char in digit_map[cur_digit]:
+            backtrack(cur_path+char, index+1)
+    ans = []
+    backtrack("", 0)
+    return ans
+#print(lettersComb("23"))
 
-# Combinations
+# LC 77. Combinations
+def combine(n, k):
+    def backtrack(cur_comb, start):
+        if len(cur_comb) == k:
+            ans.append(cur_comb.copy())
+            return
+        for i in range(start, n + 1):
+            cur_comb.append(i)
+            backtrack(cur_comb, i+1)
+            cur_comb.pop() # critial point, remove this possible number and try other possible numbers
+    ans = []
+    backtrack([], 1)
+    return ans
+#print(combine(4, 2))
 
-# Permutations
+# LC 46. Permutations
+def permute(nums):
+    l = len(nums)
+    def backtrack(cur_nums, used):
+        print("entry")
+        print(cur_nums)
+        if len(cur_nums) == l:
+            ans.append(cur_nums.copy())
+            return
+        for i in range(l):
+            print("check---")
+            print(used)
+            if not used[i]:
+                cur_nums.append(nums[i])
+                used[i] = True
+                print(cur_nums)
+                print(used)
+                print('above is new')
+                backtrack(cur_nums, used)
+                used[i] = False
+                cur_nums.pop()
+    ans = []
+    backtrack([], [False]*l)
+    return ans
+#print(permute([1, 2, 3]))
 
 # Combination Sum
 
@@ -1215,6 +1267,8 @@ def findWords(board, words):
 # Generate Parentheses
 
 # Word Search
+def wordSearch():
+    pass
 
 ##############################################################
 ##                   Divide & Conquer                       ##
@@ -1586,9 +1640,25 @@ def climbStairs(n):
     return dp[n-1]
 #print(climbStairs(2))
 
-# House Robber
+# LC.198 House Robber
+def robHouse(nums):
+    # dp[i] represents the until ith house, max amount I can rob
+    # dp[i] = max((dp[i-2] + nums[i]), dp[i-1]
+    l = len(nums)
+    if l == 1:
+        return nums[0]
+    if l == 2:
+        return max(nums)
+    dp = [0] * len(nums)
+    dp[0] = nums[0]
+    dp[1] = max(dp[0], nums[1])
+    for i in range(2, l):
+        dp[i] = max((dp[i-2]+nums[i]), dp[i-1])
+    return dp[-1]
 
-# Word Break
+# LC. 139 Word Break
+def wordBreak(s, wordDict):
+    pass
 
 # Coin Change
 
