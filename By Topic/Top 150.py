@@ -1280,7 +1280,7 @@ def generateParenthese(n):
     return ans
 #print(generateParenthese(3))
 
-# Word Search - search a word in letter grid
+# LC 79. Word Search - search a word in letter grid
 def wordSearch(grid, word):
     rows, cols = len(grid), len(grid[0])
     directions = [(-1, 0), (1, 0), (0, 1), (0, -1)]
@@ -1304,7 +1304,9 @@ def wordSearch(grid, word):
                 if backtrack(i, j, 0):
                     return True
     return False
-print(wordSearch([["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]], "ABCCED"))
+#print(wordSearch([["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]], "ABCCED"))
+#print(wordSearch([["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]], "SEE"))
+#print(wordSearch([["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]], "ABCB"))
 
 ##############################################################
 ##                   Divide & Conquer                       ##
