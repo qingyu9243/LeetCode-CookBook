@@ -773,6 +773,7 @@ def calculator2_optimize(s):
 
 # LRU Cache
 
+
 ##############################################################
 ##                  Binary Tree General                     ##
 ##############################################################
@@ -1694,11 +1695,25 @@ def robHouse(nums):
         dp[i] = max((dp[i-2]+nums[i]), dp[i-1])
     return dp[-1]
 
-# LC. 139 Word Break
+# LC. 139 Word Break, s = "leetcode", wordDict = ["leet","code"]
 def wordBreak(s, wordDict):
+    # dp[i] = has existing word & dp[i - len(word]
+    dp = [False] * (len(s)+1)
+    dp[0] = True
+    for i in range(1, len(s)+1):
+        for word in wordDict:
+            l = len(word)
+            lookup = s[i-l:i]
+            if lookup == word and dp[i-l]:
+                dp[i] = True
+                break
+    return dp[-1]
+#print(wordBreak("leetcode", ["leet","code"]))
+
+# LC. 140. Word Break II, return all comb word breaks
+def wordBreak2(s, wordDict):
     pass
 
-# LC. 140. Word Break
 # Coin Change
 
 # Longest Increasing Subsequence
