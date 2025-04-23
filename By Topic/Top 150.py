@@ -1264,6 +1264,68 @@ def permute(nums):
 # Combination Sum
 
 # N-Queens II
+def nQueensI(n): # return all the possible 
+    def canPlace(i, j):
+        if j in cols or (i-j) in diag1 or (i+j) in diag2:
+            return False
+        return True
+    
+    def backtrack(row):
+        if row == n:
+            board = []
+            for r in range(n):
+                board.append("".join(row_board[r]))
+            ans.append(board)
+            return
+        
+        for col in range(n):
+            if canPlace(row, col):
+                row_board[row][col] = "Q"
+                cols.add(col)
+                diag1.add(row-col)
+                diag2.add(row+col)
+
+                backtrack(row+1)
+
+                row_board[row][col] = "."
+                cols.remove(col)
+                diag1.remove(row-col)
+                diag2.remove(row+col)
+
+    ans = []
+    cols, diag1, diag2 = set(), set(), set()
+    row_board = [['.']*n for _ in range(n)]
+    backtrack(0)
+    return ans
+#print(nQueensI(4))
+
+def nQueensII(n): # return the number of possible ways
+    def canPlace(i, j):
+        if j in cols or (i-j) in diag1 or (i+j) in diag2:
+            return False
+        return True
+
+    def backtrack(row):
+        if row == n:
+            ans[0] += 1
+            return
+        for col in range(n):
+            if canPlace(row, col):
+                cols.add(col)
+                diag1.add(row-col)
+                diag2.add(row+col)
+            
+                backtrack(row+1)
+
+                cols.remove(col)
+                diag1.remove(row-col)
+                diag2.remove(row+col)
+
+    ans = [0]
+    cols, diag1, diag2 = set(), set(), set()
+    backtrack(0)
+    return ans[0]
+print(nQueensII(4))    
 
 # LC 22. Generate Parentheses. given n pairs of (), generate all possible well-formed paratheses.
 def generateParenthese(n):
@@ -1712,7 +1774,24 @@ def wordBreak(s, wordDict):
 
 # LC. 140. Word Break II, return all comb word breaks
 def wordBreak2(s, wordDict):
-    pass
+    word_set = set(wordDict)
+    memo = {}
+    def backtrack(i):
+        if i == len(s):
+            return [""]
+        if i in memo:
+            return memo[i]
+        res = []
+        for j in range(i, len(s)):
+            prefix = s[i:j+1]
+            if prefix in word_set:
+                tmp = backtrack(j+1)
+                for words in tmp:
+                    res.append((prefix + " " + words).strip())
+        memo[i] = res
+        return res
+    return backtrack(0)
+#print(wordBreak2("pineapplepenapple", ["apple","pen","applepen","pine","pineapple"]))
 
 # Coin Change
 
