@@ -1,5 +1,6 @@
 from collections import defaultdict
 from collections import deque
+from collections import Counter
 from typing import Any, List
 ##############################################################
 ###                     Array/String                       ###
@@ -311,7 +312,6 @@ def longestSubtringWithoutRepeatChar(s):
 
 
 # Minimum Window Substring
-from collections import Counter
 def minWindow(self, s, t):
     # Create hashmaps to keep track of counts of characters in t and in the current window
     need = Counter(t)
@@ -565,8 +565,18 @@ def insertInterval(intervals, newInterval):
     ans.extend(intervals[i:])
     return ans
 
-# Minimum Number of Arrows to Burst Balloons
-
+# 452. Minimum Number of Arrows to Burst Balloons
+def findMinArrows(points):
+    if not points:
+        return 0
+    points.sort(key=lambda x:x[1])
+    res = 1
+    cur = points[0][1]
+    for p in points[1:]:
+        if cur < p[0]:
+            res += 1
+            cur = p[1]
+    return res
 
 ##############################################################
 ####                         Stack                        ####
@@ -776,6 +786,9 @@ def calculator2_optimize(s):
 
 ##############################################################
 ##                  Binary Tree General                     ##
+# in-order: left root right
+# pre-order: root left right
+# post-order: 
 ##############################################################
 class TreeNode:
     def __init__(self, val=0, left=None, right=None):
@@ -816,7 +829,13 @@ def sameTree(root1, root2):
 
 # 226. Invert Binary Tree
 def invertTree(root):
-    return
+    if not root:
+        return None
+    right = invertTree(root.right)
+    left = invertTree(root.left)
+    root.right = left
+    root.left = right
+    return root
 
 # 101. Symmetric Tree [easy]
 """
@@ -857,13 +876,85 @@ def isSymmetric(node):
 ##############################################################
 ###                 Binary Tree BFS                         ###
 ##############################################################
-# Binary Tree Right Side View
+# 199. Binary Tree Right Side View
+def rightSideView(root):
+    if not root:
+        return []
+    queue = [(root, 0)]
+    level_map = defaultdict(list)
+    while queue:
+        cur_node, level = queue.pop(0)
+        level_map[level].append(cur_node.val)
+        if cur_node.left:
+            queue.append((cur_node.left, level+1))
+        if cur_node.right:
+            queue.append((cur_node.right, level+1))
+    res = [-1]*len(level_map)
+    for k, v in level_map.items():
+        res[k] = v[-1]
+    return res
 
-# Average of Levels in Binary Tree
+# 637. Average of Levels in Binary Tree
+def averageOfLevels(root):
+    if not root:
+        return []
+    queue = [root]
+    res = []
+    while queue:
+        level_size = len(queue)
+        level_sum = 0
+        for _ in range(level_size):
+            node = queue.pop(0)
+            level_sum += node.val
+            if node.left:
+                queue.append(node.left)
+            if node.right:
+                queue.append(node.right)
+        res.append(level_sum/level_size)
+    return res
 
-# Binary Tree Level Order Traversal
+# 102. Binary Tree Level Order Traversal
+def levelOrder(root) -> List[List[int]]:
+    if not root:
+        return []
+    queue = [root]
+    res = []
+    while queue:
+        cur_level = []
+        size = len(queue)
+        for _ in range(size):
+            node = queue.pop(0)
+            cur_level.append(node.val)
+            if node.left:
+                queue.append(node.left)
+            if node.right:
+                queue.append(node.right)
+        res.append(cur_level)
+    return res
 
-# Binary Tree Zigzag Level Order Traversal
+# 103. Binary Tree Zigzag Level Order Traversal
+def zigzagLevelOrder(root):
+    if not root:
+        return []
+    queue = [root]
+    res = []
+    flag = 1
+    while queue:
+        cur_level = []
+        size = len(queue)
+        for _ in range(size):
+            node = queue.pop(0)
+            cur_level.append(node.val)
+            if node.left:
+                queue.append(node.left)
+            if node.right:
+                queue.append(node.right)
+        if flag > 0:
+            res.append(cur_level)
+        elif flag < 0:
+            res.append(cur_level[::-1])
+        flag *= -1
+    return res    
 
 ##############################################################
 ##                  Binary Search Tree                      ##
@@ -1116,7 +1207,6 @@ assert trie.startWith("app") == True
 trie.insert("app")
 assert trie.search("app") == True
 
-
 # 211. Design Add and Search Words Data Structure[medium]
 """
 word_dict = WordDictionary()
@@ -1158,7 +1248,6 @@ class WordDictionary:
         if word[i] not in node:
             return False
         return self.dfs(node[word[i]], word, i+1)
-    
 
 # 212. Word Search II [hard][重点]
 def findWords(board, words):
@@ -1195,7 +1284,6 @@ def findWords(board, words):
                 dfs(i, j, trie)
 
     return res
-
 #print(findWords([["o","a","a","n"],["e","t","a","e"],["i","h","k","r"],["i","f","l","v"]], ["oath","pea","eat","rain"]))
 #print(findWords([["a","b"],["c","d"]], ["abcb"]))
 
@@ -1469,7 +1557,6 @@ def binary_search_condition(nums, condition):
             
     return left if condition(nums[left]) else -1  # Return the index of the first element that satisfies the condition
 
-
 import bisect
 # 35. Search Insert Position
 def searchInsert(nums, target):
@@ -1653,7 +1740,6 @@ class MedianFinder:
 ##############################################################
 ##                    Bit Manipulation                      ##
 ##############################################################
-
 # 67. Add Binary [easy]
 """
 Given two binary strings a and b, return their sum as a binary string.
