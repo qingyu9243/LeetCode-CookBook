@@ -1881,8 +1881,15 @@ def wordBreak2(s, wordDict):
 
 # 322. Coin Change
 def coinChange(coins, amount):
-    pass
-
+    # dp[i]: min coins to meet the i amount
+    dp = [amount+1] * (amount+1)
+    dp[0] = 0
+    for cur_amt in range(1, amount+1):
+        for coin in coins:
+            if coin <= cur_amt:
+                dp[cur_amt] = min(dp[cur_amt], dp[cur_amt-coin]+1)
+    return dp[amount] if dp[amount] != amount+1 else -1
+ 
 # 300. Longest Increasing Subsequence
 def lengthOfLIS(nums):
     # dp[i] = dp[j]+1 if nums[i] > nums[j] else 1
