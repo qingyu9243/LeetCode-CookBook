@@ -1879,9 +1879,45 @@ def wordBreak2(s, wordDict):
     return backtrack(0)
 #print(wordBreak2("pineapplepenapple", ["apple","pen","applepen","pine","pineapple"]))
 
-# Coin Change
+# 322. Coin Change
+def coinChange(coins, amount):
+    pass
 
-# Longest Increasing Subsequence
+# 300. Longest Increasing Subsequence
+def lengthOfLIS(nums):
+    # dp[i] = dp[j]+1 if nums[i] > nums[j] else 1
+    dp = [1] * len(nums)
+    for i in range(len(nums)):
+        for j in range(i):
+            if nums[i] > nums[j]:
+                dp[i] = max(dp[i], dp[j]+1)
+    return max(dp)
+
+def lengthOfLIS_optimized(nums):
+    if not nums:
+        return 0
+    
+    # tails[i] = smallest value that can end an increasing subsequence of length i+1
+    tails = []
+    
+    for num in nums:
+        # Binary search to find the position to insert the current number
+        left, right = 0, len(tails)
+        while left < right:
+            mid = (left + right) // 2
+            if tails[mid] < num:
+                left = mid + 1
+            else:
+                right = mid
+        
+        # If we're at end of tails array, append the number
+        if left == len(tails):
+            tails.append(num)
+        else:
+            # Replace the value at insertion position
+            tails[left] = num
+    
+    return len(tails)
 
 ##############################################################
 ##                   Multidimensional DP                    ##
