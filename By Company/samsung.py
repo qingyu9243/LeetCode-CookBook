@@ -1,7 +1,55 @@
-from collections import deque
+from collections import deque, defaultdict
 import heapq
 from typing import Optional
-#300. Longest Increasing Subsequence
+
+# 30. Substring with Concatenation of all words
+def findSubstring(s: str, words):
+    if not s or not words:
+        return []
+    
+    word_len = len(words[0])
+    num_words = len(words)
+    total_len = word_len * num_words
+    result = []
+    
+    word_count = defaultdict(int) # defaultdict(int)
+    for word in words:
+        word_count[word] += 1
+    print(word_count)
+    # Try each offset within a word length
+    for offset in range(word_len):
+        left = offset
+        right = offset
+        seen = defaultdict(int)
+        count = 0 # count valid matched words in the window
+        
+        while right + word_len <= len(s):
+            word = s[right:right + word_len]
+            right += word_len
+            
+            if word in word_count:
+                seen[word] += 1
+                count += 1
+                
+                while seen[word] > word_count[word]:
+                    left_word = s[left:left + word_len]
+                    seen[left_word] -= 1
+                    left += word_len
+                    count -= 1
+                
+                if count == num_words:
+                    result.append(left)
+            else:
+                seen.clear()
+                count = 0
+                left = right
+    
+    return result
+print(findSubstring("barfoothefoobarman", ["foo","bar"]))
+print(findSubstring("barfoothefoobarman", ["foo","bar"]))
+print(findSubstring("barfoothefoobarman", ["foo","bar"]))
+
+# 300. Longest Increasing Subsequence
 def longestIncreasingSebsequence(nums):
     if not nums:
         return 0
@@ -55,6 +103,7 @@ def possibleBipartition(n, dislikes):
     
     return True
 
+# 713. subarray product less than K
 def numSubarrayProductLessThanK(nums, k):
     if k <= 1:
         return 0
