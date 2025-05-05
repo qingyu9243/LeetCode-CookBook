@@ -1,7 +1,6 @@
 
 # 432. All O's one data structure
 
-
 class AllOne:
     def __init__(self) -> None:
         pass
@@ -18,7 +17,7 @@ class AllOne:
     def getMinKey(self):
         pass
 
-# 364.
+# 364. Nestest list weight sum II
 
 # 716. Max Stack
 
@@ -35,6 +34,14 @@ class AllOne:
 # 127. Word Ladder
 
 # 366. Find leaves of Binary Tree
+class TreeNode:
+    def __init__(self, val = 0, left = None, right = None) -> None:
+        self.value = val
+        self.left = left
+        self.right = right
+def _366_find_tree_leaves(root):
+    root_ref = root
+
 
 # 380. Insert Delete GetRandom
 

@@ -1,10 +1,44 @@
 
 # 1249. Minimum Remove to Make Valid Parentheses Med.
+def _1249_minRemoveToMakeValid(s):
+    open_count = 0
+    result = []
 
+    for char in s: # first pass to remove invalid )
+        if char == "(":
+            open_count += 1
+            result.append(char)
+        elif char == ")":
+            if open_count > 0:
+                open_count -= 1
+                result.append(char)
+            # if open_count == 0, skip to add
+        else:
+            result.append(char)
+    
+    close_count = 0
+    final_result = []
+    for char in reversed(result): # second pass to remove (
+        if char == ")":
+            close_count +=1
+            final_result.append(char)
+        elif char == "(":
+            if close_count > 0:
+                close_count -= 1
+                final_result.append(char)
+        else:
+            final_result.append(char)
 
+    return "".join(reversed(final_result))
+assert _1249_minRemoveToMakeValid("lee(t(c)o)de)") == "lee(t(c)o)de"
+
+# 408. Valid Word Abbreviation Easy
+def _408_validWordAbb(word, abbr):
+    p1 = p2 = 0
+    while p1 < len(word) and p2 < len(abbr):
+        p1 = 0
+    pass
 """
-408. Valid Word Abbreviation Easy
-
 314. Binary Tree Vertical Order Traversal Med.
 
 215. Kth Largest Element in an Array Med.
