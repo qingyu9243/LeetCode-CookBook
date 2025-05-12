@@ -5,6 +5,8 @@ class BankSystem:
     def __init__(self) -> None:
         self.accounts = {} # {accountId: balance}
         self.transactions = {} # {accountId: total amounts}
+        self.pending_transfers = {}
+        self.transfer_counter = 1
 
     def createAccount(self, timestamp, accountId):
         if accountId in self.accounts:
@@ -37,7 +39,31 @@ class BankSystem:
         return result
     
     def transfer(self, timestamp, sourceAccountId, targetAccountId, amount):
-        pass
+        ts_int = int(timestamp)
+        amt_int = int(amount)
+
+        if sourceAccountId == targetAccountId:
+            return ""
+        if sourceAccountId not in self.accounts or targetAccountId not in self.accounts:
+            return ""
+        if self.accounts[sourceAccountId] < amount:
+            return ""
+        # withhold money
+        self.accounts[sourceAccountId] -= amount
+        # create transfer id
+        transfer_id = f"transfer{self.transfer_counter}"
+        self.transfer_counter += 1
+        # expire time
+        expiration_time = ts_int + 24*60*60*60*1000
+        self.pending_transfers[transfer_id]= {
+            "sourceAccountId": sourceAccountId,
+            "targetAccountId": targetAccountId,
+            "amount": amt_int,
+            "timestamp": ts_int,
+            "expiration_time": expiration_time,
+            "status": "pending"
+        }
+        return transfer_id
 
     def accept_transfer(self, timestamp, accountId, transferId):
         pass
