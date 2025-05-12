@@ -1,3 +1,148 @@
+## OA ##
+from collections import defaultdict
+# bank system
+class BankSystem:
+    def __init__(self) -> None:
+        self.accounts = {} # {accountId: balance}
+        self.transactions = {} # {accountId: total amounts}
+
+    def createAccount(self, timestamp, accountId):
+        if accountId in self.accounts:
+            return "false"
+        self.accounts[accountId] = 0
+        self.transactions[accountId] = 0
+        return "true"
+    
+    def deposit(self, timestamp, accountId, amount):
+        if accountId not in self.accounts:
+            return ""
+        self.accounts[accountId] += amount
+        self.transactions[accountId] += amount
+        return str(self.accounts[accountId])    
+
+    def pay(self, timestamp, accountId, amount):
+        if accountId not in self.accounts:
+            return ""
+        if self.accounts[accountId] < amount:
+            return ""
+        self.accounts[accountId] -= amount
+        self.transactions[accountId] += amount
+        return str(self.accounts[accountId])
+
+    def top_activity(self, timestamp, n):
+        n_int = int(n)
+        sorted_accounts = sorted(self.transactions.items(), key=lambda x:(-x[-1], x[0]))
+        result_accounts = sorted_accounts[:n_int] if len(sorted_accounts) >= n else sorted_accounts
+        result = ", ".join([f"{acct}({trans})"] for acct, trans in result_accounts)
+        return result
+    
+    def transfer(self, timestamp, sourceAccountId, targetAccountId, amount):
+        pass
+
+    def accept_transfer(self, timestamp, accountId, transferId):
+        pass
+
+
+import heapq
+# cloud storage system
+class CloudStorage:
+    def __init__(self) -> None:
+        # main storage for file, {name: size}
+        self.files = {}
+        # user storage, {user_id: {capacity: int, remaining: int, files: {}}
+        self.users = {"admin": {"capacity": float('inf'), "remaining": float('inf'), "files":{}}}
+
+    # level 1: file manipulation
+    def add_file(self, name, size): # -> bool
+        if name in self.files:
+            return False
+        self.files[name] = size
+        return True
+
+    def get_file_size(self, name): # -> int/None
+        if name in self.files:
+            return self.files[name]
+        return None
+
+    def delete_file(self, name): # -> int(size)/None
+        if name in self.files:
+            size = self.files[name]
+            del self.files[name]
+            return size
+        return None
+
+    # level 2: retrieve file statistics with prefix
+    def get_n_largest_heap(self, prefix, n):
+        n_largest = []
+        l = len(prefix)
+        for name, size in self.files.items():
+            if prefix == name[:l]:
+                if len(n_largest) < n:
+                    heapq.heappush(n_largest, (-size, name))
+                else:
+                    head = n_largest[0]
+                    if head[0] < size:
+                        heapq.heappop(n_largest)
+                        heapq.heappush(n_largest, (-size, name))
+        result = []
+        for size, name in n_largest:
+            result.append(name)
+        return result
+    
+    def get_n_largest(self, prefix, n):
+        matching_files = []
+        for name, size in self.files.items():
+            if name.startswith(prefix):
+                matching_files.append((-size, name))
+        # sort and return :n
+        matching_files.sort(key=lambda x:(x[0], x[1]))
+        return [name for _, name in matching_files[:n]]
+    
+    # level 3: queries from diff users. (all users share common file system, but each user has capacity limit)
+    def add_user(self, user_id, capacity): # bool
+        if user_id in self.users:
+            return False
+        self.users[user_id] = {"capacity": capacity, "remaining": capacity, "files":{}}
+        return True
+    
+    def add_file_by(self, user_id, name, size): # int(remaining capacity)/None
+        # check user if exist
+        if user_id not in self.users:
+            return None
+        # check capacity
+        remaining = self.users[user_id]["remaining"]
+        if size > remaining:
+            return None
+        # add file
+        self.users[user_id]["files"][name] = size
+        self.users[user_id]["remaining"] -= size
+        return self.users[user_id]["remaining"]
+
+    # level 4: allow user to backup their files
+    def backup_user():
+        pass
+
+cloudStorage = CloudStorage()
+cloudStorage.add_file("file1", 5)
+cloudStorage.add_file("file2", 20)
+cloudStorage.add_file("file3.mov", 9)
+print(cloudStorage.get_n_largest("file", 2))
+
+# key value store
+
+
+
+# course registration system
+
+
+
+
+# text editor
+
+
+
+
+
 # 281. Zigzag iterator
 
 # 588. design in-memory file system
