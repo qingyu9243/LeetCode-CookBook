@@ -1,21 +1,40 @@
 
 from typing import List
-# 432. All O's one data structure
+from collections import defaultdict, deque
+import heapq
+
+# 432. [All O's one data structure]
+# use doubly linked list to store frequency and keys/strings with same frequency
+class Node:
+    def __init__(self, freq) -> None:
+        self.freq = freq
+        self.keys = set()
+        self.prev = None
+        self.next = None
 
 class AllOne:
     def __init__(self) -> None:
-        pass
+        self.map = {} # string: node reference
+        self.head = Node(0)
+        self.tail = Node(0)
+        self.head.next = self.tail
+        self.tail.prev = self.head
     
     def inc(self, key):
+        """increment string key by 1 if exist, else create new Node with freq 1"""
         pass
 
     def dec(self, key):
+        """decrement string key by 1. If freq = 0, delete this node """
         pass
 
     def getMaxKey(self):
         pass
 
     def getMinKey(self):
+        pass
+
+    def removeNode(self):
         pass
 
 # 364. Nestest list weight sum II - dfs/bfs
@@ -90,8 +109,59 @@ def _364_depthSumInverse_bfs(nestedList):
         total_sum += integer*weight
     return total_sum
 
-# 716. Max Stack
+# 716. [Max Stack]
+class MaxStack:
+    def __init__(self) -> None:
+        self.stack = []
+        self.heap = []
+        self.removed = set()
+        self.index = 0
 
+    def push(self, x):
+        self.stack.append((x, self.index))
+        heapq.heappush(self.heap, (-x, -self.index)) # O(nlogn)
+        self.index += 1
+
+    def pop(self): # check stack, but need to update first based on removed
+        while self.stack and self.stack[-1][-1] in self.removed:
+            self.stack.pop()
+        num, ind = self.stack.pop()
+        self.removed.add(ind)
+        return num
+
+    def top(self): # O(1), # check stack, but need to update first based on removed
+        while self.stack and self.stack[-1][-1] in self.removed:
+            self.stack.pop()
+        return self.stack[-1][0]
+
+    def peakMax(self): # check heap, but need to update first based on removed
+        while self.heap and -self.heap[0][1] in self.removed:
+            heapq.heappop(self.heap)
+        return self.heap[0][0]
+
+    def popMax(self):
+        while self.heap and -self.heap[0][1] in self.removed:
+            heapq.heappop(self.heap)
+        num, ind = heapq.heappop(self.heap)
+        self.removed.add(-ind)
+        return num
+
+# 155. Min Stack, O(1) for all op
+class MinStack:
+    def __init__(self) -> None:
+        pass
+    
+    def push(self, x):
+        pass
+
+    def pop(self):
+        pass
+
+    def top(self):
+        pass
+
+    def getMin(self):
+        pass
 
 # 20. Valid Parentheses
 
@@ -105,7 +175,54 @@ def _364_depthSumInverse_bfs(nestedList):
 
 # 53. Maximum Subarray
 
-# 127. Word Ladder
+# 127. [Word Ladder]
+def wordLadder_simple(beginWord, endWord, wordList):
+    if endWord not in wordList:
+        return 0
+    n = len(beginWord)
+    queue = deque()
+    queue.append([beginWord, [beginWord]]) # [beginWord, 1]
+    visited = set([beginWord])
+    path = []
+    path.append(beginWord)
+    while queue:
+        cur_word, path = queue.popleft() # cur_word, length
+        for i in range(n):
+            for mid_char in "abcdefghijklmnopqrstuvwxyz":
+                next_word = cur_word[:i] + mid_char + cur_word[i+1:]
+                if next_word == endWord:
+                    return path + [next_word] # length + 1
+                if next_word in wordList and next_word not in visited:
+                    visited.add(next_word)
+                    queue.append([next_word, path + [next_word]]) # length + 1
+    return []
+print(wordLadder_simple("hit", "cog", ["hot","dot","dog","lot","log","cog"]))
+
+def wordLadder(beginWord, endWord, wordList):
+    # initial check
+    if endWord not in wordList or not beginWord or not endWord or not wordList:
+        return 0
+    # intermediate words list
+    wordList.append(beginWord)
+    n = len(beginWord)
+    next_words = defaultdict(list)
+    for word in wordList:
+        for i in range(n):
+            generic_word = word[:i] + "*" + word[i+1:]
+            next_words[generic_word].append(word)
+    print(next_words)
+    # bfs
+    queue = deque()
+    queue.append([beginWord, 1])
+    while queue:
+        cur, n = queue.popleft()
+        n_words = next_words[cu]
+    return
+#wordLadder("hit", "cog", ["hot","dot","dog","lot","log","cog"])
+
+# 128. Word ladder II
+def wordLadderII():
+    pass
 
 # [366]. Find leaves of Binary Tree - dfs
 class TreeNode:
@@ -139,7 +256,8 @@ def _366_find_tree_leaves(root):
 
 # 200. Number of Islands
 
-# 3480. Maximize Subarrays after
+# 3480. [Maximize Subarrays after]
+
 
 # 605. Can place flowers
 
