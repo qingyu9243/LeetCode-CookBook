@@ -112,10 +112,10 @@ def _364_depthSumInverse_bfs(nestedList):
 # 716. [Max Stack]
 class MaxStack:
     def __init__(self) -> None:
-        self.stack = []
-        self.heap = []
-        self.removed = set()
-        self.index = 0
+        self.stack = [] # [num, ind]
+        self.heap = [] # [-num, -ind]
+        self.removed = set() # removed ind
+        self.index = 0 # ind
 
     def push(self, x):
         self.stack.append((x, self.index))
@@ -149,19 +149,25 @@ class MaxStack:
 # 155. Min Stack, O(1) for all op
 class MinStack:
     def __init__(self) -> None:
-        pass
+        self.stack = []
+        self.min_stack = [] # same length with stack, but elment is the smallest value until now.
     
     def push(self, x):
-        pass
+        self.stack.append(x)
+        if not self.min_stack:
+            self.min_stack.append(x)
+        else:
+            self.min_stack.append(min(x,self.min_stack[-1]))
 
     def pop(self):
-        pass
+        self.stack.pop()
+        self.min_stack.pop()
 
     def top(self):
-        pass
+        return self.stack[-1]
 
     def getMin(self):
-        pass
+        return self.min_stack[-1]
 
 # 20. Valid Parentheses
 
