@@ -109,6 +109,10 @@ def _364_depthSumInverse_bfs(nestedList):
         total_sum += integer*weight
     return total_sum
 
+# 339. Nested List Weight Sum
+def _339_depthSum(nestedList: List[NestedInteger]):
+    pass
+
 # 716. [Max Stack]
 class MaxStack:
     def __init__(self) -> None:
@@ -169,11 +173,55 @@ class MinStack:
     def getMin(self):
         return self.min_stack[-1]
 
-# 20. Valid Parentheses
+# 1004. Max Consecutive Ones III
+    """
+    sliding window. moving right first until 0 count reach k. then move left.
+    """
+def longestOnes(nums, k):
+    l = r = 0
+    count_zero = 0
+    ans = 0
 
+    for r in range(len(nums)):
+        if nums[r] == 0:
+            count_zero += 1
+        while count_zero > k:
+            if nums[l] == 0:
+                count_zero -= 1
+            l += 1
+        ans = max(ans, r - l + 1)
+    return ans
 
-# 50. Pow(x, n)
+# 20. Valid Parentheses, Given a string s containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid.
+def validParenthese(str):
+    check_map = {"}": "{", ")": "(", "]": "["}
+    stack = []
+    for char in str:
+        if char in ("(", "{", "["):
+            stack.append(char)
+        else:
+            if not stack or stack[-1] != check_map[char]:
+                return False
+            stack.pop()
+    return stack == []
 
+# 50. Pow(x, n) x^n
+def myPow(x, n):
+    if n == 0:
+        return 1
+    if n < 0:
+        x = 1/x
+        n = -n
+    result = 1
+    current_power = x
+    while n > 0:
+        result *= x
+        n -= 1
+    return result
+
+# 200. Number of Islands
+def numberOfIslands(grid):
+    pass
 
 # 244. Shortest Word Distance II
 
