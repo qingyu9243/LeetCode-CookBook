@@ -215,17 +215,103 @@ def myPow(x, n):
     result = 1
     current_power = x
     while n > 0:
-        result *= x
-        n -= 1
+        if n%2 == 1:
+            result *= current_power
+        current_power *= current_power
+        n // 2
     return result
+
+# 636. Exclusive time of functions
+def exclusiveTime(n, logs):
+    pass
 
 # 200. Number of Islands
 def numberOfIslands(grid):
     pass
 
-# 244. Shortest Word Distance II
+# 243. Shortest Word Distance
+def shortestDistance(wordsDict: List[str], word1: str, word2: str):
+    pos1 = pos2 = -1
+    min_distance = float('inf')
 
+    for i, word in enumerate(wordsDict):
+        if word == word1:
+            pos1 = i
+            if pos2 != -1:
+                min_distance = min(min_distance, abs(pos1 - pos2))
+        elif word == word2:
+            pos2 = i
+            if pos1 != -1:
+                min_distance = min(min_distance, abs(pos1 - pos2))
+    return min_distance
+# 244. Shortest Word Distance II
+class WordDistance:
+    def __init__(self, wordList) -> None:
+        self.indexs = defaultdict(list)
+        for i, word in enumerate(wordList):
+            self.indexs[word].append(i)
+
+    def shortestWordDistance2(self, w1, w2):
+        w1_indexes = self.indexs[w1] # [0, 1]
+        w2_indexes = self.indexs[w2] # [3, 5]
+        i = j = 0
+        min_dis = float('inf')
+        while i < len(w1_indexes) and j < len(w2_indexes):
+            min_dis = min(min_dis, abs(w1_indexes[i] - w2_indexes[j]))
+            if w1_indexes[i] < w2_indexes:
+                i += 1
+            else:
+                j += 1
+        return min_dis
+# 245. Shortest Word Distance III
+def shortestWordDistance3(wordsDict, word1, word2):
+    if word1 == word2:
+        # Special case: find shortest distance between two occurrences of the same word
+        min_distance = float('inf')
+        prev_pos = -1
+        
+        for i, word in enumerate(wordsDict):
+            if word == word1:
+                if prev_pos != -1:
+                    min_distance = min(min_distance, i - prev_pos)
+                prev_pos = i
+        
+        return min_distance
+    else:
+        # Original case: two different words
+        min_distance = float('inf')
+        pos1 = -1  # Most recent position of word1
+        pos2 = -1  # Most recent position of word2
+        
+        for i, word in enumerate(wordsDict):
+            if word == word1:
+                pos1 = i
+                # If we've seen word2 before, calculate distance
+                if pos2 != -1:
+                    min_distance = min(min_distance, abs(pos1 - pos2))
+            elif word == word2:
+                pos2 = i
+                # If we've seen word1 before, calculate distance
+                if pos1 != -1:
+                    min_distance = min(min_distance, abs(pos1 - pos2))
+        
+        return min_distance
+     
 # 277. Find the celebrity
+def findCelebrity(n):
+    def knows(a, b):
+        pass
+    candidate = 0
+    for i in range(1, n):
+        if knows(candidate, i):
+            candidate = i
+    for i in range(n):
+        if i != candidate and knows(candidate, i):
+            return -1
+    for i in range(n):
+        if i != candidate and not knows(i, candidate):
+            return -1
+    return candidate
 
 # 53. Maximum Subarray
 
@@ -286,7 +372,6 @@ class TreeNode:
         self.right = right
 def _366_find_tree_leaves(root):
     result = []
-
     def dfs(node):
         if not node:
             return -1
@@ -306,12 +391,20 @@ def _366_find_tree_leaves(root):
 
 # 380. Insert Delete GetRandom
 
-# 636. Exclusive TIme of 
-
-# 200. Number of Islands
-
-# 3480. [Maximize Subarrays after]
-
+# 3480. [Maximize Subarrays after removing one conflict pair]
+def maxSubarrays(N, A):
+    right = [[] for _ in range(N+1)]
+    for a, b in A:
+        right[max(a, b)].append(min(a, b))
+    ans = 0
+    left = [0, 0]
+    impl = [0] * (N+1)
+    for r in range(1, N+1):
+        for l in right[r]:
+            left = max(left, [l, left[0]], [left[0], l])
+        ans += r - left[0]
+        impl[left[0]] += left[0] - left[1]
+    return ans + max(impl)
 
 # 605. Can place flowers
 
@@ -320,20 +413,158 @@ def _366_find_tree_leaves(root):
 # 17. letter of comb
 def _17_letter_comb():
     pass
-
 # mutation - 
+
+# 360. Sort Transformed Array
+def sortTransFormedArray(nums, a, b, c):
+    def transform(x):
+        return a * x * x + b * x + c
+    # Transform all numbers
+    transformed = [transform(x) for x in nums]  
+    # Sort and return
+    return sorted(transformed)
+def sortTransformedArray_twoPointer(nums, a, b, c):
+    def transform(x):
+        return a * x * x + b * x + c
+    n = len(nums)
+    l, r = 0, n - 1
+    result = [0] * n
+    if a > 0: # func face up
+        for i in range(len(nums)-1, -1, -1):
+            left_value = transform(nums[l])
+            right_value = transform(nums[r])
+            if left_value >= right_value:
+                l += 1
+                result[i] = left_value
+            else:
+                r -= 1
+                result[i] = right_value
+    else: # func face down
+        for i in range(n):
+            left_value = transform(nums[l])
+            right_value = transform(nums[r])
+            if left_value <= right_value:
+                l += 1
+                result[i] = left_value
+            else:
+                r -= 1
+                result[i] = right_value
+    return result
+#print(sortTransformedArray_twoPointer([-4,-2,2,4], 1, 3, 5))
 
 # 156. Binary Tree upside down
 
+
 # 215. Kth largest element in 
 
-# 256. Paint House
+# 256. Paint House I 
+def minCostI(costs):
+    n = len(costs)
+    prev_red = costs[0][0]
+    prev_blue = costs[0][1]
+    prev_green = costs[0][2]
+
+    for i in range(1, n):
+        cur_red = costs[i][0] + min(prev_blue, prev_green)
+        cur_blue = costs[i][1] + min(prev_red, prev_green)
+        cur_green = costs[i][2] + min(prev_blue, prev_red)
+        prev_red = cur_red
+        prev_blue = cur_blue
+        prev_green = cur_green
+    print(prev_red, prev_blue, prev_green)
+    return min(prev_red, prev_blue, prev_green)
+#print(minCostI([[17,2,17],[16,16,5],[14,3,19]]))
+
+# 265. Paint House II
+def minCostII(costs):
+    n, k = len(costs), len(costs[0])
+
 
 # 272. Closet binary search Tree
+def closestKValues(root, target, k): # time: nlogK)
+    max_heap = [] # (-distance, node.val)
+    def traverse(node):
+        if not node:
+            return
+        distance = abs(node.val - target)
+        if len(max_heap) < k:
+            heapq.heappush(max_heap, (-distance, node.val))
+        elif distance < -max_heap[0][0]:
+            heapq.heapreplace(max_heap, (-distance, node.val))
+        traverse(node.left)
+        traverse(node.right)
+    traverse(root)
+    return [value for _, value in max_heap]
 
-#
+# 32. Longest Valid Parentheses
+def longestValidParen(s):
+    stack = [-1]
+    res = 0
+    for i, c in enumerate(s):
+        if c == "(":
+            stack.append(i)
+        else:
+            stack.pop()
+            if not stack:
+                stack.append(i) # record this invalid end position
+            else:
+                res = max(res, i - stack[-1])
+    return res
+def longestValidParen_twoPass(s):
+    if not s:
+        return 0
+    max_len = 0
+    left = right = 0
+    for char in s:
+        if char == "(":
+            left += 1
+        else:
+            right += 1
+        if left == right:
+            max_len = max(max_len, 2*left)
+        elif right > left:
+            left = right = 0
+    left = right = 0
+    for char in reversed(s):
+        if char == "(":
+            left += 1
+        else:
+            right += 1
+        if left == right:
+            max_len = max(max_len, 2*left)
+        elif left > right:
+            left = right = 0    
 
-#
+    return max_len
+
+# 297. Serialize and Deserialize Binary Tree
+def serialize(root):
+    vals = []
+    def preorder(node):
+        if not node:
+            vals.append('null')
+        else:
+            vals.append(str(node.val))
+            preorder(node.left)
+            preorder(node.right)
+    preorder(root)
+    return ",".join(vals)
+def deserialize(data):
+    vals = data.split(',')
+    index = 0
+    def build_tree():
+        nonlocal index
+        if index >= len(vals):
+            return None
+        val = int(vals[index])
+        index += 1
+        if val == 'null':
+            return None
+        node = TreeNode(val)
+        node.left = build_tree()
+        node.right = build_tree()
+        return node
+    build_tree()
 
 #
 
