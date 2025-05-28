@@ -24,7 +24,7 @@ class AllOne:
         """increment string key by 1 if exist, else create new Node with freq 1"""
         pass
 
-    def dec(self, key):
+    def dec(self, key): # 
         """decrement string key by 1. If freq = 0, delete this node """
         pass
 
@@ -223,7 +223,16 @@ def myPow(x, n):
 
 # 636. Exclusive time of functions
 def exclusiveTime(n, logs):
-    pass
+    res = [0]*n
+    stack = []
+    prev_time = 0
+
+    #for log in logs:
+    #    fn_id, typ 
+    return
+
+# 516. Longest Palindromic Subsequence
+
 
 # 200. Number of Islands
 def numberOfIslands(grid):
@@ -356,7 +365,7 @@ def wordLadder(beginWord, endWord, wordList):
     queue.append([beginWord, 1])
     while queue:
         cur, n = queue.popleft()
-        n_words = next_words[cu]
+        n_words = next_words[cur]
     return
 #wordLadder("hit", "cog", ["hot","dot","dog","lot","log","cog"])
 
@@ -453,7 +462,8 @@ def sortTransformedArray_twoPointer(nums, a, b, c):
 #print(sortTransformedArray_twoPointer([-4,-2,2,4], 1, 3, 5))
 
 # 156. Binary Tree upside down
-
+def upsideDownBinaryTree(root):
+    pass
 
 # 215. Kth largest element in 
 
@@ -471,7 +481,7 @@ def minCostI(costs):
         prev_red = cur_red
         prev_blue = cur_blue
         prev_green = cur_green
-    print(prev_red, prev_blue, prev_green)
+    #print(prev_red, prev_blue, prev_green)
     return min(prev_red, prev_blue, prev_green)
 #print(minCostI([[17,2,17],[16,16,5],[14,3,19]]))
 
@@ -566,7 +576,32 @@ def deserialize(data):
         return node
     build_tree()
 
-#
+# 763. Partition Labels
+def partitionLabels(s):
+    last = {ch: i for i, ch in enumerate(s)}
+    start = end = 0
+    res = []
+
+    for i, char in enumerate(s):
+        end = max(end, last[char])
+        if i == end:
+            res.append(end - start + 1)
+            start = i + 1
+    return res
+
+# 1944. Number of Visible pp in a Queue
+def numVisiblePP(heights):
+    ans = [0]*len(heights)
+    stack = []
+    for i, v in enumerate(heights):
+        while stack and heights[stack[-1]] <= v:
+            ans[stack.pop()] += 1
+        if stack:
+            ans[stack[-1]] += 1
+        stack.append(i)
+    return ans
+
+
 
 #
 
