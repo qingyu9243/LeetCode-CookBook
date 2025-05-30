@@ -657,6 +657,53 @@ def deserialize(data):
         node.right = build_tree()
         return node
     build_tree()
+    
+from collections import Counter
+# 76. minimum window substring
+def minWindow(self, s, t):
+    # Create hashmaps to keep track of counts of characters in t and in the current window
+    need = Counter(t)
+    window = {}
+
+    # Initialize two pointers for the sliding window
+    left, right = 0, 0
+    # Initialize variables for tracking the number of valid characters and the minimum window length
+    valid = 0
+    min_length = float('inf')
+    start = 0
+
+    # Expand the window to the right
+    while right < len(s):
+        # Get the character at the right pointer
+        char = s[right]
+        right += 1
+        
+        # Update the window hashmap
+        if char in need:
+            window[char] = window.get(char, 0) + 1
+            # Check if we have the correct count for this character
+            if window[char] == need[char]:
+                valid += 1
+        
+        # Check if the current window is valid
+        while valid == len(need):
+            # Update the minimum window if necessary
+            if right - left < min_length:
+                min_length = right - left
+                start = left
+            
+            # Prepare to contract the window by moving the left pointer
+            char = s[left]
+            left += 1
+            
+            # Update the window hashmap
+            if char in need:
+                if window[char] == need[char]:
+                    valid -= 1
+                window[char] -= 1
+
+    # Return the minimum window substring found, or an empty string if no valid window was found
+    return "" if min_length == float('inf') else s[start:start + min_length]    
 
 # 763. Partition Labels
 def partitionLabels(s):
