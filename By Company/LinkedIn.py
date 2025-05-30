@@ -232,7 +232,25 @@ def exclusiveTime(n, logs):
     return
 
 # 516. Longest Palindromic Subsequence
-
+def longestPaSub_dp(s):
+    n = len(s)
+    dp = [[0] * n for _ in range(n)]
+    
+    # Fill DP table
+    for i in range(n):
+        dp[i][i] = 1
+    
+    for length in range(2, n + 1):
+        for i in range(n - length + 1):
+            j = i + length - 1
+            
+            if s[i] == s[j]: # char is same, add both
+                if length == 2:
+                    dp[i][j] = 2
+                else: 
+                    dp[i][j] = dp[i + 1][j - 1] + 2
+            else: # char is different, choose best of exclusing i or j
+                dp[i][j] = max(dp[i + 1][j], dp[i][j - 1])
 
 # 200. Number of Islands
 def numberOfIslands(grid):
@@ -345,7 +363,7 @@ def wordLadder_simple(beginWord, endWord, wordList):
                     visited.add(next_word)
                     queue.append([next_word, path + [next_word]]) # length + 1
     return []
-print(wordLadder_simple("hit", "cog", ["hot","dot","dog","lot","log","cog"]))
+#print(wordLadder_simple("hit", "cog", ["hot","dot","dog","lot","log","cog"]))
 
 def wordLadder(beginWord, endWord, wordList):
     # initial check
@@ -354,7 +372,7 @@ def wordLadder(beginWord, endWord, wordList):
     # intermediate words list
     wordList.append(beginWord)
     n = len(beginWord)
-    next_words = defaultdict(list)
+    next_words = defaultdict(list) 
     for word in wordList:
         for i in range(n):
             generic_word = word[:i] + "*" + word[i+1:]
@@ -601,13 +619,107 @@ def numVisiblePP(heights):
         stack.append(i)
     return ans
 
+# 2276. Count Integers in Intervals
+class CountIntervals:
+    def __init__(self) -> None:
+        self.intervals = []
+        self.cur_count = 0
 
+    def add(self, left, right):
+        new_intervals = []
+        new_left, new_right = left, right
 
-#
+        for interval_left, interval_right in self.intervals:
+            if interval_right < left or interval_left > right: # on overlapping
+                new_intervals.append([interval_left, interval_right])
+            else:
+                new_left = min(left, interval_left)
+                new_right = max(right, interval_right)
+                self.cur_count -= (interval_right-interval_left + 1) # remove the original one. a
 
-#
+        new_intervals.append([new_left, new_right]) # add new interval
+        self.cur_count += (new_right - new_left + 1) # aad new count
+        self.intervals = new_intervals
 
-#
+    def count(self):
+        return self.cur_count
+"""  
+print("count interval")
+intervals = CountIntervals()
+intervals.add(2, 3)
+intervals.add(7, 10)
+print(intervals.count())
+intervals.add(1, 8)
+print(intervals.intervals)
+"""  
+
+# 1856. [Largest Color Value in a Directed Graph]
+def largestPathValue(colors, edges):
+    n = len(colors)
+    graph = [[] for _ in range(n)]
+    in_degree = [0]*n
+    # build graph
+    for u, v in edges:
+        graph[u].append(v)
+        in_degree[v] += 1
+    print("graph", graph)
+    print("in degree", in_degree)
+    # topological sort
+    topo_order = []
+    queue = deque([i for i in range(n) if in_degree[i] == 0])
+    print(queue)
+    while queue:
+        node = queue.popleft()
+        topo_order.append(node)
+        for neighbor in graph[node]:
+            in_degree[neighbor] -= 1
+            if in_degree[neighbor] == 0:
+                queue.append(neighbor)
+    print("topo order", topo_order)
+    # cycle detection
+    if len(topo_order) != n:
+        return -1
+    # DP. dp[i][c] = max count of color c in paths ending at node i
+    dp = [[0]*26 for _ in range(n)]
+    for node in topo_order:
+        node_color = ord(colors[node]) - ord('a') # convert to a num
+        dp[node][node_color] = max(dp[node][node_color], 1)
+        # update neigbhors
+        for neighbor in graph[node]:
+            for color in range(26):
+                if color == ord(colors[neighbor]) - ord('a'):
+                    dp[neighbor][color] = max(dp[neighbor][color], dp[node][color] + 1)
+                else:
+                    dp[neighbor][color] = max(dp[neighbor][color], dp[node][color])
+
+    return max(max(row) for row in dp)
+print(largestPathValue("abaca", [[0,1],[0,2],[2,3],[3,4]]))
+#print(largestPathValue("a", [[0, 0]]))
+
+# 373. Find K pairs with smallest sums
+def kSmallestPairs(nums1, nums2, k):
+    heap = []
+    result = []
+    for j in range(min(len(nums2), k)):
+        heapq.heappush(heap, (nums1[0]+nums2[j], 0, j))
+    while k > 0 and heap:
+        cur_sum, i, j = heapq.heappop(heap)
+        result.append(nums1[i], nums2[j])
+        if i + 1 < len(nums1):
+            heapq.heappush(heap, (nums1[i+1]+nums2[j], i+1, j))
+        k -= 1
+    return result
+
+# 658. Find K closest Elements
+def findClosetElements(arr, k, x): # binary search
+    left, right = 0, len(arr) - k
+    while left < right:
+        mid = (left + right)//2
+        if x - arr[mid] > arr[mid] - x:
+            left = mid + 1
+        else:
+            right = mid
+    return arr[left: left+k]
 
 #
 
