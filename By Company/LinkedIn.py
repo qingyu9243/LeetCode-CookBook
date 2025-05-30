@@ -388,8 +388,28 @@ def wordLadder(beginWord, endWord, wordList):
 #wordLadder("hit", "cog", ["hot","dot","dog","lot","log","cog"])
 
 # 128. Word ladder II
-def wordLadderII():
-    pass
+def wordLadderII(beginWord: str, endWord: str, wordList: List[str]) -> List[List[str]]:
+    wordList = set(wordList)
+    res = []
+    edge = defaultdict(list)
+    for word in wordList:
+        for i in range(len(word)):
+            edge[word[:i] + "_" + word[i+1:]].append(word)
+            
+    q = {beginWord: [[beginWord]]}
+    while q:
+        wordList -= set(q.keys())
+        new_q = defaultdict(list)
+        for w in q:
+            if w == endWord: 
+                return q[w]
+            else:
+                for i in range(len(w)):
+                    for neww in edge[w[:i] + "_" + w[i+1:]]:
+                        if neww in wordList:
+                            new_q[neww].extend([j + [neww] for j in q[w]])          
+        q = new_q
+    return res
 
 # [366]. Find leaves of Binary Tree - dfs
 class TreeNode:
@@ -506,7 +526,21 @@ def minCostI(costs):
 # 265. Paint House II
 def minCostII(costs):
     n, k = len(costs), len(costs[0])
+    dp = []
+    for i in range(k):
+        dp.append(costs[0][i])
+    #print(dp)
 
+    for house in range(1, n):
+        tmp_list = []
+        for color in range(k):
+            smallest = float('inf')
+            for pre_color in range(k):
+                if color == pre_color: continue
+                smallest = min(smallest, dp[pre_color])
+            tmp_list.append(costs[house][color]+smallest)
+        dp = tmp_list
+    return min(dp)
 
 # 272. Closet binary search Tree
 def closestKValues(root, target, k): # time: nlogK)

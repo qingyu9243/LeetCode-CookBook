@@ -339,6 +339,9 @@ def binary_search(search_space):
         else:
             left = mid + 1
 
+from bisect import bisect, bisect_left, bisect_right
+# bisect = bisect_right, 找到相等的数的右边
+
 #### Backtrack ####
 def function():
     def backtrack():
