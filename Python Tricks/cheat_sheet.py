@@ -340,7 +340,9 @@ def binary_search(search_space):
             left = mid + 1
 
 from bisect import bisect, bisect_left, bisect_right
-# bisect = bisect_right, 找到相等的数的右边
+# bisect = bisect_right(arr, x), 找到x index 的右边(not include x), 找不到x，返回x右边index
+# bisect = bisect_left(arr, x), 找到x index 的最右边(include x)，找不到x，返回x右边index
+
 
 #### Backtrack ####
 def function():
