@@ -417,19 +417,34 @@ def _424_characterReplacement(s, k):
 #----------------------------------------#
 #-->           Classic DP            <--#
 #----------------------------------------#
-"""
-- 62. Unique Paths (65.7% Med)
-- 70. Climbing Stairs (53.5% Easy)
-- 72. Edit Distance (58.7% Med)
-- 91. Decode Ways (36.5% Med)
-- 115. Distinct Subsequences (50.0% Hard)
-- 120. Triangle (59.2% Med)
-- 139. Word Break (48.2% Med)
-- 140. Word Break II (53.6% Hard)
-- 494. Target Sum (50.7% Med)
-- 509. Fibonacci Number (72.9% Easy)
-- 790. Domino and Tromino Tiling (52.0% Med)
-"""
+# 62. Unique Paths (65.7% Med)
+# 70. Climbing Stairs (53.5% Easy)
+# 72. Edit Distance (58.7% Med)
+# 91. Decode Ways (36.5% Med)
+# 115. Distinct Subsequences (50.0% Hard)
+# 120. Triangle (59.2% Med)
+# 139. Word Break (48.2% Med)
+def wordBreak(s, wordDict):
+    """can string s be divided by using words in wordDict"""
+    dp = [False] * (1 + len(s))
+    dp[0] = True
+    for i in range(1, len(s)+1):
+        for j in range(i):
+            if dp[j] and s[j:i] in wordDict:
+                dp[i] = True
+                break
+    return dp[-1]
+# 140. Word Break II (53.6% Hard)
+def wordBreak2(s, wordDict):
+    ans = []
+    def backtrack():
+        pass
+
+    return ans
+# 494. Target Sum (50.7% Med)
+# 509. Fibonacci Number (72.9% Easy)
+# 790. Domino and Tromino Tiling (52.0% Med)
+
 #----------------------------------------#
 #-->          Advanced DP           <--#
 #----------------------------------------#

@@ -18,6 +18,9 @@ def isValid(s: str) -> bool:
     return stack == []
 
 # 139. Word Break
+def wordBreak(s, wordDict):
+    pass
+
 
 # 322. Coin Change
 
