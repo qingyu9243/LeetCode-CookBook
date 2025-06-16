@@ -417,7 +417,25 @@ def _424_characterReplacement(s, k):
 #----------------------------------------#
 #-->           Classic DP            <--#
 #----------------------------------------#
+# 416. Partition Equal Subset Sum
+def canPartition(nums):
+    total = sum(nums)
+    if total % 2 != 0:
+        return False
+    target = total//2
+    # dp[i] 表示能否组成和为i
+    dp = [False] * (target+1)
+    dp[0] = True # 和为0总是可能的（空集）
+    for num in nums:
+        # 从后往前，避免重复使用同一个数
+        for j in range(target, num-1, -1):
+            dp[j] = dp[j] or dp[j-num]
+    return dp[target]
+
 # 62. Unique Paths (65.7% Med)
+def uniquePaths(m, n):
+    # dp[i][j] = dp[i][j-]
+    return
 # 70. Climbing Stairs (53.5% Easy)
 # 72. Edit Distance (58.7% Med)
 # 91. Decode Ways (36.5% Med)
