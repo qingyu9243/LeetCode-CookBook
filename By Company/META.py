@@ -431,12 +431,24 @@ def canPartition(nums):
         for j in range(target, num-1, -1):
             dp[j] = dp[j] or dp[j-num]
     return dp[target]
-
 # 62. Unique Paths (65.7% Med)
-def uniquePaths(m, n):
-    # dp[i][j] = dp[i][j-]
-    return
+def uniquePaths(m: int, n: int) -> int:
+    paths = [[0] * n for _ in range(m)]
+    
+    # Initialize first row and column to 1
+    for i in range(m):
+        paths[i][0] = 1
+    for j in range(n):
+        paths[0][j] = 1
+    
+    # Fill using the formula: paths[i][j] = paths[i-1][j] + paths[i][j-1]
+    for i in range(1, m):
+        for j in range(1, n):
+            paths[i][j] = paths[i-1][j] + paths[i][j-1]
+    
+    return paths[m-1][n-1]
 # 70. Climbing Stairs (53.5% Easy)
+
 # 72. Edit Distance (58.7% Med)
 # 91. Decode Ways (36.5% Med)
 # 115. Distinct Subsequences (50.0% Hard)
@@ -454,11 +466,18 @@ def wordBreak(s, wordDict):
     return dp[-1]
 # 140. Word Break II (53.6% Hard)
 def wordBreak2(s, wordDict):
-    ans = []
-    def backtrack():
-        pass
-
-    return ans
+    n = len(s)
+    dp = [[] for _ in range(n+1)] # dp[i] represent start from index i, the list of all segmented words
+    for i in range(n-1, -1, -1):
+        for j in range(i+1, n+1):
+            word = s[i:j]
+            if word in wordDict and dp[j]:
+                for segs in dp[j]:
+                    if segs:
+                        dp[i].append(word + " " + segs)
+                    else:
+                        dp[i].append(word)
+    return dp[0]
 # 494. Target Sum (50.7% Med)
 # 509. Fibonacci Number (72.9% Easy)
 # 790. Domino and Tromino Tiling (52.0% Med)
