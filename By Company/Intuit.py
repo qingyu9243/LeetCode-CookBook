@@ -15,7 +15,16 @@ def rob(nums):
 
 # 322. Coin Change
 def coinChange(coins, amount):
-    return
+    """coins type and total amount, return min coin count to satisfy amount"""
+    # dp[i] = min(dp[i-coinA]+1, dp[i-coinB]+1, xxx)
+    dp = [float('inf')]*(amount+1)
+    dp[0] = 0
+    for i in range(1, amount+1):
+        for coin in coins:
+            if i >= coin:
+                dp[i] = min(dp[i], dp[i-coin]+1)
+
+    return dp[-1] if dp[-1] != float('inf') else -1
 
 # 983. Minimum Cost For Tickets
 def mincostTickets(days, costs):
@@ -157,7 +166,18 @@ def fixedRatioSubstrings(nums):
 #########################################
 # 20. Valid Parentheses
 def isValid(s):
-    return
+    par_map = {')': '(', ']': '[', '}':'{'}
+    stack = []
+    for char in s:
+        if char in ('(', '[', '{'):
+            stack.append(char)
+        else:
+            if stack:
+                last = stack.pop()
+                if last != par_map[char]:
+                    return False
+            return False
+    return stack == []
 
 # 394. Decode String
 def decodeString(s):
@@ -186,6 +206,16 @@ def longestValidParentheses(s):
 #########################################
 ####          Array / Math            ####
 #########################################
+# 66. Plus One
+def plusOne(digits):
+    n = len(digits)
+    for i in reversed(range(n)):
+        if digits[i] < 9:
+            digits[i] += 1
+            return digits
+        digits[i] = 0
+    return [1] + digits
+
 # 238. Product of Array Except Self
 def productExceptSelf(nums):
     return
@@ -219,7 +249,7 @@ def convert(s, numRows):
     return
 
 #########################################
-####         Design / O(1)            ####
+####         Design                  ####
 #########################################
 # 146. LRU Cache
 class LRUCache:
@@ -361,7 +391,7 @@ def solveSudoku(board):
 def findMedianSortedArrays(nums1, nums2):
     return
 
-# 354. Russian Doll Envelopes
+## 354. Russian Doll Envelopes
 def maxEnvelopes(envelopes):
     return
 
