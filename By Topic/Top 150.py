@@ -995,9 +995,41 @@ def solve(board):
 
 # Evaluate Division
 
-# Course Schedule
+# 207. Course Schedule
+def canFinish(numCourses, prerequisites):
+    inbound = [0] * numCourses
+    course_map = defaultdict(list)
+    for course, pre_course in prerequisites:
+        inbound[course] += 1
+        course_map[pre_course].append(course)
+    q = [i for i in range(numCourses) if inbound[i] == 0]
+    visited = 0
+    while q:
+        course = q.pop()
+        visited += 1
+        for next_course in course_map[course]:
+            inbound[next_course] -= 1
+            if inbound[next_course] == 0:
+                q.append(next_course)
+    return numCourses == visited
 
-# Course Schedule II
+# 210.Course Schedule II
+def courseScheduleII(numCourses, prerequisites):
+    res = []
+    inbound = [0] * numCourses
+    course_map = defaultdict(list)
+    for course, pre_course in prerequisites:
+        inbound[course] += 1
+        course_map[pre_course].append(course)
+    q = [i for i in range(numCourses) if inbound[i] == 0]
+
+    while q:
+        course = q.pop()
+        for next_course in course_map[course]:
+            inbound[next_course] -= 1
+            if inbound[next_course] == 0:
+                q.append(next_course)
+    return res
 
 ##############################################################
 ##                       Graph BFS                          ##

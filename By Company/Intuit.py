@@ -69,9 +69,26 @@ def lengthOfLongestSubsequence(nums, target):
 #########################################
 ####            Graph / BFS           ####
 #########################################
+from collections import defaultdict
 # 210. Course Schedule II
 def findOrder(numCourses, prerequisites):
-    return
+    res = []
+    inbound = [0] * numCourses
+    course_map = defaultdict(list)
+    for course, pre_course in prerequisites:
+        course_map[pre_course].append(course)
+        inbound[course] += 1
+    q = [i for i in range(numCourses) if inbound[i] == 0]
+    while q:
+        cur_course = q.pop()
+        res.append(cur_course)
+        for next_course in course_map[cur_course]:
+            inbound[next_course] -= 1
+            if inbound[next_course] == 0:
+                q.append(course)
+    if len(res) < numCourses:
+        return []
+    return res
 
 # 994. Rotting Oranges
 def orangesRotting(grid):
@@ -230,11 +247,27 @@ def spiralOrder(matrix):
 
 # 628. Maximum Product of Three Numbers
 def maximumProduct(nums):
-    return
+    nums.sort()
+    return max(nums[-1]*nums[-2]*nums[-3], nums[0]*nums[1]*nums[-1])
 
 # 3148. Maximum Difference Score in a Grid
 def maxScore(grid):
-    return
+    m, n = len(grid), len(grid[0])
+    min_val = [[float('inf')]*n for _ in range(m)]
+    res = float("-inf")
+    for i in range(m):
+        for j in range(n):
+            if i > 0:
+                res = max(res, grid[i][j] - min_val[i-1][j])
+            if j > 0:
+                res = max(res, grid[i][j] - min_val[i][j-1])
+            if i > 0:
+                min_val[i][j] = min(min_val[i][j], min_val[i-1][j])
+            if j > 0:
+                min_val[i][j] = min(min_val[i][j], min_val[i][j-1])
+            min_val[i][j] = min(min_val[i][j], grid[i][j])
+    print(min_val)
+    return res
 
 # 2453. Destroy Sequential Targets
 def destroyTargets(nums, space):
@@ -387,12 +420,35 @@ def solveSudoku(board):
 # 475. Heaters
 # Already defined above
 
+# 1760. Minimum Limit of Balls in a Bag
+def minimumSize(nums, maxOperations):
+    def can_achieve(penalty):
+        pass
+    left, right = 1, max(nums)
+    while left < right:
+        mid = (left + right)//2
+        if can_achieve(mid):
+            right = mid
+        else:
+            left = mid + 1
+    return left
+
 # 4. Median of Two Sorted Arrays
 def findMedianSortedArrays(nums1, nums2):
     return
 
-## 354. Russian Doll Envelopes
+from bisect import bisect, bisect_left
+## 354. Russian Doll Envelopes - Hard
 def maxEnvelopes(envelopes):
+    envelopes.sort(key = lambda x:(x[0], -x[1]))
+    heights = [h for _, h in envelopes]
+    dp = []
+    for h in heights:
+        index = bisect.bisect_left(dp, h)
+        if index == len(dp):
+            dp.append(index)
+        else:
+            dp[index] = h
     return
 
 #########################################
