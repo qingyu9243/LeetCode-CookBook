@@ -164,18 +164,71 @@ def countDistinctSubstrings(s):
 #########################################
 # 3. Longest Substring Without Repeating Characters
 def lengthOfLongestSubstring(s):
-    return
+    cur_set = set()
+    left = 0
+    max_length = 0
+    for right in range(len(s)):
+        while s[right] in cur_set:
+            cur_set.remove(s[left])
+            left += 1
+        cur_set.add(s[right])
+        max_length = max(max_length, right - left + 1)
+    return max_length
 
 # 438. Find All Anagrams in a String
+from collections import Counter
 def findAnagrams(s, p):
-    return
+    if len(p) > len(s):
+        return []
+    result = []
+    p_count = Counter(p)
+    window_count = Counter(s[:len(p)])
+    if p_count == window_count:
+        result.append(0)
+    # slide window
+    for i in range(len(p), len(s)):
+        right_char = s[i]
+        window_count[right_char] += 1
+        left_char = s[i - len(p)]
+        window_count[left_char] -= 1
+        if window_count[left_char] == 0:
+            del window_count[left_char]
+        if window_count == p_count:
+            result.append(i - len(p) + 1)
+    return result
 
 # 15. 3Sum
+""" -4, -1, -1, -1, 1, 2
+"""#    i,   j        k
 def threeSum(nums):
-    return
+    ans = []
+    nums.sort()
+    n = len(nums)
+    for i in range(n-2):
+        if nums[i] > 0:
+            break
+        if i > 0 and nums[i] == nums[i-1]:
+            continue
+        j, k = i + 1, n - 1
+        while j < k:
+            cur_sum = nums[i] + nums[j] + nums[k]
+            if cur_sum < 0:
+                j += 1
+            elif cur_sum > 0:
+                k -= 1
+            else:
+                ans.append(nums[i], nums[j], nums[k])
+                while j + 1 < k and nums[j+1] == nums[k]:
+                    j += 1
+                while k - 1 > j and nums[k-1] == nums[j]:
+                    k -= 1
+                j += 1
+                k -= 1
+    return ans
 
 # 2489. Number of Substrings With Fixed Ratio
 def fixedRatioSubstrings(nums):
+    
     return
 
 #########################################
@@ -237,9 +290,29 @@ def plusOne(digits):
 def productExceptSelf(nums):
     return
 
-# 1. Two Sum
+# 1. Two Sum, if there is duplicates
 def twoSum(nums, target):
-    return
+    ans = []
+    _map = defaultdict(list)
+    for i, num in enumerate(nums):
+        diff = target - num
+        if diff in _map:
+            for prev_index in _map[diff]:
+                ans.append([ prev_index, i])
+        _map[num].append(i)
+    return ans
+
+# 167. two sum II - input array sorted(num is unique)
+def twoSumOrdered(nums, target):
+    i, j = 0, len(nums)-1
+    while i < j:
+        if nums[i] + nums[j] < target:
+            i += 1
+        elif nums[i] + nums[j] > target:
+            j -= 1
+        else:
+            return [i+1, j+1]
+    return -1
 
 # 54. Spiral Matrix
 def spiralOrder(matrix):
