@@ -3,11 +3,53 @@
 #########################################
 # 1326. Minimum Number of Taps to Open to Water a Garden
 def minTaps(n, ranges):
-    pass
+    tap_range = defaultdict(int)
+    for i, r in enumerate(ranges):
+        start = max(0, i - r)
+        end = min(n, i + r)
+        tap_range[start] = max(tap_range[start], end)
+
+    curEnd = curFar = count = 0
+    for i in range(n+1):
+        if i > curFar:
+            return -1
+        if i > curEnd:
+            count += 1
+            curEnd = curFar
+        curFar = max(curFar, tap_range[i])
+    return count
+
+# Jump Game II - greedy
+""" given nums = [2, 3, 1, 1, 4], return min jump to reach the end
+"""
+def jump(nums):
+    jump = curEnd = curFar = 0
+    l = len(nums)
+    for i in range(l):
+        if curEnd < i:
+            jump += 1
+            curEnd = curFar
+        curFar = max(curFar, i + nums[i])
+    return jump
 
 # 300. Longest Increasing Subsequence
 def longestIncreasingSub(nums):
-    return
+    dp = [1]*len(nums)
+    for i in range(1, len(nums)):
+        for j in range(i):
+            if nums[i] > nums[j]:
+                dp[i] = max(dp[i], dp[j] + 1)
+    return max(dp)
+
+def LIS_bisect(nums):
+    sub = []
+    for num in nums:
+        i = bisect_left(sub, num)
+        if i == len(sub):
+            sub.append(num)
+        else:
+            sub[i] = num
+    return len(sub)
 
 # 198. House Robber
 def rob(nums):
@@ -40,7 +82,15 @@ def maximalRectangle(matrix):
 
 # 139. Word Break
 def wordBreak(s, wordDict):
-    return
+    n = len(s)
+    dp = [False]*(n+1)
+    dp[0] = True
+    for i in range(1, n+1):
+        for j in range(i):
+            if dp[j] and s[j:i] in wordDict:
+                dp[i] = True
+                break
+    return dp[-1]
 
 # 931. Minimum Falling Path Sum
 def minFallingPathSum(matrix):
@@ -92,7 +142,27 @@ def findOrder(numCourses, prerequisites):
 
 # 994. Rotting Oranges
 def orangesRotting(grid):
-    return
+    max_time = 0
+    directions = [(0, 1), (1, 0), (-1, 0), (0, -1)]
+    fresh = 0
+    m, n = len(grid), len(grid[0])
+    queue = []
+    for i in range(m):
+        for j in range(n):
+            if grid[i][j] == "2":
+                queue.append((i, j, 0))
+            elif grid[i][j] == "1":
+                fresh += 1
+    while queue:
+        cur_x, cur_y, time = queue.pop(0)
+        for dx, dy in directions:
+            nx, ny = cur_x + dx, cur_y + dy
+            if 0 <= nx < m and 0 <= ny < n and grid[nx][ny] == "1":
+                grid[nx][ny] = "2"
+                queue.append((nx, ny, time+1))
+                fresh -= 1
+                max_time = max(max_time, time+1)
+    return max_time if fresh == 0 else -1
 
 # 102. Binary Tree Level Order Traversal
 def levelOrder(root):
@@ -140,11 +210,6 @@ def leastInterval(tasks, n):
 # 767. Reorganize String
 def reorganizeString(s):
     return
-
-# 475. Heaters
-def findRadius(houses, heaters):
-    return
-
 #########################################
 ####        Heap / Counting           ####
 #########################################
@@ -228,8 +293,21 @@ def threeSum(nums):
 
 # 2489. Number of Substrings With Fixed Ratio
 def fixedRatioSubstrings(nums):
-    
     return
+
+# 475. Heaters 
+def findRadius(houses, heaters): # two-pointers
+    houses.sort()
+    heaters.sort()
+    i = 0 # heater index
+    max_radius = 0
+    for house in houses:
+        # move heater pointer to find closet heater(boundary and condition)
+        while i + 1 < len(heaters) and abs(heaters[i+1] - house) <= abs(heaters[i] - house):
+            i += 1
+        min_dist = abs(heaters[i] - house)
+        max_radius = max(max_radius, min_dist)
+    return max_radius
 
 #########################################
 ####              Stack               ####
@@ -412,7 +490,18 @@ class RandomizedSet:
 
 # 22. Generate Parentheses
 def generateParenthesis(n):
-    return
+    def backtrack(cur_path, l, r):
+        if len(cur_path)*2 == n:
+            ans.append(cur_path)
+            return
+        if l > r:
+            backtrack(cur_path+")", l, r+1)
+        if l < n:
+            backtrack(cur_path+"(", l+1, r)
+        return
+    ans = []
+    backtrack("", 0, 0)
+    return ans
 
 # 49. Group Anagrams
 def groupAnagrams(strs):
@@ -420,7 +509,12 @@ def groupAnagrams(strs):
 
 # 929. Unique Email Addresses
 def numUniqueEmails(emails):
-    return
+    uniqueEmails = set()
+    for email in emails:
+        name, domain = email.split('@')
+        local = name.split('+')[0].replace('.', '')
+        uniqueEmails.add(local+'@'+domain)
+    return len(uniqueEmails)
 
 # 770. Basic Calculator IV
 def basicCalculatorIV(expression, evalvars, evalints):
@@ -477,16 +571,77 @@ def orderOfLargestPlusSign(n, mines):
 #########################################
 ####         Backtracking             ####
 #########################################
-# 37. Sudoku Solver
+# [37. Sudoku Solver]
 def solveSudoku(board):
-    return
+    def is_valid(board, row, col, num):
+        # check row
+        for j in range(9):
+            if board[row][j] == num:
+                return False
+        # check col
+        for i in range(9):
+            if board[i][col] == num:
+                return False
+        # check each 3x3
+        box_row = (row//3)*3
+        box_col = (col//3)*3
+        for i in range(box_row, box_row+3):
+            for j in range(box_col, box_col+3):
+                if board[i][j] == num:
+                    return False
+        return True
+    
+    def solve():
+        for i in range(9):
+            for j in range(9):
+                if board[i][j] == ".":
+                    for num in "123456789":
+                        if is_valid(board, i, j, num):
+                            board[i][j] = num
+                            if solve():
+                                return True
+                            board[i][j] = "."
+                    return False
+        return False
+    solve()
 
 # 22. Generate Parentheses
 # Already defined above
+def generateParenthesis(n):
+    ans = []
+    def backtrack(cur_path, l, r):
+        if len(cur_path) * 2 == n:
+            ans.append(cur_path)
+            return
+        if l > r:
+            next_path = cur_path + ")"
+            backtrack(next_path, l, r+1)
+        if l < n:
+            next_path = cur_path + "("
+            backtrack(next_path, l+1, r)
+        return
+    backtrack("", 0, 0)
+    return ans
 
 # 139. Word Break
-# Already defined above
-
+def wordBreak(s, wordDict):
+    memo = {}
+    def backtrack(start):
+        if start in memo:
+            return memo[start]       
+        if start == len(s):
+            return True  
+        # Try each word from dictionary (not all substrings!)
+        for word in wordDict:
+            word_len = len(word)
+            if (start + word_len <= len(s) and 
+                s[start:start + word_len] == word and
+                backtrack(start + word_len)):
+                memo[start] = True
+                return True
+        memo[start] = False
+        return False
+    return backtrack(0)
 #########################################
 ####       Binary Search              ####
 #########################################
