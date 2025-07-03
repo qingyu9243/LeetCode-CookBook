@@ -1,197 +1,197 @@
 {
-    "spots": [
-      {
-        "spot_id": "A1",
-        "location": "North Section"
-      },
-      {
-        "spot_id": "A2",
-        "location": "North Section"
-      },
-      {
-        "spot_id": "B1",
-        "location": "South Section"
-      },
-      {
-        "spot_id": "B2",
-        "location": "South Section"
-      }
-    ],
-    "events": [
-      {
-        "event_id": 1,
-        "spot_id": "A1",
-        "vehicle_id": "CAR001",
-        "event_type": "check_in",
-        "timestamp": "2024-01-15T08:00:00"
-      },
-      {
-        "event_id": 2,
-        "spot_id": "A2",
-        "vehicle_id": "CAR002",
-        "event_type": "check_in",
-        "timestamp": "2024-01-15T08:15:00"
-      },
-      {
-        "event_id": 3,
-        "spot_id": "B1",
-        "vehicle_id": "CAR003",
-        "event_type": "check_in",
-        "timestamp": "2024-01-15T08:30:00"
-      },
-      {
-        "event_id": 4,
-        "spot_id": "B2",
-        "vehicle_id": "CAR004",
-        "event_type": "check_in",
-        "timestamp": "2024-01-15T08:45:00"
-      },
-      {
-        "event_id": 5,
-        "spot_id": "A1",
-        "vehicle_id": "CAR005",
-        "event_type": "check_in",
-        "timestamp": "2024-01-15T09:00:00"
-      },
-      {
-        "event_id": 6,
-        "spot_id": "A2",
-        "vehicle_id": "CAR006",
-        "event_type": "check_in",
-        "timestamp": "2024-01-15T09:15:00"
-      },
-      {
-        "event_id": 7,
-        "spot_id": "A1",
-        "vehicle_id": "CAR001",
-        "event_type": "check_out",
-        "timestamp": "2024-01-15T10:30:00"
-      },
-      {
-        "event_id": 8,
-        "spot_id": "B1",
-        "vehicle_id": "CAR003",
-        "event_type": "check_out",
-        "timestamp": "2024-01-15T11:00:00"
-      },
-      {
-        "event_id": 9,
-        "spot_id": "A1",
-        "vehicle_id": "CAR007",
-        "event_type": "check_in",
-        "timestamp": "2024-01-15T12:00:00"
-      },
-      {
-        "event_id": 10,
-        "spot_id": "B1",
-        "vehicle_id": "CAR008",
-        "event_type": "check_in",
-        "timestamp": "2024-01-15T12:15:00"
-      },
-      {
-        "event_id": 11,
-        "spot_id": "A1",
-        "vehicle_id": "CAR009",
-        "event_type": "check_in",
-        "timestamp": "2024-01-15T12:30:00"
-      },
-      {
-        "event_id": 12,
-        "spot_id": "B1",
-        "vehicle_id": "CAR010",
-        "event_type": "check_in",
-        "timestamp": "2024-01-15T12:45:00"
-      },
-      {
-        "event_id": 13,
-        "spot_id": "A1",
-        "vehicle_id": "CAR011",
-        "event_type": "check_in",
-        "timestamp": "2024-01-15T13:00:00"
-      },
-      {
-        "event_id": 14,
-        "spot_id": "B1",
-        "vehicle_id": "CAR012",
-        "event_type": "check_in",
-        "timestamp": "2024-01-15T13:15:00"
-      },
-      {
-        "event_id": 15,
-        "spot_id": "A1",
-        "vehicle_id": "CAR013",
-        "event_type": "check_in",
-        "timestamp": "2024-01-15T13:30:00"
-      },
-      {
-        "event_id": 16,
-        "spot_id": "A2",
-        "vehicle_id": "CAR002",
-        "event_type": "check_out",
-        "timestamp": "2024-01-15T14:00:00"
-      },
-      {
-        "event_id": 17,
-        "spot_id": "B2",
-        "vehicle_id": "CAR004",
-        "event_type": "check_out",
-        "timestamp": "2024-01-15T14:30:00"
-      },
-      {
-        "event_id": 18,
-        "spot_id": "A1",
-        "vehicle_id": "CAR007",
-        "event_type": "check_out",
-        "timestamp": "2024-01-15T15:00:00"
-      },
-      {
-        "event_id": 19,
-        "spot_id": "A2",
-        "vehicle_id": "CAR014",
-        "event_type": "check_in",
-        "timestamp": "2024-01-15T17:00:00"
-      },
-      {
-        "event_id": 20,
-        "spot_id": "B2",
-        "vehicle_id": "CAR015",
-        "event_type": "check_in",
-        "timestamp": "2024-01-15T17:15:00"
-      },
-      {
-        "event_id": 21,
-        "spot_id": "A2",
-        "vehicle_id": "CAR016",
-        "event_type": "check_in",
-        "timestamp": "2024-01-15T17:30:00"
-      },
-      {
-        "event_id": 22,
-        "spot_id": "B2",
-        "vehicle_id": "CAR017",
-        "event_type": "check_in",
-        "timestamp": "2024-01-15T17:45:00"
-      },
-      {
-        "event_id": 23,
-        "spot_id": "A2",
-        "vehicle_id": "CAR018",
-        "event_type": "check_in",
-        "timestamp": "2024-01-15T18:00:00"
-      },
-      {
-        "event_id": 24,
-        "spot_id": "A1",
-        "vehicle_id": "CAR005",
-        "event_type": "check_out",
-        "timestamp": "2024-01-15T19:00:00"
-      },
-      {
-        "event_id": 25,
-        "spot_id": "A2",
-        "vehicle_id": "CAR006",
-        "event_type": "check_out",
-        "timestamp": "2024-01-15T19:30:00"
-      }
-    ]
-  }
+  "spots": [
+    {
+      "spot_id": "A1",
+      "location": "North Section"
+    },
+    {
+      "spot_id": "A2",
+      "location": "North Section"
+    },
+    {
+      "spot_id": "B1",
+      "location": "South Section"
+    },
+    {
+      "spot_id": "B2",
+      "location": "South Section"
+    }
+  ],
+  "events": [
+    {
+      "event_id": 1,
+      "spot_id": "A1",
+      "vehicle_id": "CAR001",
+      "event_type": "check_in",
+      "timestamp": "2024-01-15T08:00:00"
+    },
+    {
+      "event_id": 2,
+      "spot_id": "A2",
+      "vehicle_id": "CAR002",
+      "event_type": "check_in",
+      "timestamp": "2024-01-15T08:15:00"
+    },
+    {
+      "event_id": 3,
+      "spot_id": "B1",
+      "vehicle_id": "CAR003",
+      "event_type": "check_in",
+      "timestamp": "2024-01-15T08:30:00"
+    },
+    {
+      "event_id": 4,
+      "spot_id": "B2",
+      "vehicle_id": "CAR004",
+      "event_type": "check_in",
+      "timestamp": "2024-01-15T08:45:00"
+    },
+    {
+      "event_id": 5,
+      "spot_id": "A1",
+      "vehicle_id": "CAR005",
+      "event_type": "check_in",
+      "timestamp": "2024-01-15T09:00:00"
+    },
+    {
+      "event_id": 6,
+      "spot_id": "A2",
+      "vehicle_id": "CAR006",
+      "event_type": "check_in",
+      "timestamp": "2024-01-15T09:15:00"
+    },
+    {
+      "event_id": 7,
+      "spot_id": "A1",
+      "vehicle_id": "CAR001",
+      "event_type": "check_out",
+      "timestamp": "2024-01-15T10:30:00"
+    },
+    {
+      "event_id": 8,
+      "spot_id": "B1",
+      "vehicle_id": "CAR003",
+      "event_type": "check_out",
+      "timestamp": "2024-01-15T11:00:00"
+    },
+    {
+      "event_id": 9,
+      "spot_id": "A1",
+      "vehicle_id": "CAR007",
+      "event_type": "check_in",
+      "timestamp": "2024-01-15T12:00:00"
+    },
+    {
+      "event_id": 10,
+      "spot_id": "B1",
+      "vehicle_id": "CAR008",
+      "event_type": "check_in",
+      "timestamp": "2024-01-15T12:15:00"
+    },
+    {
+      "event_id": 11,
+      "spot_id": "A1",
+      "vehicle_id": "CAR009",
+      "event_type": "check_in",
+      "timestamp": "2024-01-15T12:30:00"
+    },
+    {
+      "event_id": 12,
+      "spot_id": "B1",
+      "vehicle_id": "CAR010",
+      "event_type": "check_in",
+      "timestamp": "2024-01-15T12:45:00"
+    },
+    {
+      "event_id": 13,
+      "spot_id": "A1",
+      "vehicle_id": "CAR011",
+      "event_type": "check_in",
+      "timestamp": "2024-01-15T13:00:00"
+    },
+    {
+      "event_id": 14,
+      "spot_id": "B1",
+      "vehicle_id": "CAR012",
+      "event_type": "check_in",
+      "timestamp": "2024-01-15T13:15:00"
+    },
+    {
+      "event_id": 15,
+      "spot_id": "A1",
+      "vehicle_id": "CAR013",
+      "event_type": "check_in",
+      "timestamp": "2024-01-15T13:30:00"
+    },
+    {
+      "event_id": 16,
+      "spot_id": "A2",
+      "vehicle_id": "CAR002",
+      "event_type": "check_out",
+      "timestamp": "2024-01-15T14:00:00"
+    },
+    {
+      "event_id": 17,
+      "spot_id": "B2",
+      "vehicle_id": "CAR004",
+      "event_type": "check_out",
+      "timestamp": "2024-01-15T14:30:00"
+    },
+    {
+      "event_id": 18,
+      "spot_id": "A1",
+      "vehicle_id": "CAR007",
+      "event_type": "check_out",
+      "timestamp": "2024-01-15T15:00:00"
+    },
+    {
+      "event_id": 19,
+      "spot_id": "A2",
+      "vehicle_id": "CAR014",
+      "event_type": "check_in",
+      "timestamp": "2024-01-15T17:00:00"
+    },
+    {
+      "event_id": 20,
+      "spot_id": "B2",
+      "vehicle_id": "CAR015",
+      "event_type": "check_in",
+      "timestamp": "2024-01-15T17:15:00"
+    },
+    {
+      "event_id": 21,
+      "spot_id": "A2",
+      "vehicle_id": "CAR016",
+      "event_type": "check_in",
+      "timestamp": "2024-01-15T17:30:00"
+    },
+    {
+      "event_id": 22,
+      "spot_id": "B2",
+      "vehicle_id": "CAR017",
+      "event_type": "check_in",
+      "timestamp": "2024-01-15T17:45:00"
+    },
+    {
+      "event_id": 23,
+      "spot_id": "A2",
+      "vehicle_id": "CAR018",
+      "event_type": "check_in",
+      "timestamp": "2024-01-15T18:00:00"
+    },
+    {
+      "event_id": 24,
+      "spot_id": "A1",
+      "vehicle_id": "CAR005",
+      "event_type": "check_out",
+      "timestamp": "2024-01-15T19:00:00"
+    },
+    {
+      "event_id": 25,
+      "spot_id": "A2",
+      "vehicle_id": "CAR006",
+      "event_type": "check_out",
+      "timestamp": "2024-01-15T19:30:00"
+    }
+  ]
+}

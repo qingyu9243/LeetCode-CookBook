@@ -56,8 +56,24 @@ def primeProducts(primes):
     return
 
 ### Bash Programming
-# monitor vmstat for vilations
+import sys
+from collections import deque
+# monitor vmstat for vilations that exceed threshold
 def process_vmstat(metric, limit, count, window):
+    limit = int(limit)
+    count = int(count)
+    violations = deque()
+    headers = []
+    first_line_skipped = False
+    for line in sys.stdin:
+        if line.startswith('procs'):
+            headers = next(sys.stdin).split()
+            metric_idx = headers.index(metric)
+            continue
+        if headers and not first_line_skipped:
+            first_line_skipped = True
+            continue
+        #if he
     return
 
 
