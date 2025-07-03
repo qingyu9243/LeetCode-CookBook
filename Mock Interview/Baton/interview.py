@@ -2,19 +2,19 @@ import json
 import os
 
 
-class PeakParkingAnalyzer:
+class JsonAnalyzer:
     def __init__(self) -> None:
         with open("Mock Interview/Baton/test.json", 'r') as f:
-            json_data = json.load(f)
-        print(type(json_data))
+            self.json_data = json.load(f)
     
     def returnAnswer(self):
         print('question 1')
+        print(self.json_data[])
+        return
 
 def main():
-    print("Peak Parking analysis")
-
-    analyzer = PeakParkingAnalyzer()
+    print("Begin the json file parse analysis")
+    analyzer = JsonAnalyzer()
     analyzer.returnAnswer()
 
 if __name__ == "__main__":
