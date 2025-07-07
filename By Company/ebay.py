@@ -112,17 +112,99 @@ def makesquare(matchsticks):
     return backtrack(0)
 
 # 981. Time based key-value store
+import bisect
+class TimeMap():
+    """Design a time-based key-value data structure that can store multiple values for the same key at different time stamps,
+    and retrieve the key's value at a certain timestamp."""
+    def __init__(self) -> None:
+        self.timeMap = defaultdict(list)
+
+    def set(self, key, value, timestamp):
+        self.timeMap[key].append((timestamp, value))
+    
+    def get(self, key, timestamp):
+        # binary search the timestamp
+        if key not in self.timeMap:
+            return ""
+        values = self.timeMap[key]
+        #idx = bisect.bisect_right(values, (timestamp, chr(127)))
+        left, right = 0, len(values)-1
+        result = ""
+        while left <= right:
+            mid = (left + right)//2
+            mid_ts, mid_value = values[mid]
+            if mid_ts <= timestamp:
+                left = mid + 1
+                result = mid_value
+            else:
+                right = mid - 1
+        return result
 
 # 994. rotting oranges
 
-
 # 22. generate parenthese
+def generateParenthese(n):
+    ans = []
+    def backtrack(cur_path, l, r):
+        if len(cur_path) == 2*n:
+            ans.append(cur_path)
+            return
+        if l < n:
+            backtrack(cur_path+"(", l+1, r)
+        if l > r:
+            backtrack(cur_path+")", l, r+1)
+        return
+    backtrack("", 0, 0)
+    return ans
 
 # 23. Merge K sorted lists
 
 # 581. shortest unsorted continous subarray
+def findUnsortedSubarray(nums):
+    n = len(nums)
+    # left pass - find the first decrease one
+    left = -1
+    for i in range(n-1):
+        if nums[i] > nums[i+1]:
+            left = i
+            break
+    if left == -1:
+        return 0
+    # right pass - find the first decrease one
+    right = -1
+    for j in range(n-1, 0, -1):
+        if nums[j] < nums[j-1]:
+            right = j
+            break
+
+    min_val = min(nums[left:right+1])
+    max_val = max(nums[left:right+1])
+    while left > 0 and nums[left - 1] > min_val:
+        left -= 1
+    while right < n -1 and nums[right + 1] < max_val:
+        right += 1
+    return right - left + 1
 
 # 752. open the lock
+from collections import deque
+def openLock(deadends, target):
+    if '0000' in deadends:
+        return -1
+    visited = set()
+    queue = deque()
+    queue.append(['0000', 0])
+    while queue:
+        cur, step = queue.appendleft()
+        if cur == target:
+            return step
+        for i in range(4):
+            mid_digit = [(int(cur[i])+1)%10, (int(cur[i])-1)%10]
+            next_wheels = [cur[:i] + str(mid_digit[0]) + cur[i+1:], cur[:i] + str(mid_digit[1]) + cur[i+1:]]
+            for n in next_wheels:
+                if n not in visited and n not in deadends:
+                    visited.add(n)
+                    queue.append([n, step+1])
+    return -1
 
 # 1909. remove one element to make array strictly
 def canBeIncreasing(nums):
