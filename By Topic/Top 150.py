@@ -1355,6 +1355,19 @@ def combine(n, k):
     return ans
 #print(combine(4, 2))
 
+# LC 78. Subsets
+def subSets(nums):
+    n = len(nums)
+    ans = []
+    def backtrack(start, curr_path):
+            ans.append(curr_path.copy())
+            for i in range(start, n):
+                curr_path.append(nums[i])
+                backtrack(i+1, curr_path)
+                curr_path.pop()
+    backtrack(0, [])
+    return ans
+
 # LC 46. Permutations
 def permute(nums):
     l = len(nums)

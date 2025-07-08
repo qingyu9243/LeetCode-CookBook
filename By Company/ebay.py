@@ -1,3 +1,5 @@
+# 416. 
+
 # 54. spiral matrix
 def spiralOrder(matrix):
     result = []
@@ -86,6 +88,20 @@ class LRU:
         return -1
     
 # 50. pow(x, n)
+def myPow(x, n):
+    if n == 0:
+        return 1
+    if n < 0:
+        x = 1/x
+        n = -n
+    result = 1
+    current_power = x
+    while n > 0:
+        if n % 2 == 1:
+            result *= current_power
+        current_power *= current_power
+        n // 2
+    return result
 
 # 473. matchsticks to sqaure
 def makesquare(matchsticks):
@@ -141,6 +157,7 @@ class TimeMap():
         return result
 
 # 994. rotting oranges
+
 
 # 22. generate parenthese
 def generateParenthese(n):
@@ -221,3 +238,7 @@ def canBeIncreasing(nums):
             if not can_remove_prev and not can_remove_curr:
                 return False
     return True
+
+# 332. Reconstruct itinerary
+def findItinerary(tickets):
+    return
