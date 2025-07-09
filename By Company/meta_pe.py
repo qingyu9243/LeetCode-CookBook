@@ -77,3 +77,4 @@ def process_vmstat(metric, limit, count, window):
     return
 
 
+"""sed -i -e "s/test@fb\.com/removed@fb\.com/g" *.html"""

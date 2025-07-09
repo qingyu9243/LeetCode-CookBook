@@ -176,6 +176,7 @@ def generateParenthese(n):
 
 # 23. Merge K sorted lists
 
+
 # 581. shortest unsorted continous subarray
 def findUnsortedSubarray(nums):
     n = len(nums)
@@ -241,4 +242,13 @@ def canBeIncreasing(nums):
 
 # 332. Reconstruct itinerary
 def findItinerary(tickets):
-    return
+    targets = defaultdict(list)
+    for a, b in tickets:
+        targets[a].append(b)
+    stack = ['JFK']
+    route = []
+    while stack:
+        while targets[stack[-1]]:
+            stack.append(targets[stack[-1]].pop())
+        route.append(stack.pop())
+    return route
